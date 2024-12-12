@@ -1,5 +1,6 @@
-package com.semoi.semo.models;
+package com.semoi.semo.board.entity;
 
+import com.semoi.semo.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "게시물")
+@Table(name = "boards")
 public class Board {
 
     @Id

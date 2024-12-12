@@ -1,4 +1,4 @@
-package com.semoi.semo.models;
+package com.semoi.semo.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "회원")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -58,5 +58,5 @@ public class User {
     private Integer role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Board> boards; // 회원이 작성한 게시물들
+    private List<com.semoi.semo.board.entity.Board> boards; // 회원이 작성한 게시물들
 }
