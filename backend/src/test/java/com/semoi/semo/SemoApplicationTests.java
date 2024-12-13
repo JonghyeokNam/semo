@@ -28,7 +28,7 @@ class SemoApplicationTests {
 		board.setUpdatedAt(null);
 		board.setDeletedAt(null);
 		board.setHit(0);
-		board.setUser("test-user00");
+		board.setUserId(1L);
 		board.setRecruitmentType("백엔드");
 		board.setRecruitmentCount(5);
 		board.setRecruitmentField("Spring");

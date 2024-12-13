@@ -38,7 +38,7 @@ public class Board {
 //    private User user; // 작성자 (회원)
 
     @Column(name = "user_id")
-    private String user;
+    private Long userId;
 
     @Column(name = "hit", nullable = false)
     private Integer hit;
