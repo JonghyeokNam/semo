@@ -1,12 +1,11 @@
 package com.semoi.semo.board.entity;
 
-import com.semoi.semo.user.entity.User;
+//import com.semoi.semo.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -26,20 +25,20 @@ public class Board {
     private String content;
 
     @Column(name = "created_at", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
     @Column(name = "deleted_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date deletedAt;
+    private LocalDateTime deletedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user; // 작성자 (회원)
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private User user; // 작성자 (회원)
+
+    @Column(name = "user_id")
+    private String user;
 
     @Column(name = "hit", nullable = false)
     private Integer hit;
