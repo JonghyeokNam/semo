@@ -1,5 +1,5 @@
 import GlobalStyle from './style/globalStyle';
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Nav from './layouts/nav/Nav';
 import Footer from './layouts/footer/Footer';
@@ -25,16 +25,20 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-
 const Layout = () => {
+  const location = useLocation();
+
+  // Nav와 Footer를 제외할 경로들
+  const excludedPaths = ["/login", "/signup", "/otherpage"];
+  const isExcludedPage = excludedPaths.includes(location.pathname);
 
   return (
     <BackGroundColor>
-      <Nav/>
+      {!isExcludedPage && <Nav />}
       <Wrapper>
         <Outlet />
       </Wrapper>
-      <Footer />
+      {!isExcludedPage && <Footer />}
     </BackGroundColor>
   );
 };
@@ -42,10 +46,9 @@ const Layout = () => {
 function App() {
   return (
     <>
-    <GlobalStyle />
-    <Layout />
+      <GlobalStyle />
+      <Layout />
     </>
-    
   );
 }
 

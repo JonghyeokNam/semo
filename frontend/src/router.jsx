@@ -3,6 +3,7 @@ import App from "./App";
 import Home from "./pages/home/index";
 import Chat from "./pages/chat/index";
 import Login from "./pages/login/index";
+import Signup from "./pages/login/signup";
 import Mypage from "./pages/mypage/main/index";
 import ApplyList from "./pages/applylist/index";
 import BoardDetail from "./pages/board/detail/index";
@@ -24,6 +25,9 @@ const router = createBrowserRouter([
 
       // 로그인 페이지
       { path: "/login", element: <Login /> },
+
+      // 회원가입 페이지
+      { path: "/signup", element: <Signup /> },
 
       // 마이 페이지
       { path: "/mypage", element: <Mypage /> },
