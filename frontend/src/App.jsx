@@ -2,6 +2,7 @@ import GlobalStyle from './style/globalStyle';
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import Nav from './layouts/nav/Nav';
+import Footer from './layouts/footer/Footer';
 
 const BackGroundColor = styled.div`
   width: 100vw;
@@ -33,6 +34,7 @@ const Layout = () => {
       <Wrapper>
         <Outlet />
       </Wrapper>
+      <Footer />
     </BackGroundColor>
   );
 };
