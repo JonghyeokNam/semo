@@ -8,7 +8,7 @@ export const FooterWrapper = styled.div`
   justify-content: center;
   width: 100%;
   height: 180px;
-  padding: 0 330px;
+  padding: ${(props) => (props.$isDesktop ? "0 330px" : "0 48px")};
   background-color: #f9f9f9;
   text-align: left;  /* 텍스트 왼쪽 정렬 */
 `;
@@ -37,6 +37,7 @@ export const LinksContainer = styled.div`
   justify-content: flex-end;  /* 오른쪽 정렬 */
   gap: 50px;  /* 항목 간 간격 */
   width: 100%;
+  margin-top: 10px;
 
 `;
 

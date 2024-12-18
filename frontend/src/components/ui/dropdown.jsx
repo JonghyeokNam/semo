@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import * as S from "./style"; // 스타일 파일 import
+import * as S from "./dropdownStyle"; // 스타일 파일 import
 
 export const Dropdown = (props) => {
   const list = props.props.data; // 드롭다운 데이터 리스트
