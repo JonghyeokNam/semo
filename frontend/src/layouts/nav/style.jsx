@@ -7,7 +7,9 @@ export const NavWrapper = styled.div`
   justify-content: flex-end; /* 오른쪽 정렬 */
   width: 100%; /* 100% 너비로 전체 영역을 채움 */
   height: 45px;
-  padding: ${(props) => (props.$isDesktop ? "0 330px" : "0 48px")};
+  padding: ${(props) => (props.$isDesktop ? "0 330px" : "0 32px")};
+  font-size: ${(props) => (props.$isDesktop ? "16px" : "12px")};
+  
 `;
 
 export const Nav2Wrapper = styled.div`
@@ -45,7 +47,6 @@ export const LogoText = styled.span`
 `;
 
 export const Text = styled.span`
-  font-size: 16px;
   color: #493f3c;
   margin: 0 15px;
 `;

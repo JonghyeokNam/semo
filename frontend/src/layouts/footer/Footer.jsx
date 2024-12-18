@@ -13,7 +13,7 @@ const Footer = () => {
             <S.CopyrightText>Copyright SeMO. All rights reserved</S.CopyrightText>
             
             {/* 오른쪽에 위치한 항목들 */}
-            <S.LinksContainer>
+            <S.LinksContainer $isDesktop={isDesktop}>
                 <S.LinkItem>이용약관</S.LinkItem>
                 <S.LinkItem>개인정보처리방침</S.LinkItem>
                 <S.LinkItem>서비스소개</S.LinkItem>
