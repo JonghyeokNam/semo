@@ -23,19 +23,20 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: ${(props) => (props.isExcludedPage ? "0 0" : "0px 330px")};  
 `;
 
 const Layout = () => {
   const location = useLocation();
 
   // Nav와 Footer를 제외할 경로들
-  const excludedPaths = ["/login", "/signup", "/otherpage"];
+  const excludedPaths = ["/login", "/signup"];
   const isExcludedPage = excludedPaths.includes(location.pathname);
 
   return (
     <BackGroundColor>
       {!isExcludedPage && <Nav />}
-      <Wrapper>
+      <Wrapper isExcludedPage={isExcludedPage}>
         <Outlet />
       </Wrapper>
       {!isExcludedPage && <Footer />}
