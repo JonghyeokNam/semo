@@ -3,6 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Nav from './layouts/nav/Nav';
 import Footer from './layouts/footer/Footer';
+import useMediaQueries from "./hooks/useMediaQueries";
 
 const BackGroundColor = styled.div`
   width: 100vw;
@@ -23,11 +24,13 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: ${(props) => (props.isExcludedPage ? "0 0" : "0px 330px")};  
+  padding: ${(props) => 
+    props.isExcludedPage ? "0 0" : (props.isDesktop ? "0 330px" : "0 48px")};
 `;
 
 const Layout = () => {
   const location = useLocation();
+  const { isDesktop } = useMediaQueries(); // Check if it's a desktop screen
 
   // Nav와 Footer를 제외할 경로들
   const excludedPaths = ["/login", "/signup"];
@@ -36,7 +39,7 @@ const Layout = () => {
   return (
     <BackGroundColor>
       {!isExcludedPage && <Nav />}
-      <Wrapper isExcludedPage={isExcludedPage}>
+      <Wrapper isExcludedPage={isExcludedPage} isDesktop={isDesktop}>
         <Outlet />
       </Wrapper>
       {!isExcludedPage && <Footer />}
