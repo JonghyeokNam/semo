@@ -1,5 +1,6 @@
 package com.semoi.semo.board.controller;
 
+import com.semoi.semo.board.dto.requestdto.BoardRequestDto;
 import com.semoi.semo.board.dto.responsedto.BoardListResponseDto;
 import com.semoi.semo.board.dto.responsedto.BoardResponseDto;
 import com.semoi.semo.board.service.BoardService;
@@ -8,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -67,8 +69,8 @@ public class BoardController {
     })
     @PostMapping
     public Response<Void> createBoard(
-            @RequestBody BoardListResponseDto boardRequest) {
-//        boardService.createBoard(boardRequest);
+            @Valid @RequestBody BoardRequestDto boardRequest) {
+        boardService.createBoard(boardRequest);
         return Response.success();
     }
 

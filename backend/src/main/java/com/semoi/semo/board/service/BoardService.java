@@ -1,5 +1,6 @@
 package com.semoi.semo.board.service;
 
+import com.semoi.semo.board.dto.requestdto.BoardRequestDto;
 import com.semoi.semo.board.dto.responsedto.BoardListResponseDto;
 import com.semoi.semo.board.dto.responsedto.BoardResponseDto;
 import com.semoi.semo.board.entity.Board;
@@ -27,5 +28,10 @@ public class BoardService {
                 .orElseThrow(() -> new DataNotFoundException("board not found"));
 
         return BoardMapper.toBoardResponseDto(board);
+    }
+
+    public void createBoard(BoardRequestDto requestDto) {
+        Board board = BoardMapper.toEntity(requestDto);
+        boardRepository.save(board);
     }
 }

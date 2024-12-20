@@ -1,15 +1,18 @@
 package com.semoi.semo.board.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
+import com.semoi.semo.board.dto.requestdto.BoardRequestDto;
 import com.semoi.semo.board.dto.responsedto.BoardListResponseDto;
 import com.semoi.semo.board.entity.Board;
 import com.semoi.semo.board.repository.BoardRepository;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -81,5 +84,32 @@ class BoardServiceTest {
         assertThat(secondDto.getTitle()).isEqualTo("Second Board");
         assertThat(secondDto.getRecruitmentType()).isEqualTo("Part-time");
         assertThat(secondDto.getUpdatedAt()).isNull();
+    }
+
+    @Test
+    void testCreateBoard() {
+        // Given: Request DTO 생성
+        BoardRequestDto requestDto = new BoardRequestDto();
+        requestDto.setTitle("Test Title");
+        requestDto.setContent("Test Content");
+        requestDto.setRecruitmentType("Backend");
+        requestDto.setRecruitmentCount(5L);
+        requestDto.setRecruitmentField("Spring");
+        requestDto.setRecruitmentMethod("Online");
+        requestDto.setRecruitmentDeadline(OffsetDateTime.now().plusDays(7));
+        requestDto.setProgressPeriod("3 months");
+
+        // When: Service 호출
+        boardService.createBoard(requestDto);
+
+        // Then: Repository의 save 메서드 호출 확인
+        ArgumentCaptor<Board> captor = ArgumentCaptor.forClass(Board.class);
+        verify(boardRepository).save(captor.capture());
+
+        // 저장된 Board 엔티티 검증
+        Board savedBoard = captor.getValue();
+        assertThat(savedBoard.getTitle()).isEqualTo("Test Title");
+        assertThat(savedBoard.getRecruitmentType()).isEqualTo("Backend");
+        assertThat(savedBoard.getHit()).isEqualTo(0); // 기본값 확인
     }
 }
