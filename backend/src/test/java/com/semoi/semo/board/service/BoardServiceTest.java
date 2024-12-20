@@ -17,10 +17,12 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -32,6 +34,11 @@ class BoardServiceTest {
 
     private final BoardRepository boardRepository = Mockito.mock(BoardRepository.class);
     private final BoardService boardService = new BoardService(boardRepository);
+
+    @BeforeEach
+    void setup() {
+        MockitoAnnotations.openMocks(this); // Mockito 초기화
+    }
 
     @Disabled
     @Test
@@ -70,7 +77,7 @@ class BoardServiceTest {
         Page<Board> mockPage = new PageImpl<>(mockBoardList, pageable, mockBoardList.size());
 
         // Mock Repository 반환값 설정
-        when(boardRepository.findAll()).thenReturn(mockBoardList);
+        when(boardRepository.findAllActiveBoards(any(Pageable.class))).thenReturn(mockPage);
 
         // Service 호출
         Page<BoardListResponseDto> boardDtos = boardService.getAllBoards(pageable);
@@ -146,11 +153,16 @@ class BoardServiceTest {
         boardService.updateBoard(1L, requestDto);
 
         // Then: 저장 확인
-        verify(boardRepository).save(existingBoard); // 기존 엔티티 저장 확인
-        assertThat(existingBoard.getTitle()).isEqualTo("New Title");
-        assertThat(existingBoard.getContent()).isEqualTo("Updated Content");
-        assertThat(existingBoard.getRecruitmentType()).isEqualTo("Updated Type");
+        ArgumentCaptor<Board> captor = ArgumentCaptor.forClass(Board.class);
+        verify(boardRepository).save(captor.capture()); // save 호출 확인
+
+        // 캡처된 객체 검증
+        Board updatedBoard = captor.getValue();
+        assertThat(updatedBoard.getTitle()).isEqualTo("New Title");
+        assertThat(updatedBoard.getContent()).isEqualTo("Updated Content");
+        assertThat(updatedBoard.getRecruitmentType()).isEqualTo("Updated Type");
     }
+
 
     @Test
     void testUpdateBoard_NotFound() {

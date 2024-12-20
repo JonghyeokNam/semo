@@ -48,6 +48,7 @@ public class BoardService {
                 .orElseThrow(() -> new DataNotFoundException("board not found"));
 
         BoardMapper.updateEntity(board, boardRequestDto);
+        boardRepository.save(board); // 반드시 호출
     }
 
     public void softDeleteBoard(Long boardId) {
