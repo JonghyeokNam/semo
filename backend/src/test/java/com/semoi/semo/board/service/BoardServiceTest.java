@@ -12,6 +12,10 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @SpringBootTest
 class BoardServiceTest {
@@ -50,24 +54,29 @@ class BoardServiceTest {
 
         List<Board> mockBoardList = Arrays.asList(mockBoard1, mockBoard2);
 
+        // Mock Page 객체 생성
+        Pageable pageable = PageRequest.of(0, 2);
+        Page<Board> mockPage = new PageImpl<>(mockBoardList, pageable, mockBoardList.size());
+
         // Mock Repository 반환값 설정
         when(boardRepository.findAll()).thenReturn(mockBoardList);
 
         // Service 호출
-        List<BoardListResponseDto> boardDtos = boardService.getAllBoards();
+        Page<BoardListResponseDto> boardDtos = boardService.getAllBoards(pageable);
 
         // 검증
         assertThat(boardDtos).isNotNull();
-        assertThat(boardDtos.size()).isEqualTo(2);
+        assertThat(boardDtos.getTotalElements()).isEqualTo(2);
+        assertThat(boardDtos.getTotalPages()).isEqualTo(1);
 
         // 첫 번째 게시글 검증
-        BoardListResponseDto firstDto = boardDtos.get(0);
+        BoardListResponseDto firstDto = boardDtos.getContent().get(0);
         assertThat(firstDto.getBoardId()).isEqualTo(1L);
         assertThat(firstDto.getTitle()).isEqualTo("First Board");
         assertThat(firstDto.getRecruitmentType()).isEqualTo("Full-time");
 
         // 두 번째 게시글 검증
-        BoardListResponseDto secondDto = boardDtos.get(1);
+        BoardListResponseDto secondDto = boardDtos.getContent().get(1);
         assertThat(secondDto.getBoardId()).isEqualTo(2L);
         assertThat(secondDto.getTitle()).isEqualTo("Second Board");
         assertThat(secondDto.getRecruitmentType()).isEqualTo("Part-time");

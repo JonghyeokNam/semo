@@ -6,9 +6,9 @@ import com.semoi.semo.board.entity.Board;
 import com.semoi.semo.board.mapper.BoardMapper;
 import com.semoi.semo.board.repository.BoardRepository;
 import com.semoi.semo.common.exception.DataNotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,10 +17,9 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-    public List<BoardListResponseDto> getAllBoards() {
-        return boardRepository.findAll().stream()
-                .map(BoardMapper::toBoardListResponseDto)
-                .collect(Collectors.toList());
+    public Page<BoardListResponseDto> getAllBoards(Pageable pageable) {
+        return boardRepository.findAll(pageable)
+                .map(BoardMapper::toBoardListResponseDto);
     }
 
     public BoardResponseDto getBoardById(Long boardId) {
