@@ -9,7 +9,9 @@ import com.semoi.semo.board.repository.BoardRepository;
 import com.semoi.semo.common.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,7 +21,12 @@ public class BoardService {
     private final BoardRepository boardRepository;
 
     public Page<BoardListResponseDto> getAllBoards(Pageable pageable) {
-        return boardRepository.findAll(pageable)
+        Pageable sortedPageable = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.by(Sort.Order.desc("createdAt")) // "createdAt" 기준으로 역순 정렬
+        );
+        return boardRepository.findAll(sortedPageable)
                 .map(BoardMapper::toBoardListResponseDto);
     }
 
