@@ -82,9 +82,10 @@ public class BoardController {
     })
     @PutMapping("/{boardId}")
     public Response<Void> updateBoard(
-            @Parameter(description = "게시물 ID", example = "1") @PathVariable Long id,
+            @Parameter(description = "게시물 ID", example = "1")
+            @PathVariable Long boardId,
             @Valid @RequestBody BoardRequestDto boardRequestDto) {
-        boardService.updateBoard(id, boardRequestDto);
+        boardService.updateBoard(boardId, boardRequestDto);
         return Response.success();
     }
 
@@ -96,8 +97,9 @@ public class BoardController {
     })
     @DeleteMapping("/{boardId}")
     public Response<Void> deleteBoard(
-            @Parameter(description = "게시물 ID", example = "1") @PathVariable Long id) {
-//        boardService.deleteBoard(id);
+            @Parameter(description = "게시물 ID", example = "1")
+            @PathVariable Long boardId) {
+        boardService.softDeleteBoard(boardId);;
         return Response.success();
     }
 }

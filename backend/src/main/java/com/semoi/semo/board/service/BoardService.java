@@ -7,6 +7,7 @@ import com.semoi.semo.board.entity.Board;
 import com.semoi.semo.board.mapper.BoardMapper;
 import com.semoi.semo.board.repository.BoardRepository;
 import com.semoi.semo.common.exception.DataNotFoundException;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +27,7 @@ public class BoardService {
                 pageable.getPageSize(),
                 Sort.by(Sort.Order.desc("createdAt")) // "createdAt" 기준으로 역순 정렬
         );
-        return boardRepository.findAll(sortedPageable)
+        return boardRepository.findAllActiveBoards(sortedPageable)
                 .map(BoardMapper::toBoardListResponseDto);
     }
 
@@ -47,6 +48,12 @@ public class BoardService {
                 .orElseThrow(() -> new DataNotFoundException("board not found"));
 
         BoardMapper.updateEntity(board, boardRequestDto);
+    }
 
+    public void softDeleteBoard(Long boardId) {
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> new DataNotFoundException(("board not found")));
+
+        board.setDeletedAt(LocalDateTime.now());
+        boardRepository.save(board);
     }
 }
