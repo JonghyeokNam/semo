@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class BoardListResponseDto {
     private Long boardId;
     private String title;
+    private String content;
     private Integer hit;
     private String recruitmentType;
     private Integer recruitmentCount;

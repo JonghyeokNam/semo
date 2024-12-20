@@ -1,6 +1,5 @@
 package com.semoi.semo.board.entity;
 
-//import com.semoi.semo.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
