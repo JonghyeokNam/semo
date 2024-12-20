@@ -2,14 +2,17 @@ server:
   port: 80
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
   application:
     name: semo
 
   datasource:
     url: jdbc:log4jdbc:oracle:thin:@xci.iptime.org:1521/xepdb1
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    username: sesac_semoi
-    password: semoi1111
+    hikari:
+      username: ${ORACLEDB_USERNAME}
+      password: ${ORACLEDB_PASSWORD}
 
   jpa:
     properties:
@@ -23,6 +26,30 @@ spring:
     hibernate:
       ddl-auto: update
 
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: ${KAKAO_OAUTH_CLIENT_ID}
+            client-secret: ${KAKAO_OAUTH_CLIENT_SECRET}
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost/login/oauth2/code/kakao
+            # 필드의 기본값이 openid, profile, email. openId가 스코프에 있으면 Open Id Provider로 인식하기 때문에 제외
+            scope:
+              - name
+              - account_email
+        provider:
+          kakao:
+            #소셜 로그인 버튼을 눌렀을 때 이동할 URL. 해당 URL로 이동하면 소셜 로그인과 사용자 동의를 진행하고 인가코드를 발급하여 사용자 서비스 서버로 리다이렉트 한다.
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            #사용자 서비스 서버가 Redirect URI로 전달받은 인가 코드로 액세스 토큰을 요청하는 URI이다.
+            token-uri: https://kauth.kakao.com/oauth/token
+            # 서비스 서버가 발급받은 액세스 토큰으로 사용자 정보를 가져오는 URI이다.
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            # Kakao 응답 값 resultCode, message, response 중 response 지정
+            user-name-attribute: id
+
 logging:
   level:
     jdbc:
@@ -30,3 +57,8 @@ logging:
       resultsettable: DEBUG
       audit: DEBUG
       resultset: DEBUG
+
+jwt:
+  secret-key: ${JWT_SECRET_KEY_CODE}
+  issuer: ${JWT_ISSUER}
+
