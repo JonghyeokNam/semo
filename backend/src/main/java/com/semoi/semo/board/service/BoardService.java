@@ -3,6 +3,7 @@ package com.semoi.semo.board.service;
 import com.semoi.semo.board.dto.responsedto.BoardListResponseDto;
 import com.semoi.semo.board.dto.responsedto.BoardResponseDto;
 import com.semoi.semo.board.entity.Board;
+import com.semoi.semo.board.mapper.BoardMapper;
 import com.semoi.semo.board.repository.BoardRepository;
 import com.semoi.semo.common.exception.DataNotFoundException;
 import java.util.List;
@@ -18,24 +19,7 @@ public class BoardService {
 
     public List<BoardListResponseDto> getAllBoards() {
         return boardRepository.findAll().stream()
-                .map(board -> BoardListResponseDto.builder()
-                        .boardId(board.getBoardId())
-                        .title(board.getTitle())
-                        .content(board.getContent())
-                        .hit(board.getHit())
-                        .recruitmentType(board.getRecruitmentType())
-                        .recruitmentCount(board.getRecruitmentCount())
-                        .recruitmentField(board.getRecruitmentField())
-                        .recruitmentMethod(board.getRecruitmentMethod())
-                        .recruitmentDeadline(board.getRecruitmentDeadline())
-                        .progressPeriod(board.getProgressPeriod())
-                        .createdAt(board.getCreatedAt())
-                        .updatedAt(board.getUpdatedAt())
-                        .author(BoardListResponseDto.AuthorDto.builder()
-                                .userId(board.getUserId())
-                                .username("Unknown")
-                                .build())
-                        .build())
+                .map(BoardMapper::toBoardListResponseDto)
                 .collect(Collectors.toList());
     }
 
@@ -43,23 +27,6 @@ public class BoardService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new DataNotFoundException("board not found"));
 
-        return BoardResponseDto.builder()
-                .boardId(board.getBoardId())
-                .title(board.getTitle())
-                .content(board.getContent())
-                .hit(board.getHit())
-                .recruitmentType(board.getRecruitmentType())
-                .recruitmentCount(board.getRecruitmentCount())
-                .recruitmentField(board.getRecruitmentField())
-                .recruitmentMethod(board.getRecruitmentMethod())
-                .recruitmentDeadline(board.getRecruitmentDeadline())
-                .progressPeriod(board.getProgressPeriod())
-                .createdAt(board.getCreatedAt())
-                .updatedAt(board.getUpdatedAt())
-                .author(BoardResponseDto.AuthorDto.builder()
-                        .userId(board.getUserId())
-                        .username("Unknown")
-                        .build())
-                .build();
+        return BoardMapper.toBoardResponseDto(board);
     }
 }
