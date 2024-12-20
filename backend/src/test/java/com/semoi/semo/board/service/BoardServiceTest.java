@@ -1,16 +1,22 @@
 package com.semoi.semo.board.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.semoi.semo.board.dto.requestdto.BoardRequestDto;
 import com.semoi.semo.board.dto.responsedto.BoardListResponseDto;
 import com.semoi.semo.board.entity.Board;
 import com.semoi.semo.board.repository.BoardRepository;
+import com.semoi.semo.common.exception.DataNotFoundException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -111,5 +117,50 @@ class BoardServiceTest {
         assertThat(savedBoard.getTitle()).isEqualTo("Test Title");
         assertThat(savedBoard.getRecruitmentType()).isEqualTo("Backend");
         assertThat(savedBoard.getHit()).isEqualTo(0); // 기본값 확인
+    }
+
+    @Test
+    void testUpdateBoard() {
+        // Given: 기존 게시물 Mock 데이터
+        Board existingBoard = new Board();
+        existingBoard.setBoardId(1L);
+        existingBoard.setTitle("Old Title");
+        existingBoard.setContent("Old Content");
+
+        when(boardRepository.findById(1L)).thenReturn(Optional.of(existingBoard));
+
+        // Given: 수정 요청 DTO
+        BoardRequestDto requestDto = new BoardRequestDto();
+        requestDto.setTitle("New Title");
+        requestDto.setContent("Updated Content");
+        requestDto.setRecruitmentType("Updated Type");
+        requestDto.setRecruitmentCount(10L);
+        requestDto.setRecruitmentField("Updated Field");
+        requestDto.setRecruitmentMethod("Updated Method");
+        requestDto.setRecruitmentDeadline(OffsetDateTime.now().plusDays(7));
+        requestDto.setProgressPeriod("6 months");
+
+        // When: 수정 메서드 호출
+        boardService.updateBoard(1L, requestDto);
+
+        // Then: 저장 확인
+        verify(boardRepository).save(existingBoard); // 기존 엔티티 저장 확인
+        assertThat(existingBoard.getTitle()).isEqualTo("New Title");
+        assertThat(existingBoard.getContent()).isEqualTo("Updated Content");
+        assertThat(existingBoard.getRecruitmentType()).isEqualTo("Updated Type");
+    }
+
+    @Test
+    void testUpdateBoard_NotFound() {
+        // Given: 게시물이 없는 경우
+        when(boardRepository.findById(999L)).thenReturn(Optional.empty());
+
+        // When & Then: 예외 발생 확인
+        assertThrows(DataNotFoundException.class, () -> {
+            boardService.updateBoard(999L, new BoardRequestDto());
+        });
+
+        // save 호출되지 않음을 검증
+        verify(boardRepository, never()).save(any(Board.class));
     }
 }

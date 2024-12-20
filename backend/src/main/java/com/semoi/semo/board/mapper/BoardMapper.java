@@ -52,19 +52,33 @@ public class BoardMapper {
                 .build();
     }
 
-    // Board Entity 생성
-    public static Board toEntity(BoardRequestDto requestDto) {
+    // 생성 요청 DTO -> 엔티티
+    public static Board toEntity(BoardRequestDto boardRequestDto) {
         Board board = new Board();
-        board.setTitle(requestDto.getTitle());
-        board.setContent(requestDto.getContent());
-        board.setRecruitmentType(requestDto.getRecruitmentType());
-        board.setRecruitmentCount(requestDto.getRecruitmentCount().intValue());
-        board.setRecruitmentField(requestDto.getRecruitmentField());
-        board.setRecruitmentMethod(requestDto.getRecruitmentMethod());
-        board.setRecruitmentDeadline(requestDto.getRecruitmentDeadline().toLocalDateTime());
-        board.setProgressPeriod(requestDto.getProgressPeriod());
+        board.setTitle(boardRequestDto.getTitle());
+        board.setContent(boardRequestDto.getContent());
+        board.setRecruitmentType(boardRequestDto.getRecruitmentType());
+        board.setRecruitmentCount(boardRequestDto.getRecruitmentCount().intValue());
+        board.setRecruitmentField(boardRequestDto.getRecruitmentField());
+        board.setRecruitmentMethod(boardRequestDto.getRecruitmentMethod());
+        board.setRecruitmentDeadline(boardRequestDto.getRecruitmentDeadline().toLocalDateTime());
+        board.setProgressPeriod(boardRequestDto.getProgressPeriod());
         board.setCreatedAt(LocalDateTime.now());
         board.setHit(0);
+        return board;
+    }
+
+    // 수정 요청 DTO -> 기존 엔티티 수정
+    public static Board updateEntity(Board board, BoardRequestDto boardRequestDto) {
+        board.setTitle(boardRequestDto.getTitle());
+        board.setContent(boardRequestDto.getContent());
+        board.setRecruitmentType(boardRequestDto.getRecruitmentType());
+        board.setRecruitmentCount(boardRequestDto.getRecruitmentCount().intValue());
+        board.setRecruitmentField(boardRequestDto.getRecruitmentField());
+        board.setRecruitmentMethod(boardRequestDto.getRecruitmentMethod());
+        board.setRecruitmentDeadline(boardRequestDto.getRecruitmentDeadline().toLocalDateTime());
+        board.setProgressPeriod(boardRequestDto.getProgressPeriod());
+        board.setUpdatedAt(LocalDateTime.now()); // 수정 시 현재 시간으로 설정
         return board;
     }
 }

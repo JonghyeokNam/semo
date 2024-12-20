@@ -37,8 +37,16 @@ public class BoardService {
         return BoardMapper.toBoardResponseDto(board);
     }
 
-    public void createBoard(BoardRequestDto requestDto) {
-        Board board = BoardMapper.toEntity(requestDto);
+    public void createBoard(BoardRequestDto boardRequestDto) {
+        Board board = BoardMapper.toEntity(boardRequestDto);
         boardRepository.save(board);
+    }
+
+    public void updateBoard(Long boardId, BoardRequestDto boardRequestDto) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new DataNotFoundException("board not found"));
+
+        BoardMapper.updateEntity(board, boardRequestDto);
+
     }
 }

@@ -69,8 +69,8 @@ public class BoardController {
     })
     @PostMapping
     public Response<Void> createBoard(
-            @Valid @RequestBody BoardRequestDto boardRequest) {
-        boardService.createBoard(boardRequest);
+            @Valid @RequestBody BoardRequestDto boardRequestDto) {
+        boardService.createBoard(boardRequestDto);
         return Response.success();
     }
 
@@ -83,8 +83,8 @@ public class BoardController {
     @PutMapping("/{boardId}")
     public Response<Void> updateBoard(
             @Parameter(description = "게시물 ID", example = "1") @PathVariable Long id,
-            @RequestBody BoardListResponseDto boardRequest) {
-//        boardService.updateBoard(id, boardRequest);
+            @Valid @RequestBody BoardRequestDto boardRequestDto) {
+        boardService.updateBoard(id, boardRequestDto);
         return Response.success();
     }
 
