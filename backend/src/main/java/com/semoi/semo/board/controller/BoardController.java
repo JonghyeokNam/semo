@@ -1,15 +1,13 @@
 package com.semoi.semo.board.controller;
 
 import com.semoi.semo.board.dto.responsedto.BoardListResponseDto;
+import com.semoi.semo.board.dto.responsedto.BoardResponseDto;
 import com.semoi.semo.board.service.BoardService;
 import com.semoi.semo.common.response.Response;
-
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,14 +45,11 @@ public class BoardController {
             @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @GetMapping("/{boardId}")
-//    public Response<BoardListResponseDto> getBoardById(
-//            @Parameter(description = "게시물 ID", example = "1") @PathVariable Long boardId) {
-//        BoardListResponseDto board = boardService.getBoardById(boardId);
-//        return Response.success(board);
-//    }
-    public Response<Void> getBoardById(
-            @Parameter(description = "게시물 ID", example = "1") @PathVariable Long boardId) {
-        return Response.success();
+    public Response<BoardResponseDto> getBoardById(
+            @Parameter(description = "게시물 ID", example = "1")
+            @PathVariable("boardId") Long boardId) {
+        BoardResponseDto board = boardService.getBoardById(boardId);
+        return Response.success(board);
     }
 
     @Operation(summary = "게시물 생성", description = "새로운 게시물을 생성합니다.")
