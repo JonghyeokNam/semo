@@ -3,6 +3,11 @@ package com.semoi.semo.jwt.controller;
 import com.semoi.semo.global.response.Response;
 import com.semoi.semo.jwt.service.TokenService;
 import com.semoi.semo.oauth2.util.CookieUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,6 +25,22 @@ public class TokenController {
 
     private final TokenService tokenService;
 
+    @Operation(
+            summary = "새로운 Access Token 생성",
+            description = "Refresh Token을 사용하여 새로운 Access Token을 생성합니다."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "새로운 Access Token 생성 성공",
+                    content = @Content(schema = @Schema(implementation = Response.class))
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증 실패",
+                    content = @Content(schema = @Schema(implementation = Response.class))
+            ),
+    })
     @PostMapping
     public Response<Void> createNewAccessToken(HttpServletRequest request, HttpServletResponse response) {
         String refreshToken = CookieUtil.getCookie(request, "refresh_token")
