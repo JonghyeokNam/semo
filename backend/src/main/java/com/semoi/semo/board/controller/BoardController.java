@@ -4,7 +4,7 @@ import com.semoi.semo.board.dto.requestdto.BoardRequestDto;
 import com.semoi.semo.board.dto.responsedto.BoardListResponseDto;
 import com.semoi.semo.board.dto.responsedto.BoardResponseDto;
 import com.semoi.semo.board.service.BoardService;
-import com.semoi.semo.common.response.Response;
+import com.semoi.semo.global.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

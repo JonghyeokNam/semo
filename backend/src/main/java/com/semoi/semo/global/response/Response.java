@@ -1,4 +1,4 @@
-package com.semoi.semo.common.response;
+package com.semoi.semo.global.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

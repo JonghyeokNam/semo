@@ -11,7 +11,8 @@ public enum Position {
     FRONTEND("frontend"),
     MARKETER("marketer"),
     PLANNER("planner"),
-    UIUX("uiux");
+    DESIGNER("designer"),
+    UNDECIDED("undecided");
 
     private final String position;
 }
