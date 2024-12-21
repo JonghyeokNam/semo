@@ -6,7 +6,7 @@ import com.semoi.semo.board.dto.responsedto.BoardResponseDto;
 import com.semoi.semo.board.entity.Board;
 import com.semoi.semo.board.mapper.BoardMapper;
 import com.semoi.semo.board.repository.BoardRepository;
-import com.semoi.semo.common.exception.DataNotFoundException;
+import com.semoi.semo.global.exception.DataNotFoundException;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

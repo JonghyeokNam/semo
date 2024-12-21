@@ -11,7 +11,7 @@ import com.semoi.semo.board.dto.requestdto.BoardRequestDto;
 import com.semoi.semo.board.dto.responsedto.BoardListResponseDto;
 import com.semoi.semo.board.entity.Board;
 import com.semoi.semo.board.repository.BoardRepository;
-import com.semoi.semo.common.exception.DataNotFoundException;
+import com.semoi.semo.global.exception.DataNotFoundException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
