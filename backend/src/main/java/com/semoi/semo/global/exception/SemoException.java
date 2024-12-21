@@ -1,4 +1,4 @@
-package com.semoi.semo.common.exception;
+package com.semoi.semo.global.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

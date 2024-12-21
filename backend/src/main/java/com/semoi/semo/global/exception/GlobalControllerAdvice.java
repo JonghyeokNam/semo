@@ -1,6 +1,6 @@
-package com.semoi.semo.common.exception;
+package com.semoi.semo.global.exception;
 
-import com.semoi.semo.common.response.Response;
+import com.semoi.semo.global.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
