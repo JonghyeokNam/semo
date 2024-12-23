@@ -1,6 +1,7 @@
 package com.semoi.semo.user.domain;
 
 import com.semoi.semo.Campus.domain.Campus;
+import com.semoi.semo.notification.entity.Notification;
 import com.semoi.semo.user.enums.Position;
 import com.semoi.semo.user.enums.Role;
 import jakarta.persistence.*;
@@ -14,6 +15,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -47,6 +49,12 @@ public class User {
     @Column(name = "act_score", nullable = false)
     private int actScore = 0;
 
+    @Column(name = "total_rec_score", nullable = false)
+    private int totalRecScore = 0;
+
+    @Column(name = "total_act_score", nullable = false)
+    private int totalActScore = 0;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -54,6 +62,9 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "campus_id")
     private Campus campus;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Notification> notifications;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
