@@ -23,7 +23,6 @@ const Wrapper = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  // align-items: center;
   padding: ${(props) => 
     props.isExcludedPage ? "0 0" : (props.isDesktop ? "0 250px" : "0 48px")};
 `;
@@ -32,17 +31,24 @@ const Layout = () => {
   const location = useLocation();
   const { isDesktop } = useMediaQueries(); // Check if it's a desktop screen
 
-  // Nav와 Footer를 제외할 경로들
+  // Nav와 Footer를 제외할 경로들 (로그인, 회원가입)
   const excludedPaths = ["/login", "/signup"];
-  const isExcludedPage = excludedPaths.includes(location.pathname);
+  
+  // Nav만 제외할 경로들 (상세보기, 수정, 작성, 채팅 등)
+  const navExcludedPaths = ["/", "/mypage", "/applylist"];
+
+  const isExcludedPage = excludedPaths.includes(location.pathname); // 로그인, 회원가입 경로일 경우
+  const isNavExcludedPage = navExcludedPaths.includes(location.pathname); // nav만 제외할 경로들
 
   return (
     <BackGroundColor>
+      {/* 로그인, 회원가입 경로에서만 Nav와 Footer를 숨김 */}
       {!isExcludedPage && <Nav />}
       <Wrapper isExcludedPage={isExcludedPage} isDesktop={isDesktop}>
         <Outlet />
       </Wrapper>
-      {!isExcludedPage && <Footer />}
+      {/* /login, /signup을 제외한 나머지 페이지에서 Footer를 보임 */}
+      {!isExcludedPage && isNavExcludedPage && <Footer />}
     </BackGroundColor>
   );
 };
