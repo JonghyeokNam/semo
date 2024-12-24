@@ -3,6 +3,7 @@ import * as S from "./style";
 import { Back } from "./back";
 import { TopBar } from "./topbar";
 import { BoardData } from "./boardData";
+import { Comment } from "./comment";
 
 const index = () => {
   
@@ -16,6 +17,7 @@ const index = () => {
       <S.Title2>프로젝트 소개</S.Title2>
       <S.Separator />
       <S.Content>프로젝트 소개 내용이 여기에 들어갑니다.</S.Content>
+      <Comment/>
     </S.DetailContainer>
   );
 };
