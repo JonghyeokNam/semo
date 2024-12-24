@@ -5,6 +5,16 @@
         margin: 0 auto;
         `;
 
+        export const Grid = styled.div`
+        display: grid;
+        grid-template-columns: ${(props) => 
+        props.$isDesktop 
+            ? "1fr 1fr 1fr" 
+            : props.$isTablet 
+            ? "1fr 1fr" 
+            : "1fr"};
+        `;
+
         export const title = styled.h2`
         font-size: 30px;
         font-weight: bold;
