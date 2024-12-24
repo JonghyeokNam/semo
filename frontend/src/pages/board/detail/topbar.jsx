@@ -1,8 +1,16 @@
 import React from "react";
 import * as S from "./style";
-import { FaEye } from "react-icons/fa"; // 눈 아이콘
+import { FaEye } from "react-icons/fa"; 
+import { useNavigate } from 'react-router-dom';
+
 
 export const TopBar = () => {
+    const navigate = useNavigate();
+
+    const handleComplete = () => {
+        navigate("/applylist"); // 버튼 클릭 시 '/'로 이동
+      };
+
     return (
       <S.TopBar>
         <S.Row>
@@ -20,7 +28,7 @@ export const TopBar = () => {
           </S.ViewCountWrapper>
         </S.Row>
         <S.Row>
-          <S.Status>지원리스트</S.Status>
+          <S.Status onClick={handleComplete}>지원리스트</S.Status>
           <S.Status>마감</S.Status>
           <S.Status>수정</S.Status>
           <S.Status>삭제</S.Status>
