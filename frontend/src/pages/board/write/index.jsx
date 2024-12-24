@@ -4,10 +4,14 @@ import Editor from './quill';
 import Quill from 'quill';
 import SelectComponent from '../../../components/ui/selectComponent';
 import CustomCalendar from '../../../components/ui/calendar';
+import useMediaQueries from '../../../hooks/useMediaQueries';
+
 
 const Delta = Quill.import('delta');
 
 const Index = () => {
+  const {isDesktop, isTablet } = useMediaQueries();
+  
   const recruitmentTypeData = [
     { value: "project", label: "프로젝트" },
     { value: "study", label: "스터디" },
@@ -63,7 +67,7 @@ const Index = () => {
       <S.FormSection>
         <S.title>1. 프로젝트 기본 정보를 입력해주세요.</S.title>
         <S.Separator />
-        <S.Row>
+        <S.Grid $isDesktop={isDesktop} $isTablet={isTablet}>
           <S.Column>
             <SelectComponent
               label="모집 구분"
@@ -85,8 +89,8 @@ const Index = () => {
               placeholder="온라인 / 오프라인"
             />
           </S.Column>
-        </S.Row>
-        <S.Row>
+        
+      
           <S.Column>
             <SelectComponent
               label="진행 기간"
@@ -110,7 +114,7 @@ const Index = () => {
             placeholder="프론트엔드, 백엔드..."
           />
           </S.Column>
-        </S.Row>
+          </S.Grid>
       </S.FormSection>
       <S.FormSection>
         <S.title>2. 프로젝트에 대해 소개해주세요.</S.title>

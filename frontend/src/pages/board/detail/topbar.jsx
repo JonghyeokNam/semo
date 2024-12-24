@@ -7,8 +7,12 @@ import { useNavigate } from 'react-router-dom';
 export const TopBar = () => {
     const navigate = useNavigate();
 
-    const handleComplete = () => {
+    const handlelist = () => {
         navigate("/applylist"); // 버튼 클릭 시 '/'로 이동
+      };
+
+      const handleModify = () => {
+        navigate("/board/modify"); // 버튼 클릭 시 '/'로 이동
       };
 
     return (
@@ -28,9 +32,9 @@ export const TopBar = () => {
           </S.ViewCountWrapper>
         </S.Row>
         <S.Row>
-          <S.Status onClick={handleComplete}>지원리스트</S.Status>
+          <S.Status onClick={handlelist}>지원리스트</S.Status>
           <S.Status>마감</S.Status>
-          <S.Status>수정</S.Status>
+          <S.Status onClick={handleModify}>수정</S.Status>
           <S.Status>삭제</S.Status>
         </S.Row>
       </S.TopBar>
