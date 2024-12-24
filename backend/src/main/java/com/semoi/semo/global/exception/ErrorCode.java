@@ -19,7 +19,10 @@ public enum ErrorCode {
     CAMPUS_NOT_FOUND(HttpStatus.NOT_FOUND, "Campus not found"),
 
     // Token
-    TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "Token not found");
+    TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "Token not found"),
+
+    // notification
+    NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND,  "Notification not found"),;
 
     private final HttpStatus status;
     private final String message;

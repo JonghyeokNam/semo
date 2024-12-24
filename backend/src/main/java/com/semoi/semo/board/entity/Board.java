@@ -1,10 +1,12 @@
 package com.semoi.semo.board.entity;
 
+import com.semoi.semo.notification.entity.Notification;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,6 +33,9 @@ public class Board {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
+    private List<Notification> notifications;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "user_id", nullable = false)

@@ -1,10 +1,5 @@
 package com.semoi.semo.oauth2.service;
 
-import com.semoi.semo.Campus.domain.Campus;
-import com.semoi.semo.Campus.enums.CampusName;
-import com.semoi.semo.Campus.repository.CampusRepository;
-import com.semoi.semo.global.exception.ErrorCode;
-import com.semoi.semo.global.exception.SemoException;
 import com.semoi.semo.oauth2.dto.CustomOAuth2User;
 import com.semoi.semo.oauth2.dto.KakaoResponse;
 import com.semoi.semo.oauth2.dto.OAuth2Response;
@@ -26,7 +21,6 @@ import org.springframework.stereotype.Service;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
-    private final CampusRepository campusRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -42,8 +36,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String loginEmail = oAuth2Response.getEmail();
 
         User loginUser = userRepository.findByLoginEmail(loginEmail).orElse(null);
-        Campus campus = campusRepository.findByCampusName(CampusName.DONGDAEMUN)
-                .orElseThrow(() -> new SemoException(ErrorCode.CAMPUS_NOT_FOUND));
 
         if (loginUser == null) {
             User user = User.create(oAuth2Response.getName(), loginEmail, loginEmail, Position.UNDECIDED, Role.USER, null);
