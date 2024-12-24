@@ -8,7 +8,7 @@
     justify-content: center;
     width: 100%;
     height: 180px;
-    padding: ${(props) => (props.$isDesktop ? "0 330px" : "0 48px")};
+    padding: ${(props) => (props.$isDesktop ? "0 250px" : "0 48px")};
     background-color: #f9f9f9;
     text-align: left;  /* 텍스트 왼쪽 정렬 */
     `;

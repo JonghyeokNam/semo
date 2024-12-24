@@ -23,9 +23,9 @@ const Wrapper = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  // align-items: center;
   padding: ${(props) => 
-    props.isExcludedPage ? "0 0" : (props.isDesktop ? "0 330px" : "0 48px")};
+    props.isExcludedPage ? "0 0" : (props.isDesktop ? "0 250px" : "0 48px")};
 `;
 
 const Layout = () => {

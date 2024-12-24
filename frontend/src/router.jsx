@@ -35,13 +35,13 @@ const router = createBrowserRouter([
       // 지원자 리스트
       { path: "/applylist", element: <ApplyList /> },
 
-      // 지원자 리스트
+      // 게시글 상세 페이지
       { path: "/board/detail", element: <BoardDetail /> },
 
-      // 지원자 리스트
+      // 게시글 수정 페이지
       { path: "/board/modify", element: <BoardModify /> },
 
-      // 지원자 리스트
+      // 게시글 작성 페이지
       { path: "/board/write", element: <BoardWrite /> },
 
     ],
