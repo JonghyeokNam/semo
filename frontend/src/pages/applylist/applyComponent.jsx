@@ -5,11 +5,17 @@ const ApplyComponent = () => {
   const [action, setAction] = useState(""); // 상태 관리
 
   const handleAccept = () => {
-    setAction("수락");
+    const isConfirmed = window.confirm("수락 하시겠습니까?");
+    if (isConfirmed) {
+      setAction("수락");
+    }
   };
 
   const handleReject = () => {
-    setAction("거부");
+    const isConfirmed = window.confirm("거부 하시겠습니까?");
+    if (isConfirmed) {
+      setAction("거부");
+    }
   };
 
   return (
