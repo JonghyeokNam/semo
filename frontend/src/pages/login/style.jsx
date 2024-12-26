@@ -143,7 +143,7 @@ export const Input = styled.input`
   font-size: 14px;
   border: 1px solid #D9D9D9;
   border-radius: 10px;
-  width: 300px;
+  width: 270px;
   height: 40px;
   outline: none;
   transition: border-color 0.2s;
@@ -158,8 +158,6 @@ export const Input = styled.input`
 `;
 // 완료 버튼 Wrapper
 export const CompleteButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
   width: 100%;
   margin-top: 20px;
 `;
@@ -168,7 +166,7 @@ export const CompleteButtonWrapper = styled.div`
 export const CompleteButton = styled.button`
   background-color: var(--green);
   color: white;
-  width: 300px;
+  width: 270px;
   height: 40px;
   font-size: 16px;
   font-weight: 700;
