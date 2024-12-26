@@ -1,26 +1,44 @@
 import React, { useState } from "react";
 import * as S from "./style";
+import ModalRead from "../../components/ui/modal/modalRead";
 
 const ApplyComponent = () => {
-  const [action, setAction] = useState(""); // 상태 관리
+  const [action, setAction] = useState(""); // 수락/거부 상태 관리
 
-  const handleAccept = () => {
+  const handleAccept = (e) => {
+    e.stopPropagation(); // 이벤트 전파 중단
+    e.preventDefault(); // 기본 동작 방지
     const isConfirmed = window.confirm("수락 하시겠습니까?");
     if (isConfirmed) {
       setAction("수락");
     }
   };
 
-  const handleReject = () => {
+  const handleReject = (e) => {
+    e.stopPropagation(); // 이벤트 전파 중단
+    e.preventDefault(); // 기본 동작 방지
     const isConfirmed = window.confirm("거부 하시겠습니까?");
     if (isConfirmed) {
       setAction("거부");
     }
   };
 
+  const [open, setOpen] = useState(false); //모달창 상태관리
+
+  const modalOpen = (e) => {
+    console.log("모달 오픈 클릭!");
+    e.stopPropagation(); // 이벤트 전파 중단
+    e.preventDefault(); // 기본 동작 방지
+    setOpen(true);
+  };
+
+  const closeModal = () => {
+    setOpen(false); 
+  };
+
   return (
     <>
-      <S.Container>
+      <S.Container onClick={modalOpen}>
         <S.Group>
           <S.Position>프론트엔드</S.Position>
           <S.Group>
@@ -49,6 +67,7 @@ const ApplyComponent = () => {
           <S.ResultText isAccept={action === "수락"}>{action}</S.ResultText>
         )}
       </S.Container>
+      <ModalRead isOpen={open} onClose={closeModal} />
     </>
   );
 };
