@@ -1,6 +1,5 @@
 import React from "react";
 import * as S from "./boardListStyle";
-import { LiaHandPaper } from "react-icons/lia";
 import { Link } from "react-router-dom"; 
 
 const BoardListWrite = ({ boardData }) => {
@@ -14,10 +13,12 @@ const BoardListWrite = ({ boardData }) => {
   const applicants = boardData?.applicants || { frontend: 0, backend: 0, uiux: 0, marketer: 0 };
 
   return (
-    <S.LinkContainer to="/board/detail" state={{ boardData }}>
+    <S.LinkContainer100 to="/board/detail" state={{ boardData }}>
       <S.BoardListContainer>
       <S.RightTop>
-        <LiaHandPaper />
+        <Link to="/applylist">
+            <S.ApplyButton>지원 리스트</S.ApplyButton>
+        </Link>
       </S.RightTop>
         <S.Row>
           <S.TitleContainer>
@@ -56,7 +57,7 @@ const BoardListWrite = ({ boardData }) => {
           </S.ApplicantInfo>
         </S.InfoContainer>
       </S.BoardListContainer>
-    </S.LinkContainer>
+    </S.LinkContainer100>
   );
 };
 

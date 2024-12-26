@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { FaEye, FaRegComment } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { FaRegBookmark } from "react-icons/fa";
 
 export const BoardListContainer = styled.div`
   padding: 20px 30px;
@@ -12,6 +13,11 @@ export const BoardListContainer = styled.div`
 export const LinkContainer = styled(Link)`
   display: block;
   width: 80%;
+`;
+
+export const LinkContainer100 = styled(Link)`
+  display: block;
+  width: 100%;
 `;
 
 
@@ -54,12 +60,25 @@ export const FinishBadge = styled.div`
   border-radius: 800px;
 `;
 
-export const StopIcon = styled.div`
+export const RightTop = styled.div`
   position: absolute;
   top: 30px;
   right: 30px;
   font-size: 35px;
   color: #343330;
+`;
+
+export const ApplyButton = styled.div`
+  font-size: 16px;
+  background-color: var(--green);
+  color: white;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-weight: bold;
+
+  &:hover {
+    background-color: #2d8f44;
+  }
 `;
 
 export const Content = styled.div`
@@ -89,14 +108,15 @@ export const Icon = styled.div`
   color: #868E96;
 `;
 
-export const ApplicantInfo = styled.div`
+export const FinishApplicantInfo = styled.div`
   display: flex;
   gap: 8px;
   font-size: 12px;
   color: #495057;
 `;
 
-export const FinishApplicantInfo = styled.div`
+
+export const ApplicantInfo = styled.div`
   display: flex;
   gap: 8px;
   font-size: 12px;
@@ -113,4 +133,15 @@ export const CommentIcon = styled(FaRegComment)`
   margin-right: 5px;
   font-size: 12px;
   color: #868E96;
+`;
+
+export const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const StyledBookmarkIcon = styled(FaRegBookmark)`
+  font-size: 25px;
+  color: ${({ isActive }) => (isActive ? "var(--green)" : "#333")}; 
 `;

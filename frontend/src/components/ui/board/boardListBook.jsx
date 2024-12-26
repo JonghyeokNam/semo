@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import * as S from "./boardListStyle";
-import { LiaHandPaper } from "react-icons/lia";
 import { Link } from "react-router-dom"; 
 
-const BoardListWrite = ({ boardData }) => {
+const BoardListBook = ({ boardData }) => {
 
   const title = boardData?.title || "제목을 불러오는 중...";
   const content = boardData?.content || "내용을 불러오는 중...";
@@ -13,12 +12,22 @@ const BoardListWrite = ({ boardData }) => {
   const comments = boardData?.comments || "0";
   const applicants = boardData?.applicants || { frontend: 0, backend: 0, uiux: 0, marketer: 0 };
 
+  const [isActive, setIsActive] = useState(true);
+
+  const handleClick = (e) => {
+    e.stopPropagation(); // 이벤트 전파 중단
+    e.preventDefault(); // 기본 동작 방지
+    setIsActive(!isActive); // 상태 토글
+  };
+
   return (
-    <S.LinkContainer to="/board/detail" state={{ boardData }}>
+    <S.LinkContainer100 to="/board/detail" state={{ boardData }}>
       <S.BoardListContainer>
-      <S.RightTop>
-        <LiaHandPaper />
-      </S.RightTop>
+        <S.RightTop>
+            <S.IconWrapper onClick={handleClick}>
+                <S.StyledBookmarkIcon isActive={isActive} />
+            </S.IconWrapper>
+        </S.RightTop>
         <S.Row>
           <S.TitleContainer>
             <S.Badge>모집중</S.Badge>
@@ -56,8 +65,8 @@ const BoardListWrite = ({ boardData }) => {
           </S.ApplicantInfo>
         </S.InfoContainer>
       </S.BoardListContainer>
-    </S.LinkContainer>
+    </S.LinkContainer100>
   );
 };
 
-export default BoardListWrite;
+export default BoardListBook;

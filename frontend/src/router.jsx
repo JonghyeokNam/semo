@@ -4,7 +4,7 @@ import Home from "./pages/home/index";
 import Chat from "./pages/chat/index";
 import Login from "./pages/login/index";
 import Signup from "./pages/login/signup";
-import Mypage from "./pages/mypage/main/index";
+import Mypage from "./pages/mypage/index";
 import ApplyList from "./pages/applylist/index";
 import BoardDetail from "./pages/board/detail/index";
 import BoardModify from "./pages/board/modify/index";

@@ -5,9 +5,9 @@ import { LiaHandPaper } from "react-icons/lia";
 const FinishBoardList = ({ boardData }) => {
   return (
     <S.BoardListContainer>
-    <S.StopIcon>
+    <S.RightTop>
       <LiaHandPaper />
-    </S.StopIcon>
+    </S.RightTop>
     <S.Row>
       <S.TitleContainer>
         <S.FinishBadge>모집 마감</S.FinishBadge>

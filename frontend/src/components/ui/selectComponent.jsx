@@ -7,7 +7,7 @@ const SelectComponent = ({ label, options, defaultValue, isMulti, placeholder, w
       ...provided,
       width: width || "100%", 
       minWidth: "270px",
-      maxWidth: "270px",
+      fontSize: "14px",
     }),
     placeholder: (provided) => ({
       ...provided,
