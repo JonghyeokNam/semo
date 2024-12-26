@@ -1,9 +1,8 @@
 import React from "react";
 import * as S from "./boardListStyle";
-import { LiaHandPaper } from "react-icons/lia";
 import { Link } from "react-router-dom"; 
 
-const BoardListWrite = ({ boardData }) => {
+const BoardListApply = ({ boardData }) => {
 
   const title = boardData?.title || "제목을 불러오는 중...";
   const content = boardData?.content || "내용을 불러오는 중...";
@@ -14,11 +13,13 @@ const BoardListWrite = ({ boardData }) => {
   const applicants = boardData?.applicants || { frontend: 0, backend: 0, uiux: 0, marketer: 0 };
 
   return (
-    <S.LinkContainer to="/board/detail" state={{ boardData }}>
+    <S.LinkContainer100 to="/board/detail" state={{ boardData }}>
       <S.BoardListContainer>
-      <S.RightTop>
-        <LiaHandPaper />
-      </S.RightTop>
+        <S.RightTop>
+            <Link to="/applylist">
+                <S.ApplyButton>지원 폼</S.ApplyButton>
+            </Link>
+        </S.RightTop>
         <S.Row>
           <S.TitleContainer>
             <S.Badge>모집중</S.Badge>
@@ -56,8 +57,8 @@ const BoardListWrite = ({ boardData }) => {
           </S.ApplicantInfo>
         </S.InfoContainer>
       </S.BoardListContainer>
-    </S.LinkContainer>
+    </S.LinkContainer100>
   );
 };
 
-export default BoardListWrite;
+export default BoardListApply;
