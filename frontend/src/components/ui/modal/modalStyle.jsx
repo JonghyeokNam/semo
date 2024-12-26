@@ -11,6 +11,7 @@ export const ModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 999;
 `;
 
 // 모달 컨텐츠 스타일
@@ -26,6 +27,7 @@ export const ModalContent = styled.div`
   width: 100%;
   min-width: 400px;
   max-width: 700px;
+  z-index: 1000;
 `;
 
 // 모달 닫기 버튼 스타일
