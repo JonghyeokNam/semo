@@ -4,6 +4,7 @@ import { Back } from "./back";
 import { TopBar } from "./topbar";
 import { BoardData } from "./boardData";
 import { Comment } from "./comment";
+import { TopBarApply } from "./topbarApply";
 
 const index = () => {
   
@@ -11,7 +12,7 @@ const index = () => {
     <S.DetailContainer>
       <Back/>
       <S.Title>프론트엔드 모집</S.Title>
-      <TopBar/>
+      <TopBarApply/>
       <S.Separator />
       <BoardData/>
       <S.Title2>프로젝트 소개</S.Title2>

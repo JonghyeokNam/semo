@@ -43,6 +43,12 @@ export const RowGroup = styled.div`
   gap: 30px;  // 항목들 사이 간격을 10px로 줄이기
 `;
 
+export const iconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`;
+
 export const UserInfo = styled.div`
   display: flex;
   align-items: center;
@@ -98,6 +104,19 @@ export const Status = styled.span`
         text-decoration: underline;
     }
 `;
+
+export const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 0 8px;
+
+  &:hover {
+    color: #007bff; /* 호버 시 색상 변경 */
+  }
+`;
+
 
 export const BoardData = styled.div`
   display: grid;
