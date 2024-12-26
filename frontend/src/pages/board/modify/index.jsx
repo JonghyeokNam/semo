@@ -73,6 +73,7 @@ const Index = () => {
               label="모집 구분"
               options={recruitmentTypeData}
                placeholder="스터디 / 프로젝트"
+               width="270px"
             />
           </S.Column>
           <S.Column>
@@ -80,6 +81,7 @@ const Index = () => {
               label="모집 인원"
               options={participantCountData}
                placeholder="인원 미정 ~ 10명 이상"
+               width="270px"
             />
           </S.Column>
           <S.Column>
@@ -87,6 +89,7 @@ const Index = () => {
               label="진행 방식"
               options={processMethodData}
               placeholder="온라인 / 오프라인"
+              width="270px"
             />
           </S.Column>
         
@@ -96,6 +99,7 @@ const Index = () => {
               label="진행 기간"
               options={periodData}
               placeholder="기간 미정 ~ 6개월 이상"
+              width="270px"
             />
           </S.Column>
           <S.Column>
@@ -112,6 +116,7 @@ const Index = () => {
             options={positionData}
             isMulti={true}
             placeholder="프론트엔드, 백엔드..."
+            width="270px"
           />
           </S.Column>
           </S.Grid>
