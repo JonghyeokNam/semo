@@ -192,7 +192,7 @@ export const CommentInput = styled.textarea`
   color: #333;
   resize: none;
 
-  outline-color: var(--green);
+  outline-color: #495057;
 
 `;
 

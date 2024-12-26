@@ -22,6 +22,7 @@ export const Container = styled.div`
     align-items: center;
     padding: 20px 0px;
     border-bottom: 1px solid #DEE2E6;
+    cursor: pointer;
 `;
 
 export const Group = styled.div`
