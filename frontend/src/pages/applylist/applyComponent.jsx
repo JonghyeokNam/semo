@@ -36,6 +36,13 @@ const ApplyComponent = () => {
     setOpen(false); 
   };
 
+  const content = '안녕하세요! 저는 프론트엔드 개발을 공부 중인 새싹 과정 교육생입니다. 팀 협업 경험이 많아...'
+
+  // 글자수 제한 함수: 25글자 이상이면 "..." 추가
+  const truncate = (str, n) => {
+    return str?.length > n ? str.substr(0, n - 1) + "..." : str;
+  };
+
   return (
     <>
       <S.Container onClick={modalOpen}>
@@ -52,7 +59,7 @@ const ApplyComponent = () => {
           </S.Group>
           <S.VerticalLine />
           <S.Content>
-            안녕하세요! 저는 프론트엔드 개발을 공부 중인 새싹 과정 교육생입니다. 팀 협업 경험이 많아...
+            {truncate(content, 25)}
           </S.Content>
         </S.Group>
         <S.Group>

@@ -4,7 +4,7 @@ import { FaArrowLeft } from "react-icons/fa";
 // 스타일 컴포넌트 (styled-components)
 
 export const DetailContainer = styled.div`
-  padding: 0px 30px;
+
 `;
 
 export const BackButton = styled.button`
@@ -24,7 +24,7 @@ export const BackIcon = styled(FaArrowLeft)`
 
 export const TopBar = styled.div`
   display: flex;
-  flex-direction: Row;
+  flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
 `;

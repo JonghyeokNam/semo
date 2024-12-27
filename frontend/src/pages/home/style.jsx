@@ -6,7 +6,7 @@ export const IndexContainer = styled.div`
   flex-wrap: wrap; 
   flex-direction: row;
   padding: 20px 0px;
-  width: 80%;
+  width: 900px;
   margin: 0 auto; 
 `;
 
@@ -14,7 +14,7 @@ export const Index2Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px 0px;
-  width: 80%;
+  width: 100%;
   margin: 0 auto; 
 `;
 
