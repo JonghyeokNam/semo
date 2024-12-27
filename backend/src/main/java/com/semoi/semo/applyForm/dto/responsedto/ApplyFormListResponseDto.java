@@ -1,11 +1,10 @@
 package com.semoi.semo.applyForm.dto.responsedto;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.OffsetDateTime;
 
 @Data
 @NoArgsConstructor
@@ -17,10 +16,8 @@ public class ApplyFormListResponseDto {
     private Long boardId;
     private Long userId;
     private String position;
-    private String contact;
     private String aboutMe;
     private String status;
-    private OffsetDateTime createdAt;
-    private OffsetDateTime updatedAt;
+    private LocalDateTime createdAt;
 
 }

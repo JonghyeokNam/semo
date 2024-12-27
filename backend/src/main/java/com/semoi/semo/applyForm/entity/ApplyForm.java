@@ -21,7 +21,7 @@ public class ApplyForm {
     @Column(name = "applyform_id")
     private Long applyFormId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "position_id", nullable = false)
     private Position position;
 
@@ -39,24 +39,4 @@ public class ApplyForm {
 
     @Column(name = "board_id", nullable = false)
     private Long boardId;
-}
-
-@Entity
-@Table(name = "positions")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-class Position {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "position_id")
-    private Long positionId;
-
-    @Column(name = "name", nullable = false, length = 50)
-    private String name;
-
-    @Column(name = "description", length = 255)
-    private String description;
 }
