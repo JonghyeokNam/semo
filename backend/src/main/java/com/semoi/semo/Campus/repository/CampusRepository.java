@@ -1,8 +1,8 @@
-package com.semoi.semo.Campus.repository;
+package com.semoi.semo.campus.repository;
 
-import com.semoi.semo.Campus.domain.Campus;
-import com.semoi.semo.Campus.dto.CampusTotalScoreAndNameDto;
-import com.semoi.semo.Campus.enums.CampusName;
+import com.semoi.semo.campus.domain.Campus;
+import com.semoi.semo.campus.dto.CampusTotalScoreAndNameDto;
+import com.semoi.semo.campus.enums.CampusName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,7 +13,7 @@ public interface CampusRepository extends JpaRepository<Campus, Long> {
     Optional<Campus> findByCampusName(CampusName campusName);
 
     @Query("""
-    SELECT new com.semoi.semo.Campus.dto.CampusTotalScoreAndNameDto(
+    SELECT new com.semoi.semo.campus.dto.CampusTotalScoreAndNameDto(
         SUM(u.actScore), 
         SUM(u.recScore), 
         c.campusId

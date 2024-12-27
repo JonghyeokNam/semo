@@ -1,10 +1,9 @@
 package com.semoi.semo.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.semoi.semo.Campus.enums.CampusName;
+import com.semoi.semo.campus.enums.CampusName;
 import com.semoi.semo.user.dto.request.UserRequestDto;
 import com.semoi.semo.user.enums.Position;
-import com.semoi.semo.user.enums.Role;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

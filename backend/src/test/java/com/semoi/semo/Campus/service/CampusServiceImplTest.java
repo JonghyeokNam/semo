@@ -1,13 +1,12 @@
-package com.semoi.semo.Campus.service;
+package com.semoi.semo.campus.service;
 
-import com.semoi.semo.Campus.domain.Campus;
-import com.semoi.semo.Campus.domain.CampusYearlyScore;
-import com.semoi.semo.Campus.dto.CampusActScoreResponseDto;
-import com.semoi.semo.Campus.dto.CampusRecScoreResponseDto;
-import com.semoi.semo.Campus.repository.CampusRepository;
-import com.semoi.semo.Campus.repository.CampusYearlyScoreRepository;
+import com.semoi.semo.campus.domain.Campus;
+import com.semoi.semo.campus.domain.CampusYearlyScore;
+import com.semoi.semo.campus.dto.CampusActScoreResponseDto;
+import com.semoi.semo.campus.dto.CampusRecScoreResponseDto;
+import com.semoi.semo.campus.repository.CampusRepository;
+import com.semoi.semo.campus.repository.CampusYearlyScoreRepository;
 import jakarta.transaction.Transactional;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

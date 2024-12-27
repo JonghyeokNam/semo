@@ -1,9 +1,9 @@
-package com.semoi.semo.Campus.service;
+package com.semoi.semo.campus.service;
 
-import com.semoi.semo.Campus.domain.Campus;
-import com.semoi.semo.Campus.dto.CampusActScoreResponseDto;
-import com.semoi.semo.Campus.dto.CampusRecScoreResponseDto;
-import com.semoi.semo.Campus.enums.CampusName;
+import com.semoi.semo.campus.domain.Campus;
+import com.semoi.semo.campus.dto.CampusActScoreResponseDto;
+import com.semoi.semo.campus.dto.CampusRecScoreResponseDto;
+import com.semoi.semo.campus.enums.CampusName;
 
 import java.util.List;
 

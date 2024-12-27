@@ -1,6 +1,6 @@
 package com.semoi.semo.user.dto.request;
 
-import com.semoi.semo.Campus.domain.Campus;
+import com.semoi.semo.campus.domain.Campus;
 import com.semoi.semo.user.domain.User;
 import com.semoi.semo.user.enums.Position;
 import com.semoi.semo.user.enums.Role;

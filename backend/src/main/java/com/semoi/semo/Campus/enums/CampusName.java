@@ -1,4 +1,4 @@
-package com.semoi.semo.Campus.enums;
+package com.semoi.semo.campus.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

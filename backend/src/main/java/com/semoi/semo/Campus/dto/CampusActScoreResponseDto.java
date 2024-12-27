@@ -1,6 +1,6 @@
-package com.semoi.semo.Campus.dto;
+package com.semoi.semo.campus.dto;
 
-import com.semoi.semo.Campus.domain.CampusYearlyScore;
+import com.semoi.semo.campus.domain.CampusYearlyScore;
 
 public record CampusActScoreResponseDto(
         String campusName,
