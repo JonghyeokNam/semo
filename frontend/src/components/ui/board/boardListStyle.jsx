@@ -12,7 +12,7 @@ export const BoardListContainer = styled.div`
 
 export const LinkContainer = styled(Link)`
   display: block;
-  width: 80%;
+  width: 100%;
 `;
 
 export const LinkContainer100 = styled(Link)`

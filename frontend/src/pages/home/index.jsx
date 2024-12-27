@@ -8,7 +8,7 @@ import useMediaQueries from "../../hooks/useMediaQueries";
 
 
 const Index = () => {
-  const { isMobile, isTablet, isDesktop } = useMediaQueries();
+  const {isDesktop } = useMediaQueries();
 
   const [selectedType, setSelectedType] = useState("전체"); // 기본값: 전체
 
