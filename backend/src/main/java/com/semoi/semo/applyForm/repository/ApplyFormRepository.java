@@ -10,4 +10,7 @@ public interface ApplyFormRepository extends JpaRepository<ApplyForm, Long> {
 
     // 특정 게시글의 신청서 목록 조회
     List<ApplyForm> findByBoardId(Long boardId);
+
+    // 특정 사용자 ID에 해당하는 모든 신청서 조회
+    List<ApplyForm> findByUserId(Long userId);
 }

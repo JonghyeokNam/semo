@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -33,6 +34,21 @@ public class ApplyFormController {
             @Parameter(description = "게시글 ID", example = "1")
             @PathVariable("boardId") Long boardId) {
         List<ApplyFormListResponseDto> applyForms = applyFormService.getApplyFormsByBoardId(boardId);
+        return Response.success(applyForms);
+    }
+
+    // 로그인 연결 필요!!
+    // 주소에서 user id를 받는 것이 아닌 authentication id를 받도록 해야함.
+    // GET /user/applyforms?userId=1 형태로 API 호출
+    @Operation(summary = "사용자 신청서 목록 조회", description = "현재 사용자의 모든 신청서를 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
+    @GetMapping("/user/applyforms")
+    public Response<List<ApplyFormListResponseDto>> getUserApplyForms(
+            @RequestParam(name = "userId") Long userId) {
+        List<ApplyFormListResponseDto> applyForms = applyFormService.getUserApplyForms(userId);
         return Response.success(applyForms);
     }
 }
