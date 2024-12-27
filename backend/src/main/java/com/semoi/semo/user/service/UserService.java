@@ -8,4 +8,6 @@ public interface UserService {
     User getUserByUserIdOrElseThrow(Long userId);
     User getUserByLoginEmailOrElseThrow(String loginEmail);
     UserResponseDto createUser(String loginEmail, UserInfoRequestDto userInfoRequestDto);
+
+    void resetUserScore();
 }

@@ -103,4 +103,19 @@ public class User {
         this.position = position;
         this.campus = campus;
     }
+
+    public void resetCurrentScore() {
+        this.actScore = 0;
+        this.recScore = 0;
+    }
+
+    public void plusActScore(int score) {
+        this.totalActScore += score;
+        this.actScore += score;
+    }
+
+    public void plusRecScore(int score) {
+        this.totalRecScore += score;
+        this.recScore += score;
+    }
 }
