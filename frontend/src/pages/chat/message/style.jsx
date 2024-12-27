@@ -20,7 +20,10 @@ export const MessagesContainer = styled.div`
   height: ${(props) => (props.$isMobile ? "400px" : "477px")}; 
   display: flex;
   flex-direction: column;
-  overflow-y: auto; 
+  overflow-y: scroll;
+    &::-webkit-scrollbar {
+        display: none;
+    }
   padding: 20px;
 `;
 
@@ -86,7 +89,7 @@ export const MessageInputContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 10px 20px;
   border-top: 1px solid #ddd;
   position: absolute;
   bottom: -73px;
@@ -100,6 +103,7 @@ export const MessageInput = styled.textarea`
   border-radius: 5px;
   border: 1px solid #ccc;
   resize: none;
+  outline-color:  #495057;
 `;
 
 export const SendButton = styled.button`
@@ -109,8 +113,9 @@ export const SendButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-weight: bold;
   
   &:hover {
-    background-color: #0056b3;
+    background-color: #44A253;
   }
 `;
