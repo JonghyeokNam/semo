@@ -1,6 +1,7 @@
 package com.semoi.semo.user.domain;
 
 import com.semoi.semo.Campus.domain.Campus;
+import com.semoi.semo.bookmark.domain.Bookmark;
 import com.semoi.semo.notification.entity.Notification;
 import com.semoi.semo.user.enums.Position;
 import com.semoi.semo.user.enums.Role;
@@ -62,6 +63,9 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "campus_id")
     private Campus campus;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Bookmark> bookmarks;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Notification> notifications;
