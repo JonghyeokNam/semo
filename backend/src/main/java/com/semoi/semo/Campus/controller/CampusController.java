@@ -78,4 +78,10 @@ public class CampusController {
     public Response<List<CampusRecScoreResponseDto>> getRecruitRanking(@PathVariable int year) {
         return Response.success(campusService.getCampusRecRankingByYear(year));
     }
+
+    @GetMapping("/test/scheduler")
+    public Response<Void> demonstrationScheduler() {
+        campusService.calculateAndSaveCampusYearlyScores();
+        return Response.success();
+    }
 }
