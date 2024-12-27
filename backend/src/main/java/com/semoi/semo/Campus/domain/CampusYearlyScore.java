@@ -28,4 +28,18 @@ public class CampusYearlyScore {
     @ManyToOne
     @JoinColumn(name = "campus_id", nullable = false)
     private Campus campus;
+
+    private CampusYearlyScore(Campus campus, int year) {
+        this.campus = campus;
+        this.year = year;
+    }
+
+    public void update(int recScore, int actScore) {
+        this.recScore = recScore;
+        this.actScore = actScore;
+    }
+
+    public static CampusYearlyScore create(Campus campus, int year) {
+        return new CampusYearlyScore(campus, year);
+    }
 }
