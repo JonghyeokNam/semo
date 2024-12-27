@@ -20,7 +20,7 @@ public interface CampusRepository extends JpaRepository<Campus, Long> {
     )
     FROM User u
     JOIN u.campus c
-    GROUP BY c.campusName
+    GROUP BY c.campusId
 """)
     List<CampusTotalScoreAndNameDto> findTotalScoresAndCampusIdGroupedByCampusName();
 }
