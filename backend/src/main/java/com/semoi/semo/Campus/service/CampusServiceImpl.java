@@ -1,17 +1,15 @@
-package com.semoi.semo.Campus.service;
+package com.semoi.semo.campus.service;
 
-import com.semoi.semo.Campus.domain.Campus;
-import com.semoi.semo.Campus.domain.CampusYearlyScore;
-import com.semoi.semo.Campus.dto.CampusActScoreResponseDto;
-import com.semoi.semo.Campus.dto.CampusRecScoreResponseDto;
-import com.semoi.semo.Campus.dto.CampusTotalScoreAndNameDto;
-import com.semoi.semo.Campus.enums.CampusName;
-import com.semoi.semo.Campus.repository.CampusRepository;
-import com.semoi.semo.Campus.repository.CampusYearlyScoreRepository;
+import com.semoi.semo.campus.domain.Campus;
+import com.semoi.semo.campus.domain.CampusYearlyScore;
+import com.semoi.semo.campus.dto.CampusActScoreResponseDto;
+import com.semoi.semo.campus.dto.CampusRecScoreResponseDto;
+import com.semoi.semo.campus.dto.CampusTotalScoreAndNameDto;
+import com.semoi.semo.campus.enums.CampusName;
+import com.semoi.semo.campus.repository.CampusRepository;
+import com.semoi.semo.campus.repository.CampusYearlyScoreRepository;
 import com.semoi.semo.global.exception.ErrorCode;
 import com.semoi.semo.global.exception.SemoException;
-import com.semoi.semo.user.domain.User;
-import com.semoi.semo.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

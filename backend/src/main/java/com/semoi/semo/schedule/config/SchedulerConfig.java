@@ -1,6 +1,6 @@
 package com.semoi.semo.schedule.config;
 
-import com.semoi.semo.Campus.service.CampusService;
+import com.semoi.semo.campus.service.CampusService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

@@ -1,7 +1,7 @@
-package com.semoi.semo.Campus.repository;
+package com.semoi.semo.campus.repository;
 
-import com.semoi.semo.Campus.domain.Campus;
-import com.semoi.semo.Campus.domain.CampusYearlyScore;
+import com.semoi.semo.campus.domain.Campus;
+import com.semoi.semo.campus.domain.CampusYearlyScore;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -28,7 +28,10 @@ public enum ErrorCode {
     BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "Board not found"),
 
     // Bookmark
-    BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "Bookmark not found"),;
+    BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "Bookmark not found"),
+
+    // comment
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Comment not found"),;
 
     private final HttpStatus status;
     private final String message;

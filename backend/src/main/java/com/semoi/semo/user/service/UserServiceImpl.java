@@ -1,8 +1,8 @@
 package com.semoi.semo.user.service;
 
-import com.semoi.semo.Campus.domain.Campus;
-import com.semoi.semo.Campus.enums.CampusName;
-import com.semoi.semo.Campus.service.CampusService;
+import com.semoi.semo.campus.domain.Campus;
+import com.semoi.semo.campus.enums.CampusName;
+import com.semoi.semo.campus.service.CampusService;
 import com.semoi.semo.user.domain.User;
 import com.semoi.semo.user.dto.request.UserInfoRequestDto;
 import com.semoi.semo.user.dto.response.UserResponseDto;

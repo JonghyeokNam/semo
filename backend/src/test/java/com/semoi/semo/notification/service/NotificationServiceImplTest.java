@@ -1,7 +1,7 @@
 package com.semoi.semo.notification.service;
 
-import com.semoi.semo.Campus.domain.Campus;
-import com.semoi.semo.Campus.enums.CampusName;
+import com.semoi.semo.campus.domain.Campus;
+import com.semoi.semo.campus.enums.CampusName;
 import com.semoi.semo.board.entity.Board;
 import com.semoi.semo.notification.dto.NotificationResponseDto;
 import com.semoi.semo.notification.entity.Notification;

@@ -1,6 +1,6 @@
-package com.semoi.semo.Campus.domain;
+package com.semoi.semo.campus.domain;
 
-import com.semoi.semo.Campus.enums.CampusName;
+import com.semoi.semo.campus.enums.CampusName;
 import com.semoi.semo.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

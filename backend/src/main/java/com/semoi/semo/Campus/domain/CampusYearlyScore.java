@@ -1,4 +1,4 @@
-package com.semoi.semo.Campus.domain;
+package com.semoi.semo.campus.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

@@ -1,6 +1,4 @@
-package com.semoi.semo.Campus.dto;
-
-import com.semoi.semo.Campus.enums.CampusName;
+package com.semoi.semo.campus.dto;
 
 public record CampusTotalScoreAndNameDto(
         Long actScore,

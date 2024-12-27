@@ -1,8 +1,8 @@
-package com.semoi.semo.Campus.controller;
+package com.semoi.semo.campus.controller;
 
-import com.semoi.semo.Campus.dto.CampusActScoreResponseDto;
-import com.semoi.semo.Campus.dto.CampusRecScoreResponseDto;
-import com.semoi.semo.Campus.service.CampusService;
+import com.semoi.semo.campus.dto.CampusActScoreResponseDto;
+import com.semoi.semo.campus.dto.CampusRecScoreResponseDto;
+import com.semoi.semo.campus.service.CampusService;
 import com.semoi.semo.global.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
