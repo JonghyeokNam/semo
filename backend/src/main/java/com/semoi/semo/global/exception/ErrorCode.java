@@ -22,7 +22,13 @@ public enum ErrorCode {
     TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "Token not found"),
 
     // notification
-    NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND,  "Notification not found"),;
+    NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND,  "Notification not found"),
+
+    // Board
+    BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "Board not found"),
+
+    // Bookmark
+    BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "Bookmark not found"),;
 
     private final HttpStatus status;
     private final String message;
