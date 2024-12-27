@@ -1,6 +1,7 @@
 package com.semoi.semo.board.entity;
 
 import com.semoi.semo.bookmark.domain.Bookmark;
+import com.semoi.semo.comment.domain.Comment;
 import com.semoi.semo.notification.entity.Notification;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -68,4 +69,7 @@ public class Board {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Bookmark> bookmarks;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Comment> comments;
 }

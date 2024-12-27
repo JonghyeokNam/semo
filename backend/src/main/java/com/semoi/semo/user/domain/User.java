@@ -1,7 +1,8 @@
 package com.semoi.semo.user.domain;
 
-import com.semoi.semo.Campus.domain.Campus;
+import com.semoi.semo.campus.domain.Campus;
 import com.semoi.semo.bookmark.domain.Bookmark;
+import com.semoi.semo.comment.domain.Comment;
 import com.semoi.semo.notification.entity.Notification;
 import com.semoi.semo.user.enums.Position;
 import com.semoi.semo.user.enums.Role;
@@ -69,6 +70,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Notification> notifications;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Comment> comments;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
