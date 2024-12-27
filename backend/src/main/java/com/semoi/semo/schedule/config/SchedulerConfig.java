@@ -16,7 +16,7 @@ public class SchedulerConfig {
     /**
      * 매일 새벽 2시 캠퍼스 별 점수 집계 갱신
      */
-    @Scheduled(cron = "0 0 2 ? ? ? ?")
+    @Scheduled(cron = "0 0 2 * * *")
     private void calculateDailyScores() {
         campusService.calculateAndSaveCampusYearlyScores();
     }
