@@ -4,7 +4,6 @@ export const ChatWrapper = styled.div`
   display: flex;
   justify-content: center;
   height: 100vh; 
-  background-color: ${(props) => (props.$isMobile ? "pink" : "#f8f9fa")};
 `;
 
 export const Row = styled.div`
