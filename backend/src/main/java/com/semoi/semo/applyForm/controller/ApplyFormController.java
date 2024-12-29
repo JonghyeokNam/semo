@@ -2,6 +2,7 @@ package com.semoi.semo.applyForm.controller;
 
 import com.semoi.semo.applyForm.dto.requestdto.ApplyFormRequestDto;
 import com.semoi.semo.applyForm.dto.responsedto.ApplyFormListResponseDto;
+import com.semoi.semo.applyForm.dto.responsedto.ApplyFormResponseDto;
 import com.semoi.semo.applyForm.service.ApplyFormService;
 import com.semoi.semo.global.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
@@ -76,5 +77,20 @@ public class ApplyFormController {
         }
         applyFormService.createApplyForm(boardId, requestDto, userId);
         return Response.success();
+    }
+
+    @Operation(summary = "신청서 조회", description = "사용자가 특정 신청서를 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "신청서 조회 성공"),
+            @ApiResponse(responseCode = "404", description = "신청서를 찾을 수 없음"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
+    @GetMapping("/user/applyforms/{applyFormId}")
+    public Response<ApplyFormResponseDto> getUserApplyForm(
+            @PathVariable("applyFormId") Long applyFormId,
+            @RequestParam(name = "userId") Long userId // 사용자 ID는 임시로 쿼리 매개변수로 받음
+    ) {
+        ApplyFormResponseDto applyForm = applyFormService.getUserApplyForm(applyFormId, userId);
+        return Response.success(applyForm);
     }
 }

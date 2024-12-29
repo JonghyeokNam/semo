@@ -2,6 +2,7 @@ package com.semoi.semo.applyForm.service;
 
 import com.semoi.semo.applyForm.dto.requestdto.ApplyFormRequestDto;
 import com.semoi.semo.applyForm.dto.responsedto.ApplyFormListResponseDto;
+import com.semoi.semo.applyForm.dto.responsedto.ApplyFormResponseDto;
 import com.semoi.semo.applyForm.entity.ApplyForm;
 import com.semoi.semo.applyForm.entity.Position;
 import com.semoi.semo.applyForm.repository.ApplyFormRepository;
@@ -81,5 +82,27 @@ public class ApplyFormService {
                 .build();
 
         return applyFormRepository.save(applyForm);
+    }
+
+    public ApplyFormResponseDto getUserApplyForm(Long applyFormId, Long userId) {
+        ApplyForm applyForm = applyFormRepository.findByApplyFormIdAndUserId(applyFormId, userId);
+        if (applyForm == null) {
+            throw new IllegalArgumentException("ApplyForm not found for given ID and User");
+        }
+
+        String boardTitle = boardRepository.findById(applyForm.getBoardId())
+                .map(Board::getTitle)
+                .orElse("Unknown Board Title"); // 예외, 제목을 읽을 수 없거나 없을 때
+
+        return ApplyFormResponseDto.builder()
+                .applyFormId(applyForm.getApplyFormId())
+                .boardId(applyForm.getBoardId())
+                .boardTitle(boardTitle)
+                .userId(applyForm.getUserId())
+                .position(applyForm.getPosition().getName())
+                .aboutMe(applyForm.getAboutMe())
+                .status(applyForm.getStatus())
+                .createdAt(applyForm.getCreatedAt())
+                .build();
     }
 }
