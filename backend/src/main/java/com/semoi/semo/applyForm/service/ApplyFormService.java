@@ -123,4 +123,15 @@ public class ApplyFormService {
         // 저장
         applyFormRepository.save(applyForm);
     }
+
+    public void deleteApplyForm(Long applyFormId, Long userId) {
+        // 신청서 조회
+        ApplyForm applyForm = applyFormRepository.findByApplyFormIdAndUserId(applyFormId, userId);
+        if (applyForm == null) {
+            throw new IllegalArgumentException("ApplyForm not found or you do not have permission to delete it");
+        }
+
+        // 삭제
+        applyFormRepository.delete(applyForm);
+    }
 }

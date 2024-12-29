@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -107,6 +108,22 @@ public class ApplyFormController {
             @RequestParam(name = "userId") Long userId
     ) {
         applyFormService.updateUserApplyForm(applyFormId, updateDto, userId);
+        return Response.success();
+    }
+
+    @Operation(summary = "신청서 삭제", description = "사용자가 특정 신청서를 삭제")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "신청서 삭제 성공"),
+            @ApiResponse(responseCode = "404", description = "신청서를 찾을 수 없음"),
+            @ApiResponse(responseCode = "403", description = "삭제 권한 없음"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
+    @DeleteMapping("/user/applyforms/{applyFormId}")
+    public Response<Void> deleteApplyForm(
+            @PathVariable("applyFormId") Long applyFormId,
+            @RequestParam(name = "userId") Long userId
+    ) {
+        applyFormService.deleteApplyForm(applyFormId, userId);
         return Response.success();
     }
 }
