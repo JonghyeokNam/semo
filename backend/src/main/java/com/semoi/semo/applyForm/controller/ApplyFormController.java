@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -92,5 +93,20 @@ public class ApplyFormController {
     ) {
         ApplyFormResponseDto applyForm = applyFormService.getUserApplyForm(applyFormId, userId);
         return Response.success(applyForm);
+    }
+
+    @Operation(summary = "신청서 수정", description = "사용자가 특정 신청서를 수정")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "신청서 수정 성공"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
+    @PutMapping("/user/applyforms/{applyFormId}")
+    public Response<Void> updateApplyForm(
+            @PathVariable("applyFormId") Long applyFormId,
+            @RequestBody ApplyFormRequestDto updateDto,
+            @RequestParam(name = "userId") Long userId
+    ) {
+        applyFormService.updateUserApplyForm(applyFormId, updateDto, userId);
+        return Response.success();
     }
 }

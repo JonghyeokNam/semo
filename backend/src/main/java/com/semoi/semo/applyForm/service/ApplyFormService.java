@@ -105,4 +105,22 @@ public class ApplyFormService {
                 .createdAt(applyForm.getCreatedAt())
                 .build();
     }
+
+    public void updateUserApplyForm(Long applyFormId, ApplyFormRequestDto requestDto, Long userId) {
+        // 신청서 조회
+        ApplyForm applyForm = applyFormRepository.findByApplyFormIdAndUserId(applyFormId, userId);
+        if (applyForm == null) {
+            throw new IllegalArgumentException("ApplyForm not found for given ID and User");
+        }
+
+        Position position = positionRepository.findById(requestDto.getPositionId())
+                .orElseThrow(() -> new IllegalArgumentException("Position not found for given ID"));
+
+        // 수정 가능한 필드 업데이트
+        applyForm.setPosition(position);
+        applyForm.setAboutMe(requestDto.getAboutMe());
+
+        // 저장
+        applyFormRepository.save(applyForm);
+    }
 }
