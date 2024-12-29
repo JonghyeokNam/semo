@@ -63,8 +63,7 @@ public class BoardController {
 
     @Operation(summary = "게시물 생성", description = "새로운 게시물을 생성합니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "생성 성공"),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "200", description = "생성 성공"),
             @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @PostMapping
