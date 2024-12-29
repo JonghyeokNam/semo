@@ -1,8 +1,11 @@
 package com.semoi.semo.applyForm.service;
 
+import com.semoi.semo.applyForm.dto.requestdto.ApplyFormRequestDto;
 import com.semoi.semo.applyForm.dto.responsedto.ApplyFormListResponseDto;
 import com.semoi.semo.applyForm.entity.ApplyForm;
+import com.semoi.semo.applyForm.entity.Position;
 import com.semoi.semo.applyForm.repository.ApplyFormRepository;
+import com.semoi.semo.applyForm.repository.PositionRepository;
 import com.semoi.semo.board.entity.Board;
 import com.semoi.semo.board.repository.BoardRepository;
 import java.util.List;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class ApplyFormService {
 
     private final ApplyFormRepository applyFormRepository;
+    private final PositionRepository positionRepository;
     private final BoardRepository boardRepository;
 
     public List<ApplyFormListResponseDto> getApplyFormsByBoardId(Long boardId) {
@@ -54,5 +58,28 @@ public class ApplyFormService {
                     .createdAt(applyForm.getCreatedAt())
                     .build();
         }).collect(Collectors.toList());
+    }
+
+    public ApplyForm createApplyForm(Long boardId, ApplyFormRequestDto requestDto, Long userId) {
+
+        // 포지션 ID를 기반으로 Position 엔티티 조회
+        Position position = positionRepository.findById(requestDto.getPositionId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid position ID: " + requestDto.getPositionId()));
+
+        // Board ID 유효성 확인
+        boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid board ID: " + boardId));
+
+        // 새로운 ApplyForm 생성 및 저장
+        ApplyForm applyForm = ApplyForm.builder()
+                .boardId(boardId)
+                .userId(userId)
+                .position(position)
+                .aboutMe(requestDto.getAboutMe())
+                .status("대기")
+                .createdAt(java.time.LocalDateTime.now())
+                .build();
+
+        return applyFormRepository.save(applyForm);
     }
 }

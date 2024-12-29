@@ -1,5 +1,6 @@
 package com.semoi.semo.applyForm.controller;
 
+import com.semoi.semo.applyForm.dto.requestdto.ApplyFormRequestDto;
 import com.semoi.semo.applyForm.dto.responsedto.ApplyFormListResponseDto;
 import com.semoi.semo.applyForm.service.ApplyFormService;
 import com.semoi.semo.global.response.Response;
@@ -12,6 +13,8 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,5 +53,28 @@ public class ApplyFormController {
             @RequestParam(name = "userId") Long userId) {
         List<ApplyFormListResponseDto> applyForms = applyFormService.getUserApplyForms(userId);
         return Response.success(applyForms);
+    }
+
+    @Operation(summary = "신청서 생성", description = "특정 게시글에 대한 신청서를 생성")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
+    @PostMapping("/boards/{boardId}/applyform")
+    public Response<Void> createApplyForm(
+            @PathVariable("boardId") Long boardId,
+            @RequestBody ApplyFormRequestDto requestDto,
+            @RequestParam(name = "userId") Long userId // 임시로 userId를 쿼리 매개변수로 받음
+    ) {
+        System.out.println("Received POST request");
+        if (requestDto == null) {
+            System.out.println("Request DTO is null");
+            throw new IllegalArgumentException("Request body is null");
+        }
+        if (userId == null) {
+            userId = 1L; // 테스트용 유저 ID
+        }
+        applyFormService.createApplyForm(boardId, requestDto, userId);
+        return Response.success();
     }
 }
