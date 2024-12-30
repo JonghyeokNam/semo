@@ -7,12 +7,17 @@ import com.semoi.semo.board.entity.Board;
 import com.semoi.semo.board.mapper.BoardMapper;
 import com.semoi.semo.board.repository.BoardRepository;
 import com.semoi.semo.global.exception.DataNotFoundException;
+import com.semoi.semo.user.domain.User;
+import com.semoi.semo.user.repository.UserRepository;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +25,7 @@ import org.springframework.stereotype.Service;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     public Page<BoardListResponseDto> getAllBoards(Pageable pageable) {
         Pageable sortedPageable = PageRequest.of(
@@ -56,5 +62,25 @@ public class BoardService {
 
         board.setDeletedAt(LocalDateTime.now());
         boardRepository.save(board);
+    }
+
+
+//    public List<BoardListResponseDto> getMyBoards(Long userId) {
+//        List<Board> boards = boardRepository.findByUserId(userId);
+//
+//        return boards.stream()
+//                .map(BoardMapper::toBoardListResponseDto)
+//                .collect(Collectors.toList());
+//    }
+
+    public List<BoardListResponseDto> getMyBoards(Authentication authentication) {
+        User user = userRepository.findByLoginEmail(authentication.getName())
+                .orElseThrow(() -> new DataNotFoundException(("board not found")));
+
+        List<Board> boards = boardRepository.findByUserId(user.getUserId());
+
+        return boards.stream()
+                .map(BoardMapper::toBoardListResponseDto)
+                .collect(Collectors.toList());
     }
 }

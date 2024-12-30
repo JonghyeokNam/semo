@@ -10,10 +10,12 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -101,4 +103,38 @@ public class BoardController {
         boardService.softDeleteBoard(boardId);;
         return Response.success();
     }
+
+//    @Operation(summary = "사용자 작성 게시글 조회", description = "사용자가 작성한 게시글 목록을 조회")
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "200", description = "게시글 조회 성공"),
+//            @ApiResponse(responseCode = "404", description = "게시글이 존재하지 않음")
+//    })
+//    @GetMapping("/myboards")
+//    public Response<List<BoardListResponseDto>> getMyBoards(
+//            @RequestParam(name = "userId") Long userId
+//    ) {
+//        // Service 호출
+//        List<BoardListResponseDto> myBoards = boardService.getMyBoards(userId);
+//
+//        // 결과 반환
+//        return Response.success(myBoards);
+//    }
+
+    @Operation(summary = "사용자 작성 게시글 조회", description = "사용자가 작성한 게시글 목록을 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "게시글 조회 성공"),
+            @ApiResponse(responseCode = "404", description = "게시글이 존재하지 않음")
+    })
+    @GetMapping("/myboards")
+    public Response<List<BoardListResponseDto>> getMyBoards(Authentication authentication) {
+        // Service 호출
+        List<BoardListResponseDto> myBoards = boardService.getMyBoards(authentication);
+
+        // 결과 반환
+        return Response.success(myBoards);
+    }
+
+
+
+
 }
