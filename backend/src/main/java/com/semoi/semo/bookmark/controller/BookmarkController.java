@@ -28,4 +28,9 @@ public class BookmarkController {
     public Response<List<BookmarkResponseDto>> getBookmarks(Authentication authentication) {
         return Response.success(bookmarkService.getBookmarksFromUser(authentication.getName()));
     }
+
+    @GetMapping("/boards/{boardId}")
+    public Response<Boolean> getState(Authentication authentication, @PathVariable Long boardId) {
+        return Response.success(bookmarkService.getState(authentication.getName(), boardId));
+    }
 }

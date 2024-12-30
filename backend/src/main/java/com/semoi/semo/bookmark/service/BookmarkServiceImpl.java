@@ -26,13 +26,22 @@ public class BookmarkServiceImpl implements BookmarkService {
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
 
+    @Override
+    public Boolean getState(String loginEmail, Long boardId) {
+        User user = getUserByEmailOrElseThrow(loginEmail);
+        Board board = getBoardByIdOrElseThrow(boardId);
+
+        return bookmarkRepository.findByUserAndBoard(user, board).isPresent();
+    }
+
+    @Override
     public void addOrCancelBookmark(String loginEmail, Long boardId) {
 
         User user = getUserByEmailOrElseThrow(loginEmail);
         Board board = getBoardByIdOrElseThrow(boardId);
 
         Bookmark bookmark = bookmarkRepository.findByUserAndBoard(user, board).orElse(null);
-        
+
         // 북마크 안한 경우, 추가
         if (bookmark == null) {
             bookmark = Bookmark.create(user, board);
