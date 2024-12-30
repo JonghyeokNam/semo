@@ -11,6 +11,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -22,6 +25,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
+@Log4j2
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     public static final String REFRESH_TOKEN_COOKIE_NAME = "refresh_token";
@@ -54,7 +58,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         // 리다이렉트
         Optional<String> redirectUri = CookieUtil.getCookie(request, "redirect_uri")
                 .map(Cookie::getValue);
-        String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
+        String targetUrl = "http://localhost:3000";
+
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
