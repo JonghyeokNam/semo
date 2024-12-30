@@ -3,7 +3,7 @@ package com.semoi.semo.chat.controller;
 import com.semoi.semo.chat.dto.ChatRoomDto;
 import com.semoi.semo.chat.dto.MessageDto;
 import com.semoi.semo.chat.service.ChatService;
-import com.semoi.semo.common.response.Response;
+import com.semoi.semo.global.response.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
