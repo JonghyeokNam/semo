@@ -4,6 +4,7 @@ import Home from "./pages/home/index";
 import Chat from "./pages/chat/index";
 import Login from "./pages/login/index";
 import Signup from "./pages/login/signup";
+import OAuth2RedirectHandeler from "./pages/login/OAuth2RedirectHandeler";
 import Mypage from "./pages/mypage/index";
 import ApplyList from "./pages/applylist/index";
 import BoardDetail from "./pages/board/detail/index";
@@ -28,6 +29,9 @@ const router = createBrowserRouter([
 
       // 회원가입 페이지
       { path: "/signup", element: <Signup /> },
+
+      // 카카오 페이지
+      { path: "/login/oauth2/code/kakao", element: <OAuth2RedirectHandeler /> },
 
       // 마이 페이지
       { path: "/mypage", element: <Mypage /> },

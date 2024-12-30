@@ -1,12 +1,14 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import * as S from "./style";
 
 const Login = () => {
-  const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 훅
-
+  
   const handleKakaoClick = () => {
-    navigate("/signup"); 
+    const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
+    const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+    //window.location.href = kakaoURL;
+    window.location.href = "http://localhost/oauth2/authorization/kakao";
   };
 
   return (
