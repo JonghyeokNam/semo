@@ -92,7 +92,7 @@ export const RankContainer = styled.div`
 `;
 
 export const RankTable = styled.table`
-  width: 270px;
+  width: 100%;
   border-collapse: collapse;  
   display: block; 
   white-space: nowrap; 

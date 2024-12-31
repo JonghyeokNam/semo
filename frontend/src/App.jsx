@@ -24,7 +24,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: ${(props) => 
-    props.isExcludedPage ? "0 0" : (props.isDesktop ? "0 250px" : "0 48px")};
+    props.isExcludedPage ? "0 0" : (props.$isDesktop ? "0 150px" : "0 48px")};
 `;
 
 const Layout = () => {
@@ -44,7 +44,7 @@ const Layout = () => {
     <BackGroundColor>
       {/* 로그인, 회원가입 경로에서만 Nav와 Footer를 숨김 */}
       {!isExcludedPage && <Nav />}
-      <Wrapper isExcludedPage={isExcludedPage} isDesktop={isDesktop}>
+      <Wrapper $sExcludedPage={isExcludedPage} $isDesktop={isDesktop}>
         <Outlet />
       </Wrapper>
       {/* /login, /signup을 제외한 나머지 페이지에서 Footer를 보임 */}
