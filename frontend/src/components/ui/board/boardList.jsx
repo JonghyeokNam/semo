@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import * as S from "./boardListStyle";
 import { LiaHandPaper } from "react-icons/lia";
-import { Link } from "react-router-dom"; 
+import Modal from "../modal/modalWrite";
 
 const BoardListWrite = ({ boardData }) => {
 
@@ -13,11 +13,25 @@ const BoardListWrite = ({ boardData }) => {
   const comments = boardData?.comments || "0";
   const applicants = boardData?.applicants || { frontend: 0, backend: 0, uiux: 0, marketer: 0 };
 
+  const [open, setOpen] = useState(false);
+
+  const modalOpen = (e) => {
+    console.log("모달 오픈 클릭!");
+    e.stopPropagation(); // 이벤트 전파 중단
+    e.preventDefault(); // 기본 동작 방지
+    setOpen(true);
+  };
+
+  const closeModal = () => {
+    setOpen(false); // 모달 닫기
+  };
+
   return (
+    <>
     <S.LinkContainer to="/board/detail" state={{ boardData }}>
       <S.BoardListContainer>
       <S.RightTop>
-        <LiaHandPaper />
+        <LiaHandPaper  onClick={modalOpen}/>
       </S.RightTop>
         <S.Row>
           <S.TitleContainer>
@@ -57,6 +71,8 @@ const BoardListWrite = ({ boardData }) => {
         </S.InfoContainer>
       </S.BoardListContainer>
     </S.LinkContainer>
+    <Modal isOpen={open} onClose={closeModal} />
+    </>
   );
 };
 

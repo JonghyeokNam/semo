@@ -49,7 +49,7 @@ export const Title = styled.h1`
   text-align: center;
 `;
 
-export const Column = styled.h1`
+export const Column = styled.div`
   flex-direction: column;
   display: flex;
   justify-content: start;
