@@ -1,8 +1,8 @@
 package com.semoi.semo.user.service;
 
+import com.semoi.semo.applyForm.repository.PositionRepository;
 import com.semoi.semo.campus.domain.Campus;
 import com.semoi.semo.campus.domain.Course;
-import com.semoi.semo.campus.enums.CampusName;
 import com.semoi.semo.campus.repository.CourseRepository;
 import com.semoi.semo.campus.service.CampusService;
 import com.semoi.semo.global.exception.ErrorCode;
@@ -10,7 +10,7 @@ import com.semoi.semo.global.exception.SemoException;
 import com.semoi.semo.user.domain.User;
 import com.semoi.semo.user.dto.request.UserInfoRequestDto;
 import com.semoi.semo.user.dto.response.UserResponseDto;
-import com.semoi.semo.user.enums.Position;
+import com.semoi.semo.applyForm.entity.Position;
 import com.semoi.semo.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +27,14 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
+    private final PositionRepository positionRepository;
     private final CampusService campusService;
 
     @Override
     public UserResponseDto updateUser(String loginEmail, UserInfoRequestDto userInfoRequestDto) {
         User user = getUserByLoginEmailOrElseThrow(loginEmail);
 
-        CampusName campusName = CampusName.valueOf(userInfoRequestDto.campusName());
-        Campus campus = campusService.getCampusOrElseThrow(campusName);
+        Campus campus = campusService.getCampusOrElseThrow(userInfoRequestDto.campusName());
 
         String courseName = userInfoRequestDto.courseName();
         Course course = courseRepository.findByName(courseName)
@@ -45,7 +45,8 @@ public class UserServiceImpl implements UserService{
             courseRepository.save(course);
         }
 
-        Position position = Position.valueOf(userInfoRequestDto.position());
+        Position position = positionRepository.findByName(userInfoRequestDto.position())
+                        .orElseThrow(() -> new SemoException(ErrorCode.POSITION_NOT_FOUND));
 
         user.updateInfo(
                 userInfoRequestDto.username(),
@@ -79,5 +80,17 @@ public class UserServiceImpl implements UserService{
             user.resetCurrentScore();
             userRepository.save(user);
         }
+    }
+
+    @Override
+    public Boolean getCheckNewUser(String loginEmail) {
+
+        User user = getUserByLoginEmailOrElseThrow(loginEmail);
+
+        if (user.getPosition() == null || user.getCourse() == null) {
+            return true;
+        }
+
+        return true;
     }
 }

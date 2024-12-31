@@ -19,11 +19,11 @@ public record UserResponseDto(
 
         if (user.getCourse() != null) {
             courseName = user.getCourse().getName();
-            campusName = user.getCourse().getCampus().getCampusName().getName();
+            campusName = user.getCourse().getCampus().getName();
         }
 
         if (user.getPosition() != null) {
-            position = user.getPosition().getPosition();
+            position = user.getPosition().getName();
         }
 
         return new UserResponseDto(

@@ -1,10 +1,10 @@
 package com.semoi.semo.user.domain;
 
+import com.semoi.semo.applyForm.entity.Position;
 import com.semoi.semo.bookmark.domain.Bookmark;
 import com.semoi.semo.campus.domain.Course;
 import com.semoi.semo.comment.domain.Comment;
 import com.semoi.semo.notification.entity.Notification;
-import com.semoi.semo.user.enums.Position;
 import com.semoi.semo.user.enums.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -41,10 +41,6 @@ public class User {
     @Column(name = "user_email", nullable = false)
     private String userEmail;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private Position position;
-
     @Column(name = "rec_score", nullable = false)
     private int recScore = 0;
 
@@ -60,6 +56,10 @@ public class User {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @ManyToOne
+    @JoinColumn(name = "position_id")
+    private Position position;
 
     @ManyToOne
     @JoinColumn(name = "course_id")

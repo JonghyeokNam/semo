@@ -31,7 +31,10 @@ public enum ErrorCode {
     BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "Bookmark not found"),
 
     // comment
-    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Comment not found"),;
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Comment not found"),
+
+    // position
+    POSITION_NOT_FOUND(HttpStatus.NOT_FOUND, "Position not found"),;
 
     private final HttpStatus status;
     private final String message;

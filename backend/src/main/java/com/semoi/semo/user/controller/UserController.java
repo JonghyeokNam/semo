@@ -93,4 +93,9 @@ public class UserController {
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN_KEY_NAME);
         return Response.success();
     }
+
+    @GetMapping("/check")
+    public Response<Boolean> checkNewUser(Authentication authentication) {
+        return Response.success(userService.getCheckNewUser(authentication.getName()));
+    }
 }

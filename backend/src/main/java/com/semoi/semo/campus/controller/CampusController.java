@@ -1,7 +1,9 @@
 package com.semoi.semo.campus.controller;
 
-import com.semoi.semo.campus.dto.CampusActScoreResponseDto;
-import com.semoi.semo.campus.dto.CampusRecScoreResponseDto;
+import com.semoi.semo.campus.dto.response.CampusActScoreResponseDto;
+import com.semoi.semo.campus.dto.response.CampusRecScoreResponseDto;
+import com.semoi.semo.campus.dto.response.CampusResponseDto;
+import com.semoi.semo.campus.dto.response.CourseResponseDto;
 import com.semoi.semo.campus.service.CampusService;
 import com.semoi.semo.global.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
@@ -84,4 +86,15 @@ public class CampusController {
         campusService.calculateAndSaveCampusYearlyScores();
         return Response.success();
     }
+
+    @GetMapping
+    public Response<List<CampusResponseDto>> getCampusList() {
+        return Response.success(campusService.getCampusList());
+    }
+
+    @GetMapping("/{campusId}/courses")
+    public Response<List<CourseResponseDto>> getCourseListInCampus(@PathVariable Long campusId) {
+        return Response.success(campusService.getCourseListInCampus(campusId));
+    }
+
 }
