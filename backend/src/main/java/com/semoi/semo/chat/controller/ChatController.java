@@ -43,6 +43,7 @@ public class ChatController {
 
         // 3. MongoDB에 저장
         Message message = modelMapper.map(chat, Message.class);
+        message.setId(null);
         messageRepository.save(message);
 
         // 4. STOMP 브로커로 전송 -> 해당 채팅방을 구독 중인 클라이언트에게 메시지 전달
@@ -60,6 +61,7 @@ public class ChatController {
 
         // 2. MongoDB에 저장
         Message message = modelMapper.map(chat, Message.class);
+        message.setId(null);
         messageRepository.save(message);
 
         // 3. STOMP 브로커를 통해 채팅방 구독자들에게 메시지 전송
