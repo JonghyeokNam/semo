@@ -7,11 +7,14 @@ import com.semoi.semo.board.entity.Board;
 import com.semoi.semo.board.mapper.BoardMapper;
 import com.semoi.semo.board.repository.BoardRepository;
 import com.semoi.semo.global.exception.DataNotFoundException;
+import com.semoi.semo.jwt.service.TokenProvider;
 import com.semoi.semo.user.domain.User;
 import com.semoi.semo.user.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +29,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final TokenProvider tokenProvider;
 
     public Page<BoardListResponseDto> getAllBoards(Pageable pageable) {
         Pageable sortedPageable = PageRequest.of(
@@ -73,8 +77,8 @@ public class BoardService {
 //                .collect(Collectors.toList());
 //    }
 
-    public List<BoardListResponseDto> getMyBoards(Authentication authentication) {
-        User user = userRepository.findByLoginEmail(authentication.getName())
+    public List<BoardListResponseDto> getMyBoards(HttpServletRequest request) {
+        User user = userRepository.findByLoginEmail(tokenProvider.getUserLoginEmail(request))
                 .orElseThrow(() -> new DataNotFoundException(("board not found")));
 
         List<Board> boards = boardRepository.findByUserId(user.getUserId());
