@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { API } from "../lib/apis/utils/index"; // API import
 
-// 지원폼 모달 데이터 post 요청
+// 지원폼 모달 데이터 post 요청 
 const useApplyStore = create((set) => ({
   isLoading: false,
   isError: false,

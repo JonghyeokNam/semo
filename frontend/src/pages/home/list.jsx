@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import BoardList from "../../components/ui/board/boardList";
 import { useLocation, useNavigate } from "react-router-dom";
-import useMediaQueries from "../../hooks/useMediaQueries";
 import * as S from "./style";  
 
 const List = () => {
   const [boardData, setBoardData] = useState([]);
-  const { isMobile, isTablet } = useMediaQueries();
   const itemsPerPage = 5;
 
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate

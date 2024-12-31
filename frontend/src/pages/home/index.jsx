@@ -25,7 +25,6 @@ const Index = () => {
 
   return (
     <>
-
       <S.IndexContainer $isDesktop={isDesktop}>
         <S.Column>
           <S.Title>🔥 모집이 활발한 캠퍼스</S.Title>
