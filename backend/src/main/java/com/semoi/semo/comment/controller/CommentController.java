@@ -4,6 +4,8 @@ import com.semoi.semo.comment.dto.CommentRequestDto;
 import com.semoi.semo.comment.dto.CommentResponseDto;
 import com.semoi.semo.comment.service.CommentService;
 import com.semoi.semo.global.response.Response;
+import com.semoi.semo.jwt.service.TokenProvider;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -18,6 +20,7 @@ import java.util.List;
 public class CommentController {
 
     private final CommentService commentService;
+    private final TokenProvider tokenProvider;
 
     @GetMapping("/boards/{boardId}/comments")
     public Response<List<CommentResponseDto>> getComments(@PathVariable Long boardId) {
@@ -26,25 +29,25 @@ public class CommentController {
 
     @PostMapping("/boards/{boardId}/comments")
     public Response<Void> addComment(
-            Authentication authentication,
+            HttpServletRequest request,
             @PathVariable Long boardId,
             @RequestBody CommentRequestDto commentRequestDto
     ) {
-        commentService.addComment(authentication.getName(), boardId, commentRequestDto);
+        commentService.addComment(tokenProvider.getUserLoginEmail(request), boardId, commentRequestDto);
         return Response.success();
     }
 
     @PutMapping("/comments/{commentId}")
-    public Response<Void> updateComment(Authentication authentication,
+    public Response<Void> updateComment(HttpServletRequest request,
                                         @PathVariable Long commentId,
                                         @RequestBody CommentRequestDto commentRequestDto) {
-        commentService.updateComment(authentication.getName(), commentId, commentRequestDto);
+        commentService.updateComment(tokenProvider.getUserLoginEmail(request), commentId, commentRequestDto);
         return Response.success();
     }
 
     @DeleteMapping("/comments/{commentId}")
-    public Response<Void> deleteComment(Authentication authentication, @PathVariable Long commentId) {
-        commentService.deleteComment(authentication.getName(), commentId);
+    public Response<Void> deleteComment(HttpServletRequest request, @PathVariable Long commentId) {
+        commentService.deleteComment(tokenProvider.getUserLoginEmail(request), commentId);
         return Response.success();
     }
 }

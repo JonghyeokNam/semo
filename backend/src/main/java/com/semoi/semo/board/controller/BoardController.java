@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -126,9 +127,9 @@ public class BoardController {
             @ApiResponse(responseCode = "404", description = "게시글이 존재하지 않음")
     })
     @GetMapping("/myboards")
-    public Response<List<BoardListResponseDto>> getMyBoards(Authentication authentication) {
+    public Response<List<BoardListResponseDto>> getMyBoards(HttpServletRequest request) {
         // Service 호출
-        List<BoardListResponseDto> myBoards = boardService.getMyBoards(authentication);
+        List<BoardListResponseDto> myBoards = boardService.getMyBoards(request);
 
         // 결과 반환
         return Response.success(myBoards);
