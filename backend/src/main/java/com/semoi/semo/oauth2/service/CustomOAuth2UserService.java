@@ -4,7 +4,7 @@ import com.semoi.semo.oauth2.dto.CustomOAuth2User;
 import com.semoi.semo.oauth2.dto.KakaoResponse;
 import com.semoi.semo.oauth2.dto.OAuth2Response;
 import com.semoi.semo.user.domain.User;
-import com.semoi.semo.user.enums.Position;
+import com.semoi.semo.applyForm.entity.Position;
 import com.semoi.semo.user.enums.Role;
 import com.semoi.semo.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

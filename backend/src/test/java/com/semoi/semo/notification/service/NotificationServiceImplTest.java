@@ -8,7 +8,7 @@ import com.semoi.semo.notification.entity.Notification;
 import com.semoi.semo.notification.enums.Type;
 import com.semoi.semo.notification.repository.NotificationRepository;
 import com.semoi.semo.user.domain.User;
-import com.semoi.semo.user.enums.Position;
+import com.semoi.semo.applyForm.entity.Position;
 import com.semoi.semo.user.enums.Role;
 import com.semoi.semo.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
