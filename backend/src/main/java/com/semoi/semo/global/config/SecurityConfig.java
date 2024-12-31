@@ -37,11 +37,11 @@ public class SecurityConfig {
         return http
                 .cors(cors -> {
                     CorsConfiguration configuration = new CorsConfiguration();
-                    configuration.addAllowedOrigin("http://localhost");
                     configuration.addAllowedOrigin("http://localhost:3000");
-                    configuration.addAllowedHeader("Authorization");
+                    configuration.addAllowedMethod("*");
+                    configuration.addAllowedHeader("*");
+                    configuration.setAllowCredentials(true);
                     configuration.addAllowedOriginPattern("*");
-                    configuration.setAllowCredentials(true); // 쿠키 허용
                     cors.configurationSource(request -> configuration);
                 })
                 .csrf(AbstractHttpConfigurer::disable)
