@@ -5,6 +5,7 @@ import Modal from "../modal/modalWrite";
 
 const BoardListWrite = ({ boardData }) => {
 
+  const BoardId = boardData.boardId || "2";
   const title = boardData?.title || "제목을 불러오는 중...";
   const content = boardData?.content || "내용을 불러오는 중...";
   const author = boardData?.author?.username || "이유진";
@@ -71,7 +72,7 @@ const BoardListWrite = ({ boardData }) => {
         </S.InfoContainer>
       </S.BoardListContainer>
     </S.LinkContainer>
-    <Modal isOpen={open} onClose={closeModal} />
+    <Modal isOpen={open} onClose={closeModal} boardId={BoardId}/>
     </>
   );
 };
