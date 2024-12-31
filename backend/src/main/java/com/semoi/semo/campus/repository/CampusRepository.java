@@ -12,15 +12,17 @@ import java.util.Optional;
 public interface CampusRepository extends JpaRepository<Campus, Long> {
     Optional<Campus> findByCampusName(CampusName campusName);
 
+
     @Query("""
     SELECT new com.semoi.semo.campus.dto.CampusTotalScoreAndNameDto(
-        SUM(u.actScore), 
-        SUM(u.recScore), 
-        c.campusId
+        SUM(u.actScore),
+        SUM(u.recScore),
+        cam.campusId
     )
     FROM User u
-    JOIN u.campus c
-    GROUP BY c.campusId
+    JOIN u.course cos
+    JOIN cos.campus cam
+    GROUP BY cam.campusId
 """)
     List<CampusTotalScoreAndNameDto> findTotalScoresAndCampusIdGroupedByCampusName();
 }

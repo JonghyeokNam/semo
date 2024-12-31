@@ -4,6 +4,7 @@ public record UserInfoRequestDto(
         String username,
         String userEmail,
         String position,
-        String campusName
+        String campusName,
+        String courseName
 ) {
 }

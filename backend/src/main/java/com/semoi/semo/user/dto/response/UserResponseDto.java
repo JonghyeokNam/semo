@@ -8,21 +8,31 @@ public record UserResponseDto(
         String userEmail,
         String position,
         String campusName,
+        String courseName,
         int recScore,
         int actScore
 ) {
     public static UserResponseDto toDto(User user) {
         String campusName = null;
-        if (user.getCampus() != null) {
-            campusName = user.getCampus().getCampusName().getName();
+        String courseName = null;
+        String position = null;
+
+        if (user.getCourse() != null) {
+            courseName = user.getCourse().getName();
+            campusName = user.getCourse().getCampus().getCampusName().getName();
+        }
+
+        if (user.getPosition() != null) {
+            position = user.getPosition().getPosition();
         }
 
         return new UserResponseDto(
                 user.getUserId(),
                 user.getUsername(),
                 user.getUserEmail(),
-                user.getPosition().getPosition(),
+                position,
                 campusName,
+                courseName,
                 user.getRecScore(),
                 user.getActScore()
         );
