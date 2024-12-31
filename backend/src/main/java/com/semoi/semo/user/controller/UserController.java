@@ -46,7 +46,7 @@ public class UserController {
     })
     @PutMapping
     public Response<UserResponseDto> saveInfo(Authentication authentication, @RequestBody UserInfoRequestDto userInfoRequestDto) {
-        return Response.success(userService.createUser(authentication.getName(), userInfoRequestDto));
+        return Response.success(userService.updateUser(authentication.getName(), userInfoRequestDto));
     }
 
     @Operation(

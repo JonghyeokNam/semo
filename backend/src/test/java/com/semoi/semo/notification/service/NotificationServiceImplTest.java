@@ -74,8 +74,7 @@ class NotificationServiceImplTest {
     private User setUser() throws Exception {
         // given
         String userEmail = "test@test.com";
-        Campus campus = setCampusByReflection();
-        return User.create("test", userEmail, userEmail, Position.UNDECIDED, Role.USER, campus);
+        return User.create("test", userEmail, userEmail, Position.UNDECIDED, Role.USER);
     }
 
     private Campus setCampusByReflection() throws Exception {
