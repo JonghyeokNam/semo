@@ -1,6 +1,7 @@
 package com.semoi.semo.user.controller;
 
 import com.semoi.semo.global.response.Response;
+import com.semoi.semo.jwt.service.TokenProvider;
 import com.semoi.semo.jwt.service.TokenService;
 import com.semoi.semo.oauth2.util.CookieUtil;
 import com.semoi.semo.user.dto.request.UserInfoRequestDto;
@@ -26,6 +27,7 @@ public class UserController {
 
     private final UserService userService;
     private final TokenService tokenService;
+    private final TokenProvider tokenProvider;
     private static final String REFRESH_TOKEN_KEY_NAME = "refresh_token";
 
     @Operation(
@@ -45,8 +47,8 @@ public class UserController {
             ),
     })
     @PutMapping
-    public Response<UserResponseDto> saveInfo(Authentication authentication, @RequestBody UserInfoRequestDto userInfoRequestDto) {
-        return Response.success(userService.updateUser(authentication.getName(), userInfoRequestDto));
+    public Response<UserResponseDto> saveInfo(HttpServletRequest request, @RequestBody UserInfoRequestDto userInfoRequestDto) {
+        return Response.success(userService.updateUser(tokenProvider.getUserLoginEmail(request), userInfoRequestDto));
     }
 
     @Operation(
@@ -66,8 +68,8 @@ public class UserController {
             ),
     })
     @GetMapping
-    public Response<UserResponseDto> getLoginUser(Authentication authentication) {
-        return Response.success(UserResponseDto.toDto(userService.getUserByLoginEmailOrElseThrow(authentication.getName())));
+    public Response<UserResponseDto> getLoginUser(HttpServletRequest request) {
+        return Response.success(UserResponseDto.toDto(userService.getUserByLoginEmailOrElseThrow(tokenProvider.getUserLoginEmail(request))));
     }
 
     @Operation(
@@ -87,15 +89,15 @@ public class UserController {
             ),
     })
     @PostMapping("/logout")
-    public Response<Void> logout(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
-        tokenService.deleteRefreshToken(authentication.getName());
+    public Response<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+        tokenService.deleteRefreshToken(tokenProvider.getUserLoginEmail(request));
 
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN_KEY_NAME);
         return Response.success();
     }
 
     @GetMapping("/check")
-    public Response<Boolean> checkNewUser(Authentication authentication) {
-        return Response.success(userService.getCheckNewUser(authentication.getName()));
+    public Response<Boolean> checkNewUser(HttpServletRequest request) {
+        return Response.success(userService.getCheckNewUser(tokenProvider.getUserLoginEmail(request)));
     }
 }
