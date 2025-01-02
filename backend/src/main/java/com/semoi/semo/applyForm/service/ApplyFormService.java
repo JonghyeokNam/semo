@@ -9,6 +9,11 @@ import com.semoi.semo.applyForm.repository.ApplyFormRepository;
 import com.semoi.semo.applyForm.repository.PositionRepository;
 import com.semoi.semo.board.entity.Board;
 import com.semoi.semo.board.repository.BoardRepository;
+import com.semoi.semo.global.exception.DataNotFoundException;
+import com.semoi.semo.jwt.service.TokenProvider;
+import com.semoi.semo.user.domain.User;
+import com.semoi.semo.user.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +26,22 @@ public class ApplyFormService {
     private final ApplyFormRepository applyFormRepository;
     private final PositionRepository positionRepository;
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
+    private final TokenProvider tokenProvider;
 
-    public List<ApplyFormListResponseDto> getApplyFormsByBoardId(Long boardId) {
+    public List<ApplyFormListResponseDto> getApplyFormsByBoardId(Long boardId, HttpServletRequest request) {
+        // 사용자 이메일 추출
+        String userEmail = tokenProvider.getUserLoginEmail(request);
+
+        // 게시글 조회
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new DataNotFoundException("Board not found"));
+
+        // 작성자 여부 확인
+        if (!board.getUser().getLoginEmail().equals(userEmail)) {
+            throw new DataNotFoundException("You are not the author of this board");
+        }
+
         List<ApplyForm> applyForms = applyFormRepository.findByBoardId(boardId);
         System.out.println("Fetched apply forms: " + applyForms);
 
@@ -31,7 +50,7 @@ public class ApplyFormService {
                         .applyFormId(applyForm.getApplyFormId())
                         .boardId(applyForm.getBoardId())
                         .userId(applyForm.getUserId())
-                        .position(applyForm.getPosition().getName()) // NullPointerException 가능성 체크
+                        .position(applyForm.getPosition().getName())
                         .aboutMe(applyForm.getAboutMe())
                         .status(applyForm.getStatus())
                         .createdAt(applyForm.getCreatedAt())
@@ -39,11 +58,15 @@ public class ApplyFormService {
         }).collect(Collectors.toList());
     }
 
-    // 로그인 연결 필요!!
-    // 주소에서 user id를 받는 것이 아닌 authentication id를 받도록 해야함.
-    public List<ApplyFormListResponseDto> getUserApplyForms(Long userId) {
+    public List<ApplyFormListResponseDto> getUserApplyForms(HttpServletRequest request) {
+        // 사용자 이메일 추출
+        String userEmail = tokenProvider.getUserLoginEmail(request);
 
-        List<ApplyForm> applyForms = applyFormRepository.findByUserId(userId);
+        // 사용자 조회
+        User user = userRepository.findByLoginEmail(userEmail)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
+
+        List<ApplyForm> applyForms = applyFormRepository.findByUserId(user.getUserId());
 
         return applyForms.stream().map(applyForm -> {
             String boardTitle = boardRepository.findById(applyForm.getBoardId())
@@ -61,7 +84,14 @@ public class ApplyFormService {
         }).collect(Collectors.toList());
     }
 
-    public ApplyForm createApplyForm(Long boardId, ApplyFormRequestDto requestDto, Long userId) {
+    public void createApplyForm(Long boardId, ApplyFormRequestDto requestDto, HttpServletRequest request) {
+
+        // 사용자 이메일 추출
+        String userEmail = tokenProvider.getUserLoginEmail(request);
+
+        // 사용자 조회
+        User user = userRepository.findByLoginEmail(userEmail)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
 
         // 포지션 ID를 기반으로 Position 엔티티 조회
         Position position = positionRepository.findById(requestDto.getPositionId())
@@ -74,18 +104,26 @@ public class ApplyFormService {
         // 새로운 ApplyForm 생성 및 저장
         ApplyForm applyForm = ApplyForm.builder()
                 .boardId(boardId)
-                .userId(userId)
+                .userId(user.getUserId())
                 .position(position)
                 .aboutMe(requestDto.getAboutMe())
                 .status("대기")
                 .createdAt(java.time.LocalDateTime.now())
                 .build();
 
-        return applyFormRepository.save(applyForm);
+        applyFormRepository.save(applyForm);
     }
 
-    public ApplyFormResponseDto getUserApplyForm(Long applyFormId, Long userId) {
-        ApplyForm applyForm = applyFormRepository.findByApplyFormIdAndUserId(applyFormId, userId);
+    public ApplyFormResponseDto getUserApplyForm(Long applyFormId, HttpServletRequest request) {
+
+        // 사용자 이메일 추출
+        String userEmail = tokenProvider.getUserLoginEmail(request);
+
+        // 사용자 조회
+        User user = userRepository.findByLoginEmail(userEmail)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
+
+        ApplyForm applyForm = applyFormRepository.findByApplyFormIdAndUserId(applyFormId, user.getUserId());
         if (applyForm == null) {
             throw new IllegalArgumentException("ApplyForm not found for given ID and User");
         }
@@ -106,9 +144,17 @@ public class ApplyFormService {
                 .build();
     }
 
-    public void updateUserApplyForm(Long applyFormId, ApplyFormRequestDto requestDto, Long userId) {
+    public void updateUserApplyForm(Long applyFormId, ApplyFormRequestDto requestDto, HttpServletRequest request) {
+
+        // 사용자 이메일 추출
+        String userEmail = tokenProvider.getUserLoginEmail(request);
+
+        // 사용자 조회
+        User user = userRepository.findByLoginEmail(userEmail)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
+
         // 신청서 조회
-        ApplyForm applyForm = applyFormRepository.findByApplyFormIdAndUserId(applyFormId, userId);
+        ApplyForm applyForm = applyFormRepository.findByApplyFormIdAndUserId(applyFormId, user.getUserId());
         if (applyForm == null) {
             throw new IllegalArgumentException("ApplyForm not found for given ID and User");
         }
@@ -124,9 +170,17 @@ public class ApplyFormService {
         applyFormRepository.save(applyForm);
     }
 
-    public void deleteApplyForm(Long applyFormId, Long userId) {
+    public void deleteApplyForm(Long applyFormId, HttpServletRequest request) {
+
+        // 사용자 이메일 추출
+        String userEmail = tokenProvider.getUserLoginEmail(request);
+
+        // 사용자 조회
+        User user = userRepository.findByLoginEmail(userEmail)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
+
         // 신청서 조회
-        ApplyForm applyForm = applyFormRepository.findByApplyFormIdAndUserId(applyFormId, userId);
+        ApplyForm applyForm = applyFormRepository.findByApplyFormIdAndUserId(applyFormId, user.getUserId());
         if (applyForm == null) {
             throw new IllegalArgumentException("ApplyForm not found or you do not have permission to delete it");
         }

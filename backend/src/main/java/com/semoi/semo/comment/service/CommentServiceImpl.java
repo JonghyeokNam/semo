@@ -10,15 +10,13 @@ import com.semoi.semo.global.exception.ErrorCode;
 import com.semoi.semo.global.exception.SemoException;
 import com.semoi.semo.notification.enums.Type;
 import com.semoi.semo.notification.service.NotificationService;
-import com.semoi.semo.notification.service.NotificationServiceImpl;
 import com.semoi.semo.user.domain.User;
 import com.semoi.semo.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @Slf4j

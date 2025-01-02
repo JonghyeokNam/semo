@@ -17,8 +17,9 @@ import java.time.LocalDateTime;
 public class ApplyForm {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "applyform_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "apply_form_seq")
+    @SequenceGenerator(name = "apply_form_seq", sequenceName = "apply_form_seq", allocationSize = 1)
+    @Column(name = "applyform_id", nullable = false)
     private Long applyFormId;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,14 +32,13 @@ public class ApplyFormController {
     @GetMapping("/boards/{boardId}/applyform")
     public Response<List<ApplyFormListResponseDto>> getApplyFormsByBoardId(
             @Parameter(description = "게시글 ID", example = "1")
-            @PathVariable("boardId") Long boardId) {
-        List<ApplyFormListResponseDto> applyForms = applyFormService.getApplyFormsByBoardId(boardId);
+            @PathVariable("boardId") Long boardId,
+            HttpServletRequest request
+    ) {
+        List<ApplyFormListResponseDto> applyForms = applyFormService.getApplyFormsByBoardId(boardId, request);
         return Response.success(applyForms);
     }
 
-    // 로그인 연결 필요!!
-    // 주소에서 user id를 받는 것이 아닌 authentication id를 받도록 해야함.
-    // GET /user/applyforms?userId=1 형태로 API 호출
     @Operation(summary = "사용자 신청서 목록 조회", description = "현재 사용자의 모든 신청서를 조회")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
@@ -46,8 +46,8 @@ public class ApplyFormController {
     })
     @GetMapping("/user/applyforms")
     public Response<List<ApplyFormListResponseDto>> getUserApplyForms(
-            @RequestParam(name = "userId") Long userId) {
-        List<ApplyFormListResponseDto> applyForms = applyFormService.getUserApplyForms(userId);
+            HttpServletRequest request) {
+        List<ApplyFormListResponseDto> applyForms = applyFormService.getUserApplyForms(request);
         return Response.success(applyForms);
     }
 
@@ -60,17 +60,9 @@ public class ApplyFormController {
     public Response<Void> createApplyForm(
             @PathVariable("boardId") Long boardId,
             @RequestBody ApplyFormRequestDto requestDto,
-            @RequestParam(name = "userId") Long userId // 임시로 userId를 쿼리 매개변수로 받음
+            HttpServletRequest request
     ) {
-        System.out.println("Received POST request");
-        if (requestDto == null) {
-            System.out.println("Request DTO is null");
-            throw new IllegalArgumentException("Request body is null");
-        }
-        if (userId == null) {
-            userId = 1L; // 테스트용 유저 ID
-        }
-        applyFormService.createApplyForm(boardId, requestDto, userId);
+        applyFormService.createApplyForm(boardId, requestDto, request);
         return Response.success();
     }
 
@@ -83,9 +75,9 @@ public class ApplyFormController {
     @GetMapping("/user/applyforms/{applyFormId}")
     public Response<ApplyFormResponseDto> getUserApplyForm(
             @PathVariable("applyFormId") Long applyFormId,
-            @RequestParam(name = "userId") Long userId // 사용자 ID는 임시로 쿼리 매개변수로 받음
+            HttpServletRequest request
     ) {
-        ApplyFormResponseDto applyForm = applyFormService.getUserApplyForm(applyFormId, userId);
+        ApplyFormResponseDto applyForm = applyFormService.getUserApplyForm(applyFormId, request);
         return Response.success(applyForm);
     }
 
@@ -98,9 +90,9 @@ public class ApplyFormController {
     public Response<Void> updateApplyForm(
             @PathVariable("applyFormId") Long applyFormId,
             @RequestBody ApplyFormRequestDto updateDto,
-            @RequestParam(name = "userId") Long userId
+            HttpServletRequest request
     ) {
-        applyFormService.updateUserApplyForm(applyFormId, updateDto, userId);
+        applyFormService.updateUserApplyForm(applyFormId, updateDto, request);
         return Response.success();
     }
 
@@ -114,9 +106,9 @@ public class ApplyFormController {
     @DeleteMapping("/user/applyforms/{applyFormId}")
     public Response<Void> deleteApplyForm(
             @PathVariable("applyFormId") Long applyFormId,
-            @RequestParam(name = "userId") Long userId
+            HttpServletRequest request
     ) {
-        applyFormService.deleteApplyForm(applyFormId, userId);
+        applyFormService.deleteApplyForm(applyFormId, request);
         return Response.success();
     }
 }
