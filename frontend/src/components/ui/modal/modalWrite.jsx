@@ -8,23 +8,25 @@ const Modal = ({ isOpen, onClose, boardId }) => {
   const { submitApplication, isLoading, isError, error } = useApplyStore();
   const [selectedPosition, setSelectedPosition] = useState("");
   const [aboutMe, setAboutMe] = useState("");
+  const userId = 123;
 
   if (!isOpen) return null;
 
   const positionList = [
-    { value: "uiux", label: "UI/UX" },
     { value: "front", label: "프론트엔드 개발자" },
     { value: "back", label: "백엔드 개발자" },
+    { value: "uiux", label: "UI/UX" },
     { value: "marketer", label: "마케터" },
   ];
 
   const handleComplete = () => {
-    const applicationData = {
-      position_id: selectedPosition,
-      aboutMe,
-    };
+    const positionId = positionList.findIndex((pos) => pos.value === selectedPosition);
     
-    submitApplication(boardId, applicationData); // 지원 폼 제출
+    submitApplication(boardId, positionId, aboutMe, userId ); // 지원 폼 제출
+    console.log("positionId" , positionId);
+    console.log("aboutMe", aboutMe);
+    console.log("aboutMe", userId);
+
 
     // 서버에 데이터 제출 후 모달 닫기
     onClose();
@@ -52,7 +54,7 @@ const Modal = ({ isOpen, onClose, boardId }) => {
             options={positionList}
             placeholder="포지션 선택"
             value={selectedPosition}
-            onChange={(e) => setSelectedPosition(e.target.value)}
+            onChange={(selectedOption) => setSelectedPosition(selectedOption.value)} 
             width="310px"
           />
           <S.ContentTitle>
