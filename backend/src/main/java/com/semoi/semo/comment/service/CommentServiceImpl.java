@@ -8,6 +8,9 @@ import com.semoi.semo.comment.dto.CommentResponseDto;
 import com.semoi.semo.comment.repository.CommentRepository;
 import com.semoi.semo.global.exception.ErrorCode;
 import com.semoi.semo.global.exception.SemoException;
+import com.semoi.semo.notification.enums.Type;
+import com.semoi.semo.notification.service.NotificationService;
+import com.semoi.semo.notification.service.NotificationServiceImpl;
 import com.semoi.semo.user.domain.User;
 import com.semoi.semo.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -26,6 +29,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     @Override
     public List<CommentResponseDto> getAllComments(Long boardId) {
@@ -42,6 +46,8 @@ public class CommentServiceImpl implements CommentService {
 
         Comment comment = Comment.create(commentRequestDto.content(), user, board);
         commentRepository.save(comment);
+
+        notificationService.createNotification(Type.COMMENT_ALERT, board.getUser(), board);
     }
 
     @Override
