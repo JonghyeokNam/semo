@@ -85,8 +85,24 @@ public class BoardService {
     }
 
     public void updateBoard(Long boardId, BoardRequestDto boardRequestDto, HttpServletRequest request) {
+
+        // TokenProvider를 사용해 사용자 이메일 추출
+        String userEmail = tokenProvider.getUserLoginEmail(request);
+
+        // 사용자 조회
+        User user = userRepository.findByLoginEmail(userEmail)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
+
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new DataNotFoundException("board not found"));
+
+        // 작성자 여부 확인
+        boolean isAuthor = board.getUser().getLoginEmail().equals(userEmail);
+
+        // 이게 아니라 프론트로 알려줘야할 거 같은데..
+        if (!isAuthor) {
+            throw new DataNotFoundException("You are not the author of this board.");
+        }
 
         BoardMapper.updateEntity(board, boardRequestDto);
         boardRepository.save(board); // 반드시 호출
@@ -94,18 +110,22 @@ public class BoardService {
 
     public void softDeleteBoard(Long boardId, HttpServletRequest request) {
 
-        // 1. TokenProvider를 사용해 사용자 이메일 추출
+        // TokenProvider를 사용해 사용자 이메일 추출
         String userEmail = tokenProvider.getUserLoginEmail(request);
-
-        // 2. 유효하지 않은 토큰 처리
-        if (userEmail == null) {
-            throw new DataNotFoundException("Invalid or missing token.");
-        }
 
         User user = userRepository.findByLoginEmail(userEmail)
                 .orElseThrow(() -> new DataNotFoundException(("board not found")));
 
-        Board board = boardRepository.findById(boardId).orElseThrow(() -> new DataNotFoundException(("board not found")));
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new DataNotFoundException(("board not found")));
+
+        // 작성자 여부 확인
+        boolean isAuthor = board.getUser().getLoginEmail().equals(userEmail);
+
+        // 이게 아니라 프론트로 알려줘야할 거 같은데..
+        if (!isAuthor) {
+            throw new DataNotFoundException("You are not the author of this board.");
+        }
 
         board.setDeletedAt(LocalDateTime.now());
         boardRepository.save(board);

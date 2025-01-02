@@ -87,7 +87,7 @@ public class BoardController {
     @PutMapping("/{boardId}")
     public Response<Void> updateBoard(
             @Parameter(description = "게시물 ID", example = "1")
-            @PathVariable Long boardId,
+            @PathVariable("boardId") Long boardId,
             @Valid @RequestBody BoardRequestDto boardRequestDto,
             HttpServletRequest request) {
         boardService.updateBoard(boardId, boardRequestDto, request);
@@ -103,7 +103,7 @@ public class BoardController {
     @DeleteMapping("/{boardId}")
     public Response<Void> deleteBoard(
             @Parameter(description = "게시물 ID", example = "1")
-            @PathVariable Long boardId,
+            @PathVariable("boardId") Long boardId,
             HttpServletRequest request) {
         boardService.softDeleteBoard(boardId, request);
         return Response.success();
