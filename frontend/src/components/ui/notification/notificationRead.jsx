@@ -1,25 +1,20 @@
 import { IoClose } from "react-icons/io5";
 import * as S from "./notificationStyle"; 
 import NotificationDetail from "./notificationDetail"
-import { useGetNotificationsStore } from "../../../store/notificationStore";
+import { useGetNotificationsStore } from "../../../store/useNotificationStore";
 import { useEffect } from "react";
 
 
 const Notification = ({ isOpen, onClose }) => {
     // isOpen이 false일 경우 모달을 렌더링하지 않음
     
-    // const { list, fetchList, loading, error } = useGetNotificationsStore();
+    const { list, fetchList } = useGetNotificationsStore();
     
-    // useEffect(() => {
-    //     fetchList(); // 데이터 가져오기
-    // }, [fetchList]);
+    useEffect(() => {
+        fetchList(); // 데이터 가져오기
+    }, [fetchList]);
     
     if (!isOpen) return null;
-
-    // if (loading) return <p>Loading...</p>;
-    // if (error) return <p>Error: {error}</p>;
-
-    // console.log(list);
 
     return (
         <S.Overlay onClick={onClose}>
@@ -32,7 +27,11 @@ const Notification = ({ isOpen, onClose }) => {
                 </S.NotificationHead>
 
                 <S.NotificationBody>
-                    <NotificationDetail/>
+                    {list.map((item, index) => {
+                        return !item.isRead ? (
+                            <NotificationDetail key={index} item={item} onClose={onClose} />
+                        ) : null;
+                    })}
                 </S.NotificationBody>
 
             </S.NotificationContent>

@@ -4,6 +4,8 @@ import styled from "styled-components";
 import Nav from './layouts/nav/Nav';
 import Footer from './layouts/footer/Footer';
 import useMediaQueries from "./hooks/useMediaQueries";
+import { useEffect } from 'react';
+import { useCheckNoReadNotificationStore } from './store/useNotificationStore';
 
 const BackGroundColor = styled.div`
   width: 100vw;
@@ -30,6 +32,7 @@ const Wrapper = styled.div`
 const Layout = () => {
   const location = useLocation();
   const { isDesktop } = useMediaQueries(); // Check if it's a desktop screen
+  const { fechIsReadAll } = useCheckNoReadNotificationStore();
 
   // Nav와 Footer를 제외할 경로들 (로그인, 회원가입)
   const excludedPaths = ["/login", "/signup"];
@@ -39,6 +42,19 @@ const Layout = () => {
 
   const isExcludedPage = excludedPaths.includes(location.pathname); // 로그인, 회원가입 경로일 경우
   const isNavExcludedPage = navExcludedPaths.includes(location.pathname); // nav만 제외할 경로들
+
+  useEffect(() => {
+    let timeoutId;
+
+    const executeCheck = () => {
+      fechIsReadAll(); // 함수 실행
+      timeoutId = setTimeout(executeCheck, 300000); // 5분 후 재호출
+    };
+
+    executeCheck(); // 페이지 로드 및 이동 시 즉시 실행
+
+    return () => clearTimeout(timeoutId); // 이전 타이머 정리
+  }, [location.pathname, fechIsReadAll]); // 페이지 경로 변경 시 재실행
 
   return (
     <BackGroundColor>

@@ -4,15 +4,18 @@ import { BiMessageRoundedDots } from "react-icons/bi";
 import { Link } from "react-router-dom"; 
 import useMediaQueries from "../../hooks/useMediaQueries";
 import Notification from "../../components/ui/notification/notificationRead";
+import { useCheckNoReadNotificationStore, useGetNotificationsStore } from "../../store/useNotificationStore";
 
 const Nav = () => {
   const {isDesktop } = useMediaQueries();
-
   const [open, setOpen] = useState(false);
+  const { fetchList } = useGetNotificationsStore();
+  const { isReadAll } = useCheckNoReadNotificationStore();
 
   const openNotification = (e) => {
     e.stopPropagation(); // 이벤트 전파 중단
     e.preventDefault(); // 기본 동작 방지
+    fetchList();
     setOpen(true);
   };
 
@@ -46,8 +49,8 @@ const Nav = () => {
           <Link to="/chat">
             <BiMessageRoundedDots size={36} />
           </Link>
-          
-          <S.StyledGoBell size={36} onClick={openNotification} />
+            <S.StyledGoBell size={36}  onClick={openNotification}/>
+            {isReadAll && <S.RedDot />}
         </S.RightContainer>
       </S.Nav2Wrapper>
       <Notification isOpen={open} onClose={closeModal}/>

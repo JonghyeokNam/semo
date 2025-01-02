@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 // 알림 오버레이 스타일
@@ -100,6 +101,7 @@ export const Date = styled.div`
     
 `
 
-
-
-
+export const LinkContainer = styled(Link)`
+  display: block;
+  width: 100%;
+`;
