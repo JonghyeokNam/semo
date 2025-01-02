@@ -58,7 +58,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         // 리다이렉트
         Optional<String> redirectUri = CookieUtil.getCookie(request, "redirect_uri")
                 .map(Cookie::getValue);
-        String targetUrl = "http://localhost:3000";
+        String targetUrl = "http://localhost:3000/login/oauth2/code/kakao?token=" + accessToken;
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
