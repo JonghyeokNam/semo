@@ -30,7 +30,9 @@ public class BoardListResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Integer commentCount; // 댓글 수
+    @JsonProperty("isParticipated")
     private boolean isParticipated; // 참가 여부
+    @JsonProperty("isClosed")
     private boolean isClosed; // 모집 종료 여부
     private AuthorDto author;
     private ApplyFormsDto applyForms; // 신청자 정보
