@@ -1,26 +1,26 @@
 package com.semoi.semo.board.service;
 
+import com.semoi.semo.applyForm.repository.ApplyFormRepository;
 import com.semoi.semo.board.dto.requestdto.BoardRequestDto;
 import com.semoi.semo.board.dto.responsedto.BoardListResponseDto;
 import com.semoi.semo.board.dto.responsedto.BoardResponseDto;
 import com.semoi.semo.board.entity.Board;
 import com.semoi.semo.board.mapper.BoardMapper;
 import com.semoi.semo.board.repository.BoardRepository;
+import com.semoi.semo.comment.repository.CommentRepository;
 import com.semoi.semo.global.exception.DataNotFoundException;
 import com.semoi.semo.jwt.service.TokenProvider;
 import com.semoi.semo.user.domain.User;
 import com.semoi.semo.user.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,31 +29,60 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final ApplyFormRepository applyFormRepository;
+    private final CommentRepository commentRepository;
     private final TokenProvider tokenProvider;
 
-    public Page<BoardListResponseDto> getAllBoards(Pageable pageable) {
+    public Page<BoardListResponseDto> getAllBoards(Pageable pageable, HttpServletRequest request) {
+
+        // TokenProvider를 사용해 사용자 이메일 추출
+        String userEmail = tokenProvider.getUserLoginEmail(request);
+
         Pageable sortedPageable = PageRequest.of(
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
                 Sort.by(Sort.Order.desc("createdAt")) // "createdAt" 기준으로 역순 정렬
         );
+
+        // 게시물 목록 조회 후 DTO 변환
         return boardRepository.findAllActiveBoards(sortedPageable)
-                .map(BoardMapper::toBoardListResponseDto);
+                .map(board -> {
+                    User user = userRepository.findByLoginEmail(userEmail)
+                            .orElseThrow(() -> new DataNotFoundException("User not found"));
+
+                    // ApplyFormRepository에서 boardId와 userId를 기준으로 존재 여부 확인
+                    boolean isParticipated = applyFormRepository.existsByBoardIdAndUserId(board.getBoardId(), user.getUserId());
+
+                    return BoardListResponseDto.fromEntity(board, userEmail, isParticipated, applyFormRepository, commentRepository);
+                }
+                );
     }
 
-    public BoardResponseDto getBoardById(Long boardId) {
+    public BoardResponseDto getBoardById(Long boardId, HttpServletRequest request) {
+
+        // TokenProvider를 사용해 사용자 이메일 추출
+        String userEmail = tokenProvider.getUserLoginEmail(request);
+
+        // 사용자 조회
+        User user = userRepository.findByLoginEmail(userEmail)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
+
+        // 게시글 조회
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new DataNotFoundException("board not found"));
 
-        return BoardMapper.toBoardResponseDto(board);
+        // 작성자 여부 확인
+        boolean isAuthor = board.getUser().getLoginEmail().equals(user.getLoginEmail());
+
+        return BoardMapper.toBoardResponseDto(board, isAuthor);
     }
 
-    public void createBoard(BoardRequestDto boardRequestDto) {
+    public void createBoard(BoardRequestDto boardRequestDto, HttpServletRequest request) {
         Board board = BoardMapper.toEntity(boardRequestDto);
         boardRepository.save(board);
     }
 
-    public void updateBoard(Long boardId, BoardRequestDto boardRequestDto) {
+    public void updateBoard(Long boardId, BoardRequestDto boardRequestDto, HttpServletRequest request) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new DataNotFoundException("board not found"));
 
@@ -61,30 +90,41 @@ public class BoardService {
         boardRepository.save(board); // 반드시 호출
     }
 
-    public void softDeleteBoard(Long boardId) {
+    public void softDeleteBoard(Long boardId, HttpServletRequest request) {
+
+        // 1. TokenProvider를 사용해 사용자 이메일 추출
+        String userEmail = tokenProvider.getUserLoginEmail(request);
+
+        // 2. 유효하지 않은 토큰 처리
+        if (userEmail == null) {
+            throw new DataNotFoundException("Invalid or missing token.");
+        }
+
+        User user = userRepository.findByLoginEmail(userEmail)
+                .orElseThrow(() -> new DataNotFoundException(("board not found")));
+
         Board board = boardRepository.findById(boardId).orElseThrow(() -> new DataNotFoundException(("board not found")));
 
         board.setDeletedAt(LocalDateTime.now());
         boardRepository.save(board);
     }
 
-
-//    public List<BoardListResponseDto> getMyBoards(Long userId) {
-//        List<Board> boards = boardRepository.findByUserId(userId);
-//
-//        return boards.stream()
-//                .map(BoardMapper::toBoardListResponseDto)
-//                .collect(Collectors.toList());
-//    }
-
     public List<BoardListResponseDto> getMyBoards(HttpServletRequest request) {
-        User user = userRepository.findByLoginEmail(tokenProvider.getUserLoginEmail(request))
-                .orElseThrow(() -> new DataNotFoundException(("board not found")));
 
-        List<Board> boards = boardRepository.findByUserId(user.getUserId());
+        // 1. TokenProvider를 사용해 사용자 이메일 추출
+        String userEmail = tokenProvider.getUserLoginEmail(request);
 
+        // 2. 유효하지 않은 토큰 처리
+        if (userEmail == null) {
+            throw new DataNotFoundException("Invalid or missing token.");
+        }
+
+        // 3. 사용자 이메일 기반 게시글 조회
+        List<Board> boards = boardRepository.findByUser_LoginEmail(userEmail);
+
+        // 4. 게시글 목록을 DTO로 변환
         return boards.stream()
-                .map(BoardMapper::toBoardListResponseDto)
+                .map(board -> BoardMapper.toBoardListResponseDto(board, true)) // isAuthor는 항상 true
                 .collect(Collectors.toList());
     }
 }

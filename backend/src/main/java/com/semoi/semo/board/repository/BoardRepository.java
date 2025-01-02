@@ -14,6 +14,6 @@ public interface BoardRepository extends JpaRepository<Board, Long>{
 
     Page<Board> findAll(Pageable pageable);
 
-    // 특정 사용자가 작성한 게시글만 조회
-    List<Board> findByUserId(Long userId);
+    // 특정 사용자의 게시글 조회
+    List<Board> findByUser_LoginEmail(String loginEmail);
 }
