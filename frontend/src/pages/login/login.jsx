@@ -1,12 +1,12 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import * as S from "./style";
 
 const Login = () => {
-  const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 훅
 
   const handleKakaoClick = () => {
-    navigate("/signup"); 
+    //window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
+    console.log(process.env.REACT_APP_KAKAO_URL);
+    window.location.href = process.env.REACT_APP_KAKAO_URL;
   };
 
   return (
