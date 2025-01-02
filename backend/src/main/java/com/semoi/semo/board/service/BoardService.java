@@ -80,7 +80,15 @@ public class BoardService {
     }
 
     public void createBoard(BoardRequestDto boardRequestDto, HttpServletRequest request) {
-        Board board = BoardMapper.toEntity(boardRequestDto);
+
+        // TokenProvider를 사용해 사용자 이메일 추출
+        String userEmail = tokenProvider.getUserLoginEmail(request);
+
+        // 사용자 조회
+        User user = userRepository.findByLoginEmail(userEmail)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
+
+        Board board = BoardMapper.toEntity(boardRequestDto, user);
         boardRepository.save(board);
     }
 
@@ -105,7 +113,7 @@ public class BoardService {
         }
 
         BoardMapper.updateEntity(board, boardRequestDto);
-        boardRepository.save(board); // 반드시 호출
+        boardRepository.save(board);
     }
 
     public void softDeleteBoard(Long boardId, HttpServletRequest request) {

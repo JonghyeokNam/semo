@@ -4,6 +4,7 @@ import com.semoi.semo.board.dto.requestdto.BoardRequestDto;
 import com.semoi.semo.board.dto.responsedto.BoardListResponseDto;
 import com.semoi.semo.board.dto.responsedto.BoardResponseDto;
 import com.semoi.semo.board.entity.Board;
+import com.semoi.semo.user.domain.User;
 import java.time.LocalDateTime;
 
 public class BoardMapper {
@@ -53,7 +54,7 @@ public class BoardMapper {
     }
 
     // 생성 요청 DTO -> 엔티티
-    public static Board toEntity(BoardRequestDto boardRequestDto) {
+    public static Board toEntity(BoardRequestDto boardRequestDto, User user) {
         Board board = new Board();
         board.setTitle(boardRequestDto.getTitle());
         board.setContent(boardRequestDto.getContent());
@@ -65,6 +66,7 @@ public class BoardMapper {
         board.setProgressPeriod(boardRequestDto.getProgressPeriod());
         board.setCreatedAt(LocalDateTime.now());
         board.setHit(0);
+        board.setUser(user); // 작성자 설정
         return board;
     }
 
