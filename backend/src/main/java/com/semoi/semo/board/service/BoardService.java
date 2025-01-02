@@ -54,8 +54,7 @@ public class BoardService {
                     boolean isParticipated = applyFormRepository.existsByBoardIdAndUserId(board.getBoardId(), user.getUserId());
 
                     return BoardListResponseDto.fromEntity(board, userEmail, isParticipated, applyFormRepository, commentRepository);
-                }
-                );
+                });
     }
 
     public BoardResponseDto getBoardById(Long boardId, HttpServletRequest request) {
@@ -74,7 +73,10 @@ public class BoardService {
         // 작성자 여부 확인
         boolean isAuthor = board.getUser().getLoginEmail().equals(user.getLoginEmail());
 
-        return BoardMapper.toBoardResponseDto(board, isAuthor);
+        // ApplyFormRepository에서 boardId와 userId를 기준으로 존재 여부 확인
+        boolean isParticipated = applyFormRepository.existsByBoardIdAndUserId(board.getBoardId(), user.getUserId());
+
+        return BoardResponseDto.fromEntity(board, userEmail, isParticipated, applyFormRepository, commentRepository);
     }
 
     public void createBoard(BoardRequestDto boardRequestDto, HttpServletRequest request) {
