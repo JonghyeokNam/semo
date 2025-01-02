@@ -7,7 +7,8 @@ import java.time.LocalDateTime;
 
 public record NotificationResponseDto(
         Long notificationId,
-        String type,
+        String title,
+        String content,
         boolean isRead,
         Long boardId,
         LocalDateTime createdAt
@@ -15,7 +16,8 @@ public record NotificationResponseDto(
     public static NotificationResponseDto fromEntity(Notification notification) {
         return new NotificationResponseDto(
                 notification.getNotificationId(),
-                notification.getType().getType(),
+                notification.getType().getTitle(),
+                notification.getType().getContent(),
                 notification.isRead(),
                 notification.getBoard().getBoardId(),
                 notification.getCreatedAt()
