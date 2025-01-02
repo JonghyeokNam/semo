@@ -144,9 +144,12 @@ public class BoardService {
         // 3. 사용자 이메일 기반 게시글 조회
         List<Board> boards = boardRepository.findByUser_LoginEmail(userEmail);
 
+        // 4. 본인 글을 참여하진 않으니 false
+        boolean isParticipated = false;
+
         // 4. 게시글 목록을 DTO로 변환
         return boards.stream()
-                .map(board -> BoardMapper.toBoardListResponseDto(board, true)) // isAuthor는 항상 true
+                .map(board -> BoardListResponseDto.fromEntity(board, userEmail, isParticipated, applyFormRepository, commentRepository)) // isAuthor는 항상 true
                 .collect(Collectors.toList());
     }
 }
