@@ -9,13 +9,13 @@ import java.time.LocalDateTime;
 public class BoardMapper {
 
     // Board -> BoardListResponseDto 변환
-    public static BoardListResponseDto toBoardListResponseDto(Board board) {
+    public static BoardListResponseDto toBoardListResponseDto(Board board, Boolean isAuthor) {
         return BoardListResponseDto.builder()
                 .boardId(board.getBoardId())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .hit(board.getHit())
-                .recruitmentType(board.getRecruitmentType())
+                .recruitmentTypes(board.getRecruitmentTypes())
                 .recruitmentCount(board.getRecruitmentCount())
                 .recruitmentField(board.getRecruitmentField())
                 .recruitmentMethod(board.getRecruitmentMethod())
@@ -24,20 +24,20 @@ public class BoardMapper {
                 .createdAt(board.getCreatedAt())
                 .updatedAt(board.getUpdatedAt())
                 .author(BoardListResponseDto.AuthorDto.builder()
-                        .userId(board.getUserId())
-                        .username("Unknown")
+                        .username(board.getUser().getUsername())
+                        .isAuthor(isAuthor) // 작성자 여부 포함
                         .build())
                 .build();
     }
 
     // Board -> BoardResponseDto 변환
-    public static BoardResponseDto toBoardResponseDto(Board board) {
+    public static BoardResponseDto toBoardResponseDto(Board board, Boolean isAuthor) {
         return BoardResponseDto.builder()
                 .boardId(board.getBoardId())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .hit(board.getHit())
-                .recruitmentType(board.getRecruitmentType())
+                .recruitmentTypes(board.getRecruitmentTypes())
                 .recruitmentCount(board.getRecruitmentCount())
                 .recruitmentField(board.getRecruitmentField())
                 .recruitmentMethod(board.getRecruitmentMethod())
@@ -46,8 +46,8 @@ public class BoardMapper {
                 .createdAt(board.getCreatedAt())
                 .updatedAt(board.getUpdatedAt())
                 .author(BoardResponseDto.AuthorDto.builder()
-                        .userId(board.getUserId())
-                        .username("Unknown")
+                        .username(board.getUser().getUsername())
+                        .isAuthor(isAuthor) // 작성자 여부 포함
                         .build())
                 .build();
     }
@@ -57,7 +57,7 @@ public class BoardMapper {
         Board board = new Board();
         board.setTitle(boardRequestDto.getTitle());
         board.setContent(boardRequestDto.getContent());
-        board.setRecruitmentType(boardRequestDto.getRecruitmentType());
+        board.setRecruitmentTypes(boardRequestDto.getRecruitmentTypes());
         board.setRecruitmentCount(boardRequestDto.getRecruitmentCount().intValue());
         board.setRecruitmentField(boardRequestDto.getRecruitmentField());
         board.setRecruitmentMethod(boardRequestDto.getRecruitmentMethod());
@@ -72,7 +72,7 @@ public class BoardMapper {
     public static Board updateEntity(Board board, BoardRequestDto boardRequestDto) {
         board.setTitle(boardRequestDto.getTitle());
         board.setContent(boardRequestDto.getContent());
-        board.setRecruitmentType(boardRequestDto.getRecruitmentType());
+        board.setRecruitmentTypes(boardRequestDto.getRecruitmentTypes());
         board.setRecruitmentCount(boardRequestDto.getRecruitmentCount().intValue());
         board.setRecruitmentField(boardRequestDto.getRecruitmentField());
         board.setRecruitmentMethod(boardRequestDto.getRecruitmentMethod());

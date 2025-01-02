@@ -1,14 +1,28 @@
 package com.semoi.semo.board.entity;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.semoi.semo.bookmark.domain.Bookmark;
 import com.semoi.semo.comment.domain.Comment;
 import com.semoi.semo.notification.entity.Notification;
-import jakarta.persistence.*;
+import com.semoi.semo.user.domain.User;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -39,18 +53,38 @@ public class Board {
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
     private List<Notification> notifications;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private User user; // 작성자 (회원)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user; // 작성자 (회원)
 
-    @Column(name = "user_id")
-    private Long userId;
+//    @Column(name = "user_id")
+//    private Long userId;
 
     @Column(name = "hit", nullable = false)
     private Integer hit;
 
-    @Column(name = "recruitment_type", nullable = false, length = 255)
-    private String recruitmentType;
+    @Column(name = "recruitment_types", nullable = false, length = 2000)
+    private String recruitmentTypes; // JSON 문자열로 저장
+
+    // Getter: JSON 문자열을 List<String>으로 변환
+    public List<String> getRecruitmentTypes() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(recruitmentTypes, new TypeReference<List<String>>() {});
+        } catch (IOException e) {
+            return Collections.emptyList(); // 변환 실패 시 빈 리스트 반환
+        }
+    }
+
+    // Setter: List<String>을 JSON 문자열로 변환
+    public void setRecruitmentTypes(List<String> recruitmentTypes) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            this.recruitmentTypes = objectMapper.writeValueAsString(recruitmentTypes);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to serialize recruitmentTypes", e);
+        }
+    }
 
     @Column(name = "recruitment_count", nullable = false)
     private Integer recruitmentCount;

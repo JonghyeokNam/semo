@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,10 +41,11 @@ public class BoardController {
     @GetMapping
     public Response<Page<BoardListResponseDto>> getBoardList(
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            HttpServletRequest request
     ){
         Pageable pageable = PageRequest.of(page, size);
-        Page<BoardListResponseDto> boardList = boardService.getAllBoards(pageable);
+        Page<BoardListResponseDto> boardList = boardService.getAllBoards(pageable, request);
 
         return Response.success(boardList);
     }
@@ -59,8 +59,9 @@ public class BoardController {
     @GetMapping("/{boardId}")
     public Response<BoardResponseDto> getBoardById(
             @Parameter(description = "게시물 ID", example = "1")
-            @PathVariable("boardId") Long boardId) {
-        BoardResponseDto board = boardService.getBoardById(boardId);
+            @PathVariable("boardId") Long boardId,
+            HttpServletRequest request) {
+        BoardResponseDto board = boardService.getBoardById(boardId, request);
         return Response.success(board);
     }
 
@@ -71,8 +72,9 @@ public class BoardController {
     })
     @PostMapping
     public Response<Void> createBoard(
-            @Valid @RequestBody BoardRequestDto boardRequestDto) {
-        boardService.createBoard(boardRequestDto);
+            @Valid @RequestBody BoardRequestDto boardRequestDto,
+            HttpServletRequest request) {
+        boardService.createBoard(boardRequestDto, request);
         return Response.success();
     }
 
@@ -86,8 +88,9 @@ public class BoardController {
     public Response<Void> updateBoard(
             @Parameter(description = "게시물 ID", example = "1")
             @PathVariable Long boardId,
-            @Valid @RequestBody BoardRequestDto boardRequestDto) {
-        boardService.updateBoard(boardId, boardRequestDto);
+            @Valid @RequestBody BoardRequestDto boardRequestDto,
+            HttpServletRequest request) {
+        boardService.updateBoard(boardId, boardRequestDto, request);
         return Response.success();
     }
 
@@ -100,26 +103,11 @@ public class BoardController {
     @DeleteMapping("/{boardId}")
     public Response<Void> deleteBoard(
             @Parameter(description = "게시물 ID", example = "1")
-            @PathVariable Long boardId) {
-        boardService.softDeleteBoard(boardId);;
+            @PathVariable Long boardId,
+            HttpServletRequest request) {
+        boardService.softDeleteBoard(boardId, request);
         return Response.success();
     }
-
-//    @Operation(summary = "사용자 작성 게시글 조회", description = "사용자가 작성한 게시글 목록을 조회")
-//    @ApiResponses({
-//            @ApiResponse(responseCode = "200", description = "게시글 조회 성공"),
-//            @ApiResponse(responseCode = "404", description = "게시글이 존재하지 않음")
-//    })
-//    @GetMapping("/myboards")
-//    public Response<List<BoardListResponseDto>> getMyBoards(
-//            @RequestParam(name = "userId") Long userId
-//    ) {
-//        // Service 호출
-//        List<BoardListResponseDto> myBoards = boardService.getMyBoards(userId);
-//
-//        // 결과 반환
-//        return Response.success(myBoards);
-//    }
 
     @Operation(summary = "사용자 작성 게시글 조회", description = "사용자가 작성한 게시글 목록을 조회")
     @ApiResponses({
@@ -134,8 +122,4 @@ public class BoardController {
         // 결과 반환
         return Response.success(myBoards);
     }
-
-
-
-
 }

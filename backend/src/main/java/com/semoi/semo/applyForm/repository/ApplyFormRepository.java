@@ -19,4 +19,9 @@ public interface ApplyFormRepository extends JpaRepository<ApplyForm, Long> {
     @Query("SELECT a FROM ApplyForm a WHERE a.applyFormId = :applyFormId AND a.userId = :userId")
     ApplyForm findByApplyFormIdAndUserId(@Param("applyFormId") Long applyFormId, @Param("userId") Long userId);
 
+    boolean existsByBoardIdAndUserId(Long boardId, Long userId);
+
+    @Query("SELECT COUNT(a) FROM ApplyForm a JOIN a.position p " +
+            "WHERE a.boardId = :boardId AND p.name = :positionName")
+    int countByBoardIdAndPositionName(@Param("boardId") Long boardId, @Param("positionName") String positionName);
 }
