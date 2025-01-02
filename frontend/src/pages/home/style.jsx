@@ -144,7 +144,7 @@ export const FilterItem = styled.div`
   cursor: pointer;
   font-size: 20px;
   font-weight: bold;
-  color: ${({ isSelected }) => (isSelected ? "#444444" : "#868E96")};
+  color: ${( props ) => (props.$isSelected ? "#444444" : "#868E96")};
   // border-bottom: ${({ isSelected }) =>
     isSelected ? "2px solid #444444" : "none"};
 `;
