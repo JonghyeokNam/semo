@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import * as S from "./style";
 import { BiMessageRoundedDots } from "react-icons/bi";
-import { GoBell } from "react-icons/go";
 import { Link } from "react-router-dom"; 
 import useMediaQueries from "../../hooks/useMediaQueries";
+import Notification from "../../components/ui/notification/notificationRead";
 
 const Nav = () => {
   const {isDesktop } = useMediaQueries();
+
+  const [open, setOpen] = useState(false);
+
+  const openNotification = (e) => {
+    e.stopPropagation(); // 이벤트 전파 중단
+    e.preventDefault(); // 기본 동작 방지
+    setOpen(true);
+  };
+
+  const closeModal = () => {
+    setOpen(false); // 모달 닫기
+  };
 
   return (
     <>
@@ -34,9 +46,11 @@ const Nav = () => {
           <Link to="/chat">
             <BiMessageRoundedDots size={36} />
           </Link>
-          <GoBell size={36} />
+          
+          <S.StyledGoBell size={36} onClick={openNotification} />
         </S.RightContainer>
       </S.Nav2Wrapper>
+      <Notification isOpen={open} onClose={closeModal}/>
     </>
   );
 };
