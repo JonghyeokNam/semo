@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { GoBell } from "react-icons/go";
 
 export const NavWrapper = styled.div`
   display: flex;
@@ -63,4 +64,20 @@ export const StyledLink = styled(Link)`
   color: inherit; /* 부모 색상 상속 */
   display: flex;
   align-items: center;
+`;
+
+export const StyledGoBell = styled(GoBell)`
+  cursor: pointer;
+`;
+
+// RedDot: 빨간 원
+export const RedDot = styled.div`
+  position: absolute;
+  right: 8.5rem;
+  top: 3.9rem;
+  width: 1rem;
+  height: 1rem;
+  background-color: red;
+  border-radius: 50%;
+  border: 2px solid white;
 `;
