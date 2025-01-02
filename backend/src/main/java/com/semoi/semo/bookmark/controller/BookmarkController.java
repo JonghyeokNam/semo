@@ -5,12 +5,14 @@ import com.semoi.semo.bookmark.service.BookmarkServiceImpl;
 import com.semoi.semo.global.response.Response;
 import com.semoi.semo.jwt.service.TokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/bookmarks")
@@ -22,7 +24,7 @@ public class BookmarkController {
     private final TokenProvider tokenProvider;
 
     @PostMapping("/boards/{boardId}")
-    public Response<Void> addOrCancelBookmark(HttpServletRequest request, @PathVariable Long boardId) {
+    public Response<Void> addOrCancelBookmark(HttpServletRequest request, @PathVariable("boardId") Long boardId) {
         bookmarkService.addOrCancelBookmark(tokenProvider.getUserLoginEmail(request), boardId);
         return Response.success();
     }
@@ -33,7 +35,7 @@ public class BookmarkController {
     }
 
     @GetMapping("/boards/{boardId}")
-    public Response<Boolean> getState(HttpServletRequest request, @PathVariable Long boardId) {
+    public Response<Boolean> getState(HttpServletRequest request, @PathVariable("boardId") Long boardId) {
         return Response.success(bookmarkService.getState(tokenProvider.getUserLoginEmail(request), boardId));
     }
 }

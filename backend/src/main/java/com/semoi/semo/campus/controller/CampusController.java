@@ -50,7 +50,7 @@ public class CampusController {
             }
     )
     @GetMapping("/act/{year}")
-    public Response<List<CampusActScoreResponseDto>> getActRanking(@PathVariable int year) {
+    public Response<List<CampusActScoreResponseDto>> getActRanking(@PathVariable("year") int year) {
         return Response.success(campusService.getCampusActRankingByYear(year));
     }
 
@@ -77,7 +77,7 @@ public class CampusController {
             }
     )
     @GetMapping("/recruit/{year}")
-    public Response<List<CampusRecScoreResponseDto>> getRecruitRanking(@PathVariable int year) {
+    public Response<List<CampusRecScoreResponseDto>> getRecruitRanking(@PathVariable("year") int year) {
         return Response.success(campusService.getCampusRecRankingByYear(year));
     }
 
@@ -93,7 +93,7 @@ public class CampusController {
     }
 
     @GetMapping("/{campusId}/courses")
-    public Response<List<CourseResponseDto>> getCourseListInCampus(@PathVariable Long campusId) {
+    public Response<List<CourseResponseDto>> getCourseListInCampus(@PathVariable("campusId") Long campusId) {
         return Response.success(campusService.getCourseListInCampus(campusId));
     }
 

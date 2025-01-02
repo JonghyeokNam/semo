@@ -6,12 +6,17 @@ import com.semoi.semo.comment.service.CommentService;
 import com.semoi.semo.global.response.Response;
 import com.semoi.semo.jwt.service.TokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
@@ -23,14 +28,14 @@ public class CommentController {
     private final TokenProvider tokenProvider;
 
     @GetMapping("/boards/{boardId}/comments")
-    public Response<List<CommentResponseDto>> getComments(@PathVariable Long boardId) {
+    public Response<List<CommentResponseDto>> getComments(@PathVariable("boardId") Long boardId) {
         return Response.success(commentService.getAllComments(boardId));
     }
 
     @PostMapping("/boards/{boardId}/comments")
     public Response<Void> addComment(
             HttpServletRequest request,
-            @PathVariable Long boardId,
+            @PathVariable("boardId") Long boardId,
             @RequestBody CommentRequestDto commentRequestDto
     ) {
         commentService.addComment(tokenProvider.getUserLoginEmail(request), boardId, commentRequestDto);
@@ -39,14 +44,14 @@ public class CommentController {
 
     @PutMapping("/comments/{commentId}")
     public Response<Void> updateComment(HttpServletRequest request,
-                                        @PathVariable Long commentId,
+                                        @PathVariable("commentId") Long commentId,
                                         @RequestBody CommentRequestDto commentRequestDto) {
         commentService.updateComment(tokenProvider.getUserLoginEmail(request), commentId, commentRequestDto);
         return Response.success();
     }
 
     @DeleteMapping("/comments/{commentId}")
-    public Response<Void> deleteComment(HttpServletRequest request, @PathVariable Long commentId) {
+    public Response<Void> deleteComment(HttpServletRequest request, @PathVariable("commentId") Long commentId) {
         commentService.deleteComment(tokenProvider.getUserLoginEmail(request), commentId);
         return Response.success();
     }
