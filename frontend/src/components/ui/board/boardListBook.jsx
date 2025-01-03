@@ -1,21 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import * as S from "./boardListStyle";
-import { Link } from "react-router-dom"; 
-import { useGetBoardDetailStore } from "../../../store/useBoardStore";
 
-const BoardListBook = ({ boardData, boardId }) => {
-  const { boardInfo, fetchBoard } = useGetBoardDetailStore();
-
-  useEffect(() => {
-    fetchBoard(boardId);
-    boardData = boardInfo;
-  }, [fetchBoard, boardId])
-
-  useEffect(() => {
-    if (boardInfo) {
-      console.log(boardInfo); // 상태가 업데이트된 이후 출력
-    }
-  }, [boardInfo]);
+const BoardListBook = ({ boardData }) => {
 
   const title = boardData?.title || "제목을 불러오는 중...";
   const content = boardData?.content || "내용을 불러오는 중...";

@@ -7,7 +7,7 @@ import BoardListApply from "../../components/ui/board/boardListApply";
 import BoardListBook from "../../components/ui/board/boardListBook";
 import {useAuthStore } from "../../store/useAuthStore";
 import { useGetMyBookmarksStore } from "../../store/useBookmarkStore";
-import { useGetMyBoardsStore } from "../../store/useBoardStore";
+import { useGetBoardDetailStore, useGetMyBoardsStore } from "../../store/useBoardStore";
 
 const positionList = [
   { value: "designer", label: "UI/UX" },
@@ -71,12 +71,16 @@ const MyPage = () => {
         </S.ContainerBody>
       </Container>
       <Container title="참여글" type="참여" >
+      <S.ContainerBody >
         <BoardListApply />
+      </S.ContainerBody>
       </Container>
       <Container title="북마크" type="북마크" >
-        {bookmarkList.map((item, index) => (
-          <BoardListBook boardId={item.boardId} key={index} />
-        ))}
+        <S.ContainerBody >
+          {bookmarkList.map((item, index) => (
+            <BoardListBook boardData={item} key={index} />
+          ))}
+        </S.ContainerBody>
       </Container>
     </S.mypageWrapper>
   );
