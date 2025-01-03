@@ -1,23 +1,51 @@
 import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import {useAuthStore} from "../../store/useAuthStore";
+import {useNewCheckStore} from "../../store/useNewCheckStore";
 
 function OAuth2RedirectHandler() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { storeLogin, fetchUserInfo } = useAuthStore();
+  const { checkNewUser } = useNewCheckStore();
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const token = queryParams.get('token'); // URL에서 'token' 파라미터 추출
-    console.log(token);
+    const handleLogin = async () => {
+      const queryParams = new URLSearchParams(location.search);
+      const token = queryParams.get("token"); // URL에서 'token' 파라미터 추출
 
-    if (token) {
-      // 액세스 토큰을 localStorage에 저장
-      localStorage.setItem("access_token", token);
-      navigate("/"); // 홈 페이지로 이동
-    } else {
-      console.error("Access token not found in the URL");
-    }
-  }, [location, navigate]);
+      if (token) {
+        // 토큰 저장
+        localStorage.setItem("access_token", token);
+
+        try {
+          // 신규 유저 여부 확인
+          const isNewUser = await checkNewUser();
+          console.log(isNewUser);
+
+          // 유저 정보 가져오기
+          await fetchUserInfo();
+
+          // 로그인 상태 업데이트
+          storeLogin(token, null); // 사용자 정보를 나중에 설정
+
+          // 신규 유저 여부에 따라 리디렉션
+          if (isNewUser) {
+            navigate("/signup"); // 추가 정보 입력 페이지로 이동
+          } else {
+            navigate("/"); // 홈 페이지로 이동
+          }
+        } catch (error) {
+          console.error("Failed to process login flow:", error);
+          navigate("/error"); 
+        }
+      } else {
+        console.error("Access token not found in the URL");
+      }
+    };
+
+    handleLogin();
+  }, [location, navigate, storeLogin, fetchUserInfo, checkNewUser]);
 
   return <div>카카오 로그인 중...</div>;
 }
