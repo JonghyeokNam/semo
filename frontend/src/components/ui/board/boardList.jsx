@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import * as S from "./boardListStyle";
 import { LiaHandPaper } from "react-icons/lia";
 import Modal from "../modal/modalWrite";
+import { truncate } from "../../../utils/truncateText";
 
 const BoardListWrite = ({ boardData }) => {
 
@@ -46,7 +47,7 @@ const BoardListWrite = ({ boardData }) => {
           </S.TitleContainer>
         </S.Row>
 
-        <S.Content>{content}</S.Content>
+        <S.Content>{truncate(content, 80)}</S.Content>
 
         <S.InfoContainer>
           <S.InfoItem>
