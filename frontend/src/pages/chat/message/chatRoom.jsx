@@ -24,6 +24,15 @@ const ChatRoom = ({ roomId }) => {
     // roomId가 없다면 실행 X
     if (!roomId) return;
 
+    // (0) 읽음 처리 API
+    axios.post(`http://localhost:8080/chatrooms/read?roomId=${roomId}`)
+      .then(res => {
+        if (res.data.resultCode === "READ_ROOM_SUCCESS") {
+          console.log("읽음 처리 완료");
+        }
+      })
+      .catch(err => console.error(err));
+
     // (1) 먼저 과거 메시지 불러오기 (REST API)
     axios
       .get(`http://localhost:8080/chatrooms/chats?roomId=${roomId}`)
