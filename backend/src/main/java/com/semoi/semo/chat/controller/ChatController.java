@@ -10,8 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,10 +18,10 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
+@RequestMapping("/ws")
 public class ChatController {
 
     private final SimpMessagingTemplate messagingTemplate;
-    //    private final SimpMessageSendingOperations template;
     private final MessageRepository messageRepository;
     private final ChatService chatService;
     private final ModelMapper modelMapper;

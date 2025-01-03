@@ -17,13 +17,17 @@ public class ChatPart {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "room_id")
     private ChatRoom chatRoom;
 
-//    @JoinColumn(name = "MEMBER_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id")
     @ManyToOne
     private User user;
 
     private LocalDateTime enterTime;
+
+    // 새로 추가 (이 유저가 이 방의 메시지를 마지막으로 확인한 시각)
+    private LocalDateTime lastReadTime;
 
     public ChatPart(ChatRoom chatRoom, User user, LocalDateTime time){
         this.chatRoom = chatRoom;
