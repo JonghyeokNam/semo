@@ -1,10 +1,6 @@
 import React from "react";
 import * as S from "./style";
-
-// 글자수 제한 함수: 25글자 이상이면 "..." 추가
-const truncate = (str, n) => {
-  return str?.length > n ? str.substr(0, n - 1) + "..." : str;
-};
+import { truncate } from "../../../utils/truncateText";
 
 const ListComponent = ({ chatData, onSelectRoom }) => {
   return (
