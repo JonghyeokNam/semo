@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import * as S from "./boardListStyle";
-import { Link } from "react-router-dom"; 
 
 const BoardListBook = ({ boardData }) => {
 

@@ -27,7 +27,7 @@ const RecruitRank = () => {
             <tr key={index}>
               {/* 순위를 정적으로 매핑 (인덱스 + 1) */}
               <S.TableCell $rank={index + 1}>{index + 1}</S.TableCell>
-              <S.TableCell $rank={index + 1}>{item.campusName} 캠퍼스</S.TableCell>
+              <S.TableCell $rank={index + 1}>{item.campusName}</S.TableCell>
               <S.TableCell $rank={index + 1}>{item.score}</S.TableCell>
             </tr>
           ))}

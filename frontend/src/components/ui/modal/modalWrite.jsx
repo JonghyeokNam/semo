@@ -8,7 +8,7 @@ const Modal = ({ isOpen, onClose, boardId }) => {
   const { submitApplication, isLoading, isError, error } = useApplyStore();
   const [selectedPosition, setSelectedPosition] = useState("");
   const [aboutMe, setAboutMe] = useState("");
-  const userId = 123;
+  const userId = 1;
 
   if (!isOpen) return null;
 
@@ -25,7 +25,6 @@ const Modal = ({ isOpen, onClose, boardId }) => {
     submitApplication(boardId, positionId, aboutMe, userId ); // 지원 폼 제출
     console.log("positionId" , positionId);
     console.log("aboutMe", aboutMe);
-    console.log("aboutMe", userId);
 
 
     // 서버에 데이터 제출 후 모달 닫기
