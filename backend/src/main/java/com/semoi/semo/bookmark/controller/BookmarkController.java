@@ -1,5 +1,7 @@
 package com.semoi.semo.bookmark.controller;
 
+import com.semoi.semo.board.dto.responsedto.BoardListResponseDto;
+import com.semoi.semo.board.dto.responsedto.BoardResponseDto;
 import com.semoi.semo.bookmark.dto.BookmarkResponseDto;
 import com.semoi.semo.bookmark.service.BookmarkServiceImpl;
 import com.semoi.semo.global.response.Response;
@@ -30,7 +32,7 @@ public class BookmarkController {
     }
 
     @GetMapping
-    public Response<List<BookmarkResponseDto>> getBookmarks(HttpServletRequest request) {
+    public Response<List<BoardResponseDto>> getBookmarks(HttpServletRequest request) {
         return Response.success(bookmarkService.getBookmarksFromUser(tokenProvider.getUserLoginEmail(request)));
     }
 
