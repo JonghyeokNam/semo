@@ -100,8 +100,8 @@ public class ApplyFormService {
                 .orElseThrow(() -> new DataNotFoundException("User not found"));
 
         // 포지션 ID를 기반으로 Position 엔티티 조회
-        Position position = positionRepository.findById(requestDto.getPositionId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid position ID: " + requestDto.getPositionId()));
+        Position position = positionRepository.findByName(requestDto.getPositionName())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid position ID: " + requestDto.getPositionName()));
 
         // Board ID 유효성 확인
         boardRepository.findById(boardId)
@@ -165,7 +165,7 @@ public class ApplyFormService {
             throw new IllegalArgumentException("ApplyForm not found for given ID and User");
         }
 
-        Position position = positionRepository.findById(requestDto.getPositionId())
+        Position position = positionRepository.findByName(requestDto.getPositionName())
                 .orElseThrow(() -> new IllegalArgumentException("Position not found for given ID"));
 
         // 수정 가능한 필드 업데이트
