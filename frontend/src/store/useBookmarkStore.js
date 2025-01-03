@@ -12,7 +12,6 @@ export const useGetMyBookmarksStore = create((set) => ({
       try {
         const response = await API.get(`/bookmarks`);
         if (response.data.resultCode === 'SUCCESS') {
-          console.log(response.data.result);
           set({ bookmarkList: response.data.result, loading: false });
         } else {
           throw new Error('Failed to fetch list');
