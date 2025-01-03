@@ -28,7 +28,7 @@ export const useGetBoardDetailStore = create((set) => ({
   error: null, // 에러 상태
 
   // 목록을 가져오는 함수
-  fetchBoard: async (boardId) => {
+  fetchBoardInfo: async (boardId) => {
     set({ loading: true, error: null }); // 로딩 상태 설정
     try {
       const response = await API.get(`/boards/${boardId}`);
