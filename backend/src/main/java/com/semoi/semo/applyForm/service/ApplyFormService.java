@@ -3,12 +3,15 @@ package com.semoi.semo.applyForm.service;
 import com.semoi.semo.applyForm.dto.requestdto.ApplyFormRequestDto;
 import com.semoi.semo.applyForm.dto.responsedto.ApplyFormListResponseDto;
 import com.semoi.semo.applyForm.dto.responsedto.ApplyFormResponseDto;
+import com.semoi.semo.applyForm.dto.responsedto.UserApplyFormListResponseDto;
 import com.semoi.semo.applyForm.entity.ApplyForm;
 import com.semoi.semo.applyForm.entity.Position;
 import com.semoi.semo.applyForm.repository.ApplyFormRepository;
 import com.semoi.semo.applyForm.repository.PositionRepository;
+import com.semoi.semo.board.dto.responsedto.BoardResponseDto;
 import com.semoi.semo.board.entity.Board;
 import com.semoi.semo.board.repository.BoardRepository;
+import com.semoi.semo.comment.repository.CommentRepository;
 import com.semoi.semo.global.exception.DataNotFoundException;
 import com.semoi.semo.jwt.service.TokenProvider;
 import com.semoi.semo.user.domain.User;
@@ -27,6 +30,7 @@ public class ApplyFormService {
     private final PositionRepository positionRepository;
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
     private final TokenProvider tokenProvider;
 
     public List<ApplyFormListResponseDto> getApplyFormsByBoardId(Long boardId, HttpServletRequest request) {
@@ -58,7 +62,7 @@ public class ApplyFormService {
         }).collect(Collectors.toList());
     }
 
-    public List<ApplyFormListResponseDto> getUserApplyForms(HttpServletRequest request) {
+    public List<UserApplyFormListResponseDto> getUserApplyForms(HttpServletRequest request) {
         // 사용자 이메일 추출
         String userEmail = tokenProvider.getUserLoginEmail(request);
 
@@ -69,14 +73,15 @@ public class ApplyFormService {
         List<ApplyForm> applyForms = applyFormRepository.findByUserId(user.getUserId());
 
         return applyForms.stream().map(applyForm -> {
-            String boardTitle = boardRepository.findById(applyForm.getBoardId())
-                    .map(Board::getTitle)
-                    .orElse("Unknown Board Title"); // 예외, 제목을 읽을 수 없거나 없을 때
+            // 게시글 정보 조회
+            Board board = boardRepository.findById(applyForm.getBoardId())
+                    .orElseThrow(() -> new DataNotFoundException("Board not found"));
 
-            return ApplyFormListResponseDto.builder()
+            BoardResponseDto boardResponseDto = BoardResponseDto.fromEntity(board, userEmail, false, applyFormRepository, commentRepository);
+
+            return UserApplyFormListResponseDto.builder()
                     .applyFormId(applyForm.getApplyFormId())
-                    .boardId(applyForm.getBoardId())
-                    .boardTitle(boardTitle)
+                    .board(boardResponseDto)
                     .position(applyForm.getPosition().getName())
                     .status(applyForm.getStatus())
                     .createdAt(applyForm.getCreatedAt())

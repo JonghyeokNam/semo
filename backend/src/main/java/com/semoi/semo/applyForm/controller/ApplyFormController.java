@@ -3,6 +3,7 @@ package com.semoi.semo.applyForm.controller;
 import com.semoi.semo.applyForm.dto.requestdto.ApplyFormRequestDto;
 import com.semoi.semo.applyForm.dto.responsedto.ApplyFormListResponseDto;
 import com.semoi.semo.applyForm.dto.responsedto.ApplyFormResponseDto;
+import com.semoi.semo.applyForm.dto.responsedto.UserApplyFormListResponseDto;
 import com.semoi.semo.applyForm.service.ApplyFormService;
 import com.semoi.semo.global.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,9 +46,9 @@ public class ApplyFormController {
             @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @GetMapping("/user/applyforms")
-    public Response<List<ApplyFormListResponseDto>> getUserApplyForms(
+    public Response<List<UserApplyFormListResponseDto>> getUserApplyForms(
             HttpServletRequest request) {
-        List<ApplyFormListResponseDto> applyForms = applyFormService.getUserApplyForms(request);
+        List<UserApplyFormListResponseDto> applyForms = applyFormService.getUserApplyForms(request);
         return Response.success(applyForms);
     }
 
