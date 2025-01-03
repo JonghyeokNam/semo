@@ -1,4 +1,4 @@
-package com.semoi.semo.applyForm.entity;
+package com.semoi.semo.position.entity;
 
 import com.semoi.semo.user.domain.User;
 import jakarta.persistence.*;

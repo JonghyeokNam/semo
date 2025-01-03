@@ -1,5 +1,6 @@
 package com.semoi.semo.applyForm.entity;
 
+import com.semoi.semo.position.entity.Position;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

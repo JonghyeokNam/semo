@@ -1,6 +1,6 @@
 package com.semoi.semo.user.domain;
 
-import com.semoi.semo.applyForm.entity.Position;
+import com.semoi.semo.position.entity.Position;
 import com.semoi.semo.bookmark.domain.Bookmark;
 import com.semoi.semo.campus.domain.Course;
 import com.semoi.semo.comment.domain.Comment;

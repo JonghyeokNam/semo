@@ -1,6 +1,6 @@
 package com.semoi.semo.user.service;
 
-import com.semoi.semo.applyForm.repository.PositionRepository;
+import com.semoi.semo.position.repository.PositionRepository;
 import com.semoi.semo.campus.domain.Campus;
 import com.semoi.semo.campus.domain.Course;
 import com.semoi.semo.campus.repository.CourseRepository;
@@ -10,7 +10,7 @@ import com.semoi.semo.global.exception.SemoException;
 import com.semoi.semo.user.domain.User;
 import com.semoi.semo.user.dto.request.UserInfoRequestDto;
 import com.semoi.semo.user.dto.response.UserResponseDto;
-import com.semoi.semo.applyForm.entity.Position;
+import com.semoi.semo.position.entity.Position;
 import com.semoi.semo.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

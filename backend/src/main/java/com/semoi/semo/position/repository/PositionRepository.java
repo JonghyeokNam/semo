@@ -1,6 +1,6 @@
-package com.semoi.semo.applyForm.repository;
+package com.semoi.semo.position.repository;
 
-import com.semoi.semo.applyForm.entity.Position;
+import com.semoi.semo.position.entity.Position;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
