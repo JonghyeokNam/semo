@@ -43,6 +43,8 @@ public class BoardListResponseDto {
     public static class AuthorDto {
 
         private String username;
+//        채팅방 생성용, 게시글 작성자 로그인 이메일 전송
+//        private String userEmail;
         @JsonProperty("isAuthor") // JSON 직렬화 시 필드 이름 보장
         private boolean isAuthor; // 작성자 여부 추가
     }
@@ -99,6 +101,8 @@ public class BoardListResponseDto {
                 .isClosed(isClosed)
                 .author(AuthorDto.builder()
                         .username(board.getUser().getUsername())
+//                        채팅방 생성용, 게시글 작성자 로그인 이메일 전송
+//                        .username(board.getUser().getLoginEmail())
                         .isAuthor(isAuthor)
                         .build())
                 .applyForms(applyFormsDto)
