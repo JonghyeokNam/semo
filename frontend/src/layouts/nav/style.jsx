@@ -50,6 +50,7 @@ export const LogoText = styled.span`
 export const Text = styled.span`
   color: #493f3c;
   margin: 0 15px;
+  cursor: pointer;
 `;
 
 export const Divider = styled.div`
