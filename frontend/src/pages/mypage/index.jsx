@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as S from "./style";
 import Container from "./container";
 import SelectComponent from "../../components/ui/selectComponent";
 import BoardListWrite from "../../components/ui/board/boardListWrite";
 import BoardListApply from "../../components/ui/board/boardListApply";
 import BoardListBook from "../../components/ui/board/boardListBook";
-import {useAuthStore } from "../../store/useAuthStore";
+import {useAuthStore, useUpdateUserStore } from "../../store/useAuthStore";
 import { useGetMyBookmarksStore } from "../../store/useBookmarkStore";
-import { useGetBoardDetailStore, useGetMyBoardsStore } from "../../store/useBoardStore";
+import { useGetMyBoardsStore } from "../../store/useBoardStore";
+
 
 const positionList = [
   { value: "designer", label: "UI/UX" },
@@ -20,12 +21,40 @@ const MyPage = () => {
   const { user, fetchUserInfo } = useAuthStore();
   const { boardList, fetchBoardList } = useGetMyBoardsStore();
   const { bookmarkList, fetchBookmarkList } = useGetMyBookmarksStore();
+  const [selectedPosition, setSelectedPosition] = useState(user.position || "");
+  const { updateUserInfo, isUpdating } = useUpdateUserStore();
 
   useEffect(() => {
     fetchUserInfo();
     fetchBoardList();
     fetchBookmarkList();
   }, [fetchUserInfo, fetchBoardList, fetchBookmarkList])
+
+  useEffect(() => {
+    if (user?.position) {
+      setSelectedPosition(user.position);
+    }
+  }, [user]);
+
+  const handlePositionChange = (selectedOption) => {
+    setSelectedPosition(selectedOption?.value || "");
+  };
+
+  const handleSave = async () => {
+    const userInfo = {
+      userEmail: user.userEmail, // 사용자 이메일
+      position: selectedPosition, // 선택된 포지션
+      campusName: user.campusName, // 캠퍼스 이름
+      courseName: user.courseName, // 교육 과정 이름
+    };
+
+    try {
+      await updateUserInfo(userInfo); // 사용자 정보 업데이트 요청
+      fetchUserInfo(); // 최신 사용자 정보 가져오기
+    } catch (error) {
+      console.error("프로필 저장 중 오류 발생:", error);
+    }
+  };
 
   return (
     <S.mypageWrapper>
@@ -55,9 +84,10 @@ const MyPage = () => {
               options={positionList}
               placeholder="포지션 선택"
               width="310px"
-              value={user.position}
+              value={selectedPosition}
+              onChange={handlePositionChange}
             />
-            <S.SaveButton>프로필 저장</S.SaveButton>
+            <S.SaveButton onClick={handleSave} disabled={isUpdating}>프로필 저장</S.SaveButton>
           </S.Column>
         </S.Row>
 

@@ -25,3 +25,23 @@ export const useAuthStore = create((set) => ({
     }
   },
 }));
+
+export const useUpdateUserStore = create((set) => ({
+  isUpdating: false, // 업데이트 상태
+  updateError: null, // 업데이트 실패 시 에러 메시지
+  updateUserInfo: async (userInfo) => {
+    set({ isUpdating: true, updateError: null }); // 업데이트 시작 상태 설정
+    try {
+      const response = await API.put('/users', userInfo); // 사용자 정보 업데이트 요청
+      if (response.data.resultCode === "SUCCESS") {
+        set({ isUpdating: false }); // 업데이트 성공 시 상태 초기화
+      } else {
+        set({ isUpdating: false, updateError: "업데이트 실패" });
+        console.error("사용자 정보 업데이트 실패:", response.data.message);
+      }
+    } catch (error) {
+      set({ isUpdating: false, updateError: error.message });
+      console.error("사용자 정보 업데이트 중 오류 발생:", error);
+    }
+  },
+}));
