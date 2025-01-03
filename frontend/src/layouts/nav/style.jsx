@@ -8,7 +8,7 @@ export const NavWrapper = styled.div`
   justify-content: flex-end; /* 오른쪽 정렬 */
   width: 100%; /* 100% 너비로 전체 영역을 채움 */
   height: 45px;
-  padding: ${(props) => (props.$isDesktop ? "0 150px" : "0 32px")};
+  padding: ${(props) => (props.$isDesktop ? "0 var(--dpadding)" : "0 var(--tpadding)")};
   font-size: ${(props) => (props.$isDesktop ? "14px" : "10px")};
   
 `;
@@ -19,7 +19,7 @@ export const Nav2Wrapper = styled.div`
   justify-content: space-between; /* 양쪽 끝에 정렬 */
   width: 100%;
   height: 75px;
-  padding: ${(props) => (props.$isDesktop ? "0 150px" : "0 48px")};
+  padding: ${(props) => (props.$isDesktop ? "0 var(--dpadding)" : "0 var(--tpadding)")};
 `;
 
 export const LeftContainer = styled.div`

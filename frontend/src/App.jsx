@@ -26,7 +26,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: ${(props) => 
-    props.isExcludedPage ? "0 0" : (props.$isDesktop ? "0 150px" : "0 48px")};
+    props.isExcludedPage ? "0 0" : (props.$isDesktop ? "0 var(--dpadding)" : "0 var(--tpadding)")};
 `;
 
 const Layout = () => {
