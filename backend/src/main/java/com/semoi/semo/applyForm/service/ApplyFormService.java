@@ -81,6 +81,7 @@ public class ApplyFormService {
 
             return UserApplyFormListResponseDto.builder()
                     .applyFormId(applyForm.getApplyFormId())
+                    .aboutMe(applyForm.getAboutMe())
                     .board(boardResponseDto)
                     .position(applyForm.getPosition().getName())
                     .status(applyForm.getStatus())
