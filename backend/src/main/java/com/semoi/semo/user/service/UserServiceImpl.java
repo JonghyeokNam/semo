@@ -33,23 +33,26 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserResponseDto updateUser(String loginEmail, UserInfoRequestDto userInfoRequestDto) {
         User user = getUserByLoginEmailOrElseThrow(loginEmail);
+        Course course = user.getCourse();
 
-        Campus campus = campusService.getCampusOrElseThrow(userInfoRequestDto.campusName());
+        // 이미 등록된 과정의 수정을 막기 위해, null 경우에만 수정 가능.
+        if (user.getCourse() == null) {
+            Campus campus = campusService.getCampusOrElseThrow(userInfoRequestDto.campusName());
 
-        String courseName = userInfoRequestDto.courseName();
-        Course course = courseRepository.findByName(courseName)
-                .orElse(null);
+            String courseName = userInfoRequestDto.courseName();
+            course = courseRepository.findByName(courseName)
+                    .orElse(null);
 
-        if (course == null) {
-            course = Course.of(courseName, campus);
-            courseRepository.save(course);
+            if (course == null) {
+                course = Course.of(courseName, campus);
+                courseRepository.save(course);
+            }
         }
 
         Position position = positionRepository.findByName(userInfoRequestDto.position())
                         .orElseThrow(() -> new SemoException(ErrorCode.POSITION_NOT_FOUND));
 
         user.updateInfo(
-                userInfoRequestDto.username(),
                 userInfoRequestDto.userEmail(),
                 position,
                 course
