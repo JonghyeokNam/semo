@@ -6,7 +6,7 @@ export const useAuthStore = create((set) => ({
   user: {}, // 초기 사용자 정보
   storeLogin: (token, user) => {
     localStorage.setItem("access_token", token); // 토큰 저장
-    set({ isLoggedIn: true, user }); // 로그인 상태와 사용자 정보 업데이트
+    set({ isLoggedIn: true, user: user || {} }); // 로그인 상태와 사용자 정보 업데이트
   },
   storeLogout: () => {
     localStorage.removeItem("access_token"); // 토큰 삭제
