@@ -8,6 +8,7 @@ import BoardListBook from "../../components/ui/board/boardListBook";
 import {useAuthStore, useUpdateUserStore } from "../../store/useAuthStore";
 import { useGetMyBookmarksStore } from "../../store/useBookmarkStore";
 import { useGetMyBoardsStore } from "../../store/useBoardStore";
+import { useGetUserApplyFormsStore } from "../../store/useApplyStore";
 
 
 const positionList = [
@@ -21,13 +22,15 @@ const MyPage = () => {
   const { user, fetchUserInfo } = useAuthStore();
   const { boardList, fetchBoardList } = useGetMyBoardsStore();
   const { bookmarkList, fetchBookmarkList } = useGetMyBookmarksStore();
-  const [selectedPosition, setSelectedPosition] = useState(user.position || "");
   const { updateUserInfo, isUpdating } = useUpdateUserStore();
+  const { applyForms, fetchUserApplyForms } = useGetUserApplyFormsStore();
+  const [selectedPosition, setSelectedPosition] = useState(user.position || "");
 
   useEffect(() => {
     fetchUserInfo();
     fetchBoardList();
     fetchBookmarkList();
+    fetchUserApplyForms();
   }, [fetchUserInfo, fetchBoardList, fetchBookmarkList])
 
   useEffect(() => {
@@ -102,7 +105,9 @@ const MyPage = () => {
       </Container>
       <Container title="참여글" type="참여" >
       <S.ContainerBody >
-        <BoardListApply />
+        {applyForms.map((item, index) => (
+          <BoardListApply boardData={item.board} formData={item} key={index}/>
+        ))}
       </S.ContainerBody>
       </Container>
       <Container title="북마크" type="북마크" >

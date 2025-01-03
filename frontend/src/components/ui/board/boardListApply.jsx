@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import * as S from "./boardListStyle";
 import ModalModify from "../modal/modalModify";
-
-const BoardListApply = ({ boardData }) => {
+import { truncate } from "../../../utils/truncateText";
+import formatRelativeTime from "../../../utils/formatTime";
+const BoardListApply = ({ boardData, formData }) => {
 
   const title = boardData?.title || "제목을 불러오는 중...";
   const content = boardData?.content || "내용을 불러오는 중...";
@@ -35,18 +36,18 @@ const BoardListApply = ({ boardData }) => {
         <S.Row>
           <S.TitleContainer>
             <S.Badge>모집중</S.Badge>
-            <S.Title>{title}</S.Title>
+            <S.Title>{truncate(title, 17)}</S.Title>
           </S.TitleContainer>
         </S.Row>
 
-        <S.Content>{content}</S.Content>
+        <S.Content>{truncate(content)}</S.Content>
 
         <S.InfoContainer>
           <S.InfoItem>
             <div>{author}</div>
           </S.InfoItem>
           <S.InfoItem>
-            <div>・ {createdAt}</div>
+            <div>・ {formatRelativeTime(createdAt)}</div>
           </S.InfoItem>
           <S.InfoItem>
             <S.Icon>
@@ -70,7 +71,7 @@ const BoardListApply = ({ boardData }) => {
         </S.InfoContainer>
       </S.BoardListContainer>
     </S.LinkContainer100>
-    <ModalModify isOpen={open} onClose={closeModal} />
+    <ModalModify isOpen={open} onClose={closeModal} formData={formData} />
     </>
   );
 };
