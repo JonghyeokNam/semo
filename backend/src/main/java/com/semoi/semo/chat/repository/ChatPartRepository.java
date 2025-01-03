@@ -18,4 +18,6 @@ public interface ChatPartRepository extends JpaRepository<ChatPart, User> {
 
     // 해당 채팅방에 참여 중인 전체 ChatPart 목록 조회
     List<ChatPart> findByChatRoom(ChatRoom chatRoom);
+
+    List<ChatPart> findByUser(User user);
 }

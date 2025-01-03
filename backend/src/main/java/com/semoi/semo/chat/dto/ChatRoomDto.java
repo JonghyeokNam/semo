@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,10 @@ public class ChatRoomDto {
     private long userCount;
 
     private List<String> userList = new ArrayList<>();
+
+    private String lastMessage;
+    private LocalDateTime lastMessageTime;
+    private long unreadCount;
 
     public ChatRoomDto(ChatRoom chatRoom, List<ChatPart> chatParts) {
         this.roomId = chatRoom.getRoomId();
