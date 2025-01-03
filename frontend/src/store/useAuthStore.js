@@ -3,7 +3,7 @@ import { API } from "../lib/apis/utils/index";
 
 export const useAuthStore = create((set) => ({
   isLoggedIn: localStorage.getItem("access_token") ? true : false, // 초기 로그인 상태
-  user: null, // 초기 사용자 정보
+  user: {}, // 초기 사용자 정보
   storeLogin: (token, user) => {
     //localStorage.setItem("access_token", token); // 토큰 저장
     set({ isLoggedIn: true, user }); // 로그인 상태와 사용자 정보 업데이트
@@ -16,9 +16,7 @@ export const useAuthStore = create((set) => ({
     try {
       const response = await API.get('/users'); // API 모듈을 사용하여 사용자 정보 요청
       if (response.data.resultCode === "SUCCESS") {
-        const userData = response.data.result;
-        set({ user: userData }); // 사용자 정보 저장
-        console.log(userData);
+        set({ user: response.data.result }); // 사용자 정보 저장
       } else {
         console.error('사용자 정보를 가져오는 데 실패했습니다.');
       }
