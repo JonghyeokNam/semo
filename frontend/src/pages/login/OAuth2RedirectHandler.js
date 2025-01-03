@@ -17,15 +17,16 @@ function OAuth2RedirectHandler() {
       if (token) {
 
         try {
+        
+          // 로그인 상태 업데이트
+          storeLogin(token, null); // isLoggedIn : true 설정
+
           // 신규 유저 여부 확인
           const isNewUser = await checkNewUser();
           console.log(isNewUser);
 
           // 유저 정보 가져오기
           await fetchUserInfo();
-
-          // 로그인 상태 업데이트
-          storeLogin(token, null); // isLoggedIn : true 설정
 
           // 신규 유저 여부에 따라 리디렉션
           if (isNewUser) {
