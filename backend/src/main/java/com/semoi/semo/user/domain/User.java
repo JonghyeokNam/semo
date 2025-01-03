@@ -101,8 +101,7 @@ public class User {
         return new User(username, loginEmail, userEmail, role);
     }
 
-    public void updateInfo(String username, String userEmail, Position position, Course course) {
-        this.username = username;
+    public void updateInfo(String userEmail, Position position, Course course) {
         this.userEmail = userEmail;
         this.position = position;
         this.course = course;

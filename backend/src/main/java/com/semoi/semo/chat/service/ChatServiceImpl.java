@@ -36,24 +36,102 @@ public class ChatServiceImpl implements ChatService {
     private final ModelMapper modelMapper;
 
     @Override
-    public List<ChatRoomDto> chatRoomList() {
-        // 1. 모든 채팅방을 가져온 뒤,
-        List<ChatRoom> chatRoomList = chatRoomRepository.findAll();
+    public List<ChatRoomDto> chatRoomList(String loginEmail) {
+        // 1) 이메일로 User 엔티티 조회
+        User user = userRepository.findByLoginEmail(loginEmail)
+                .orElseThrow(() -> new EntityNotFoundException("USER_NOT_FOUND"));
 
-        // 2. 각 ChatRoom마다 해당 방에 연결된 ChatPart 목록 조회
-        return chatRoomList.stream()
+        // 2) ChatPart에서 해당 User가 속한 목록 찾기
+        List<ChatPart> userChatParts = chatPartRepository.findByUser(user);
+
+        // 3) userChatParts에 있는 chatRoom들만 추출, 중복 제거
+        List<ChatRoom> userRooms = userChatParts.stream()
+                .map(ChatPart::getChatRoom)
+                .distinct()
+                .collect(Collectors.toList());
+
+        // 4) 각 방에 대한 DTO 생성 + 마지막 메시지/안 읽은 메시지 설정
+        return userRooms.stream()
                 .map(chatRoom -> {
-                    // ChatPartRepository를 통해 현재 방에 대한 ChatPart 목록을 조회
+                    // (a) Dto 기본 생성
                     List<ChatPart> chatParts = chatPartRepository.findByChatRoom(chatRoom);
-                    // ChatRoom + ChatPart 목록을 넘겨서 ChatRoomDto 생성
-                    return new ChatRoomDto(chatRoom, chatParts);
+                    ChatRoomDto dto = new ChatRoomDto(chatRoom, chatParts);
+
+                    // (b) 가장 최근 메시지 (MongoDB)
+                    Message lastMsg = messageRepository.findTopByRoomIdOrderByTimeDesc(chatRoom.getRoomId());
+                    if (lastMsg != null) {
+                        dto.setLastMessage(lastMsg.getContent());
+                        dto.setLastMessageTime(lastMsg.getTime());
+                    } else {
+                        dto.setLastMessage("");
+                        dto.setLastMessageTime(null);
+                    }
+
+                    // (c) 안 읽은 메시지 개수 계산
+                    //     현재 유저의 ChatPart를 찾고 -> lastReadTime 기준으로 count
+                    ChatPart cp = chatPartRepository.findByChatRoomAndUser(chatRoom, user)
+                            .orElse(null);
+
+                    if (cp != null && cp.getLastReadTime() != null) {
+                        long unread = messageRepository.countByRoomIdAndTimeAfter(
+                                chatRoom.getRoomId(),
+                                cp.getLastReadTime()
+                        );
+                        dto.setUnreadCount(unread);
+                    } else {
+                        // 참여 중이긴 하나 lastReadTime이 없거나,
+                        // 참여 기록이 없는 경우(이론상 없지만)
+                        // => 전부 안 읽은 것으로 볼 수도 있고, 임시로 0 처리
+                        dto.setUnreadCount(0);
+                    }
+
+                    return dto;
                 })
                 .collect(Collectors.toList());
+
+//        // 4) 각 채팅방에 대한 ChatPart 목록을 다시 구해서 ChatRoomDto로 매핑
+//        return userRooms.stream()
+//                .map(chatRoom -> {
+//                    List<ChatPart> chatParts = chatPartRepository.findByChatRoom(chatRoom);
+//                    return new ChatRoomDto(chatRoom, chatParts);
+//                })
+//                .collect(Collectors.toList());
+
+//        // 1. 모든 채팅방을 가져온 뒤,
+//        List<ChatRoom> chatRoomList = chatRoomRepository.findAll();
+//
+//        // 2. 각 ChatRoom마다 해당 방에 연결된 ChatPart 목록 조회
+//        return chatRoomList.stream()
+//                .map(chatRoom -> {
+//                    // ChatPartRepository를 통해 현재 방에 대한 ChatPart 목록을 조회
+//                    List<ChatPart> chatParts = chatPartRepository.findByChatRoom(chatRoom);
+//                    // ChatRoom + ChatPart 목록을 넘겨서 ChatRoomDto 생성
+//                    return new ChatRoomDto(chatRoom, chatParts);
+//                })
+//                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public ChatRoomDto createRoom(String roomName) {
+    public void readRoom(String roomId, String loginEmail) {
+        User user = userRepository.findByLoginEmail(loginEmail)
+                .orElseThrow(() -> new EntityNotFoundException("USER_NOT_FOUND"));
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId)
+                .orElseThrow(() -> new EntityNotFoundException("CHATROOM_NOT_FOUND"));
+        ChatPart chatPart = chatPartRepository
+                .findByChatRoomAndUser(chatRoom, user)
+                .orElseThrow(() -> new EntityNotFoundException("CHATROOM_MEMBER_NOT_FOUND"));
+
+        // 읽음 처리
+        chatPart.setLastReadTime(LocalDateTime.now());
+        chatPartRepository.save(chatPart);
+    }
+
+    @Override
+    @Transactional
+    public ChatRoomDto createRoom(String roomName, String loginEmail) {
+        User user = userRepository.findByLoginEmail(loginEmail)
+                .orElseThrow(() -> new EntityNotFoundException("USER_NOT_FOUND"));
         // 1) 새 채팅방 엔티티 생성
         ChatRoom chatRoom = ChatRoom.builder()
                 .roomId(UUID.randomUUID().toString())
@@ -63,6 +141,11 @@ public class ChatServiceImpl implements ChatService {
 
         // 2) 저장
         chatRoomRepository.save(chatRoom);
+
+        // 3) 방 생성 후, 해당 유저가 바로 입장한다고 가정
+        chatRoom.upUserCount();
+        ChatPart chatPart = new ChatPart(chatRoom, user, LocalDateTime.now());
+        chatPartRepository.save(chatPart);
 
         // 3) 방을 처음 만들 때는 참여자가 없으므로 빈 리스트
         return new ChatRoomDto(chatRoom, new ArrayList<>());
@@ -89,9 +172,9 @@ public class ChatServiceImpl implements ChatService {
     // 채팅방 입장 처리
     @Override
     @Transactional
-    public void enterRoom(String roomId, String username) {
+    public void enterRoom(String roomId, String loginEmail) {
         ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(() -> new EntityNotFoundException("CHATROOM_NOT_FOUND"));
-        User user = userRepository.findByUsername(username).orElseThrow();
+        User user = userRepository.findByLoginEmail(loginEmail).orElseThrow();
 
         // 채팅방 인원 수 증가
         chatRoom.upUserCount();
@@ -108,9 +191,9 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     @Transactional
-    public void leaveRoom(String roomId) {
-        // 테스트용: DB에서 특정 유저를 가져온다
-        User user = userRepository.findByUsername("테스터")
+    public void leaveRoom(String roomId, String loginEmail) {
+        // 1) 토큰에서 꺼낸 userEmail로 User 조회
+        User user = userRepository.findByLoginEmail(loginEmail)
                 .orElseThrow(() -> new EntityNotFoundException("USER_NOT_FOUND"));
 
         ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(() -> new EntityNotFoundException("CHATROOM_NOT_FOUND"));
@@ -123,9 +206,9 @@ public class ChatServiceImpl implements ChatService {
 
     // 해당 채팅방 입장 시점 이후의 메시지 목록 가져오기
     @Override
-    public List<MessageDto> getChatList(String roomId) {
-        // 테스트용: DB에서 특정 유저를 가져온다
-        User user = userRepository.findByUsername("테스터")
+    public List<MessageDto> getChatList(String roomId, String loginEmail) {
+        // 1) 토큰에서 꺼낸 userEmail로 User 조회
+        User user = userRepository.findByLoginEmail(loginEmail)
                 .orElseThrow(() -> new EntityNotFoundException("USER_NOT_FOUND"));
 
         ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(() -> new EntityNotFoundException("CHATROOM_NOT_FOUND"));

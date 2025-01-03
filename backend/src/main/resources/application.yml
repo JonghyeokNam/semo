@@ -52,7 +52,7 @@ spring:
             user-name-attribute: id
   data:
     mongodb:
-      uri: mongodb+srv://njh9750:W3Kcy6ewG8aJ1paY@namjonghyeok99.oywkz.mongodb.net/?retryWrites=true&w=majority
+      uri: ${MONGODB_URI}
       database: NamJongHyeok99
 
 logging:
