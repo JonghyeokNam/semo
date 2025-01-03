@@ -57,8 +57,10 @@ const Nav = () => {
           <Link to="/chat">
             <BiMessageRoundedDots size={36} />
           </Link>
-            <S.StyledGoBell size={36}  onClick={openNotification}/>
-            {isReadAll && <S.RedDot />}
+            <S.NotificationContainer>
+              <S.StyledGoBell size={36}  onClick={openNotification}/>
+              {isReadAll && <S.RedDot />}
+            </S.NotificationContainer>
         </S.RightContainer>
       </S.Nav2Wrapper>
       <Notification isOpen={open} onClose={closeModal}/>
