@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import * as S from "./boardListStyle";
 import { truncate } from "../../../utils/truncateText";
 import formatRelativeTime from "../../../utils/formatTime";
+import { useDoBookmarkStore, useGetMyBookmarksStore } from "../../../store/useBookmarkStore";
 
 const BoardListBook = ({ boardData }) => {
+  const { fetchBookmark } = useDoBookmarkStore();
+  const { fetchBookmarkList } = useGetMyBookmarksStore();
 
   const title = boardData?.title || "제목을 불러오는 중...";
   const content = boardData?.content || "내용을 불러오는 중...";
@@ -15,10 +18,15 @@ const BoardListBook = ({ boardData }) => {
 
   const [isActive, setIsActive] = useState(true);
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.stopPropagation(); // 이벤트 전파 중단
     e.preventDefault(); // 기본 동작 방지
-    setIsActive(!isActive); // 상태 토글
+    try {
+      await fetchBookmark(boardData.boardId); // 북마크 API 호출
+      fetchBookmarkList();
+    } catch (error) {
+      console.error("북마크 처리 중 오류:", error);
+    }
   };
 
   return (
