@@ -51,9 +51,11 @@ public class BookmarkServiceImpl implements BookmarkService {
         if (bookmark == null) {
             bookmark = Bookmark.create(user, board);
             bookmarkRepository.save(bookmark);
+            log.info(boardId + "번 게시물 북마크 등록");
         } else {
         // 북마크 되어 있는 경우, 취소
             bookmarkRepository.delete(bookmark);
+            log.info(boardId + "번 게시물 북마크 취소");
         }
     }
 
@@ -64,7 +66,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 
         List<BoardResponseDto> boardListDtos = new ArrayList<>();
         for (Bookmark bookmark : bookmarks) {
-            Board board = boardRepository.findById(bookmark.getBookmarkId())
+            Board board = boardRepository.findById(bookmark.getBoard().getBoardId())
                     .orElse(null);
 
             if (board == null) {
