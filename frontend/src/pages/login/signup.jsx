@@ -1,29 +1,52 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as S from "./style";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import SelectComponent from "../../components/ui/selectComponent";
+import useSignupStore from "../../store/useSignupStore";
 
 const Signup = () => {
-  const navigate = useNavigate(); // useNavigate 훅 사용
-  const campusList = [
-    { value: "campus1", label: "동대문캠퍼스" },
-    { value: "campus2", label: "성동캠퍼스" },
-  ];
-  const courseList = [
-    { value: "프론트엔드 과정", label: "프론트엔드 과정" },
-    { value: "백엔드 과정", label: "백엔드 과정" },
-    { value: "풀스택 과정", label: "풀스택 과정" },
-  ];
-  const positionList = [
-    { value: "uiux", label: "UI/UX" },
-    { value: "front", label: "프론트엔드 개발자" },
-    { value: "back", label: "백엔드 개발자" },
-    { value: "marketer", label: "마케터" },
-  ];
+  const navigate = useNavigate();
+  const [selectedCampus, setSelectedCampus] = useState(null); // 선택된 캠퍼스 상태
+  const { campuses, courses, fetchCampuses, fetchCourses, loading } = useSignupStore();
+
+  useEffect(() => {
+    fetchCampuses(); // 컴포넌트가 마운트될 때 캠퍼스 목록을 가져옵니다
+  }, [fetchCampuses]);
+
+  // 캠퍼스 선택 시 처리 함수
+  const handleCampusChange = (selectedOption) => {
+    setSelectedCampus(selectedOption);
+    if (selectedOption) {
+      fetchCourses(selectedOption.value); // 캠퍼스가 선택되면 해당 캠퍼스의 과정을 가져옵니다
+    }
+  };
+
+  // 과정 선택 시 처리 함수
+  const handleCourseChange = (selectedOption) => {
+    console.log("선택된 과정:", selectedOption);
+  };
 
   const handleComplete = () => {
-    navigate("/"); // 버튼 클릭 시 '/'로 이동
+    navigate("/"); // 완료 버튼 클릭 시 이동
   };
+
+  // 캠퍼스 목록을 SelectComponent에서 사용할 형식으로 변환
+  const campusList = campuses && campuses.length > 0
+    ? campuses.map(campus => ({
+        value: campus.campusId,
+        label: campus.name
+      }))
+    : [];
+
+  // 과정 목록을 SelectComponent에서 사용할 형식으로 변환 (선택된 캠퍼스의 courseId에 해당하는 과정만 필터링)
+  const courseList = courses && courses.length > 0
+  ? courses.filter(course => course.campusId === selectedCampus?.value) // campusId가 selectedCampus와 일치하는 것만 필터링
+      .map(course => ({
+        value: course.courseId,
+        label: course.name
+      }))
+  : [];
+
 
   return (
     <S.SignupWrapper>
@@ -31,26 +54,33 @@ const Signup = () => {
         <S.HeaderText>추가 정보</S.HeaderText>
         <S.ContentWrapper>
           <S.TextWrapper>
-            
             <SelectComponent
               label="소속된 캠퍼스를 선택해주세요."
               options={campusList}
               placeholder="캠퍼스 선택"
+              onChange={handleCampusChange}
+              isLoading={loading && !campuses.length} 
             />
           </S.TextWrapper>
           <S.TextWrapper>
-            
             <SelectComponent
               label="현재 진행 중인 과정명을 선택해주세요."
               options={courseList}
               placeholder="과정명 선택"
+              onChange={handleCourseChange}
+              disabled={loading || !selectedCampus} // 캠퍼스 선택 후 로딩 완료되어야 활성화
+              isLoading={loading && !courses.length} 
             />
           </S.TextWrapper>
           <S.TextWrapper>
-           
             <SelectComponent
               label="희망하는 포지션을 선택해주세요."
-              options={positionList}
+              options={[
+                { value: "uiux", label: "UI/UX" },
+                { value: "front", label: "프론트엔드 개발자" },
+                { value: "back", label: "백엔드 개발자" },
+                { value: "marketer", label: "마케터" },
+              ]}
               placeholder="포지션 선택"
             />
           </S.TextWrapper>
