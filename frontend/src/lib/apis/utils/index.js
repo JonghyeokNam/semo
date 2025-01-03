@@ -35,7 +35,7 @@ const refreshToken = async () => {
     // 서버가 헤더에서 새 토큰을 전송했다고 가정
     const newToken = response.headers['authorization']; // 헤더에서 새 토큰 추출
     if (newToken) {
-      localStorage.setItem('access_token', newToken); // 새 토큰을 localStorage에 저장
+      localStorage.setItem('access_token', newToken); 
       return newToken; // 새로운 액세스 토큰 반환
     } else {
       throw new Error('새로운 토큰을 헤더에서 찾을 수 없습니다.');
