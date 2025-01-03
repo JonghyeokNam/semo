@@ -118,3 +118,8 @@ export const SaveButton = styled.button`
     background-color: #2d8f44;
   }
 `;
+
+export const ContainerBody = styled.div`
+  max-height: 20rem;
+  overflow: auto;
+`
