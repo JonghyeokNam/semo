@@ -4,8 +4,6 @@ import * as S from "./style";
 const Login = () => {
 
   const handleKakaoClick = () => {
-    //window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
-    console.log(process.env.REACT_APP_KAKAO_URL);
     window.location.href = process.env.REACT_APP_KAKAO_URL;
   };
 
