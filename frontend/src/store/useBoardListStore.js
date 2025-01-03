@@ -16,14 +16,16 @@ const useBoardStore = create((set) => ({
     set({ loading: true, error: null }); // 로딩 시작
     try {
       const response = await API.get(`/boards?page=${page}&size=${size}`);
-      const { content, totalElements, totalPages } = response.data.result; // API 응답 데이터 구조에 맞게 추출
-      set({
-        boards: content,
-        totalItems: totalElements,
-        totalPages: totalPages,
-        currentPage: page,
-        loading: false, // 로딩 종료
-      });
+      if (response.data.resultCode === 'SUCCESS') {
+        const { content, totalElements, totalPages } = response.data.result; // API 응답 데이터 구조에 맞게 추출
+        set({
+          boards: content,
+          totalItems: totalElements,
+          totalPages: totalPages,
+          currentPage: page,
+          loading: false, // 로딩 종료
+        });
+      }
     } catch (err) {
       set({ error: err.message, loading: false });
     }

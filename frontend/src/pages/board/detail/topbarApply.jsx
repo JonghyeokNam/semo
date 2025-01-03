@@ -6,7 +6,13 @@ import { useNavigate } from "react-router-dom";
 import { LiaHandPaper } from "react-icons/lia";
 import Modal from "../../../components/ui/modal/modalWrite";
 
-export const TopBarApply = () => {
+export const TopBarApply = ({boardInfo}) => {
+  const username = boardInfo?.author?.username || "작성자 없음";
+  const createdAt = boardInfo?.createdAt
+  ? new Date(boardInfo.createdAt).toLocaleDateString()
+  : "작성일 불러오는 중...";
+  const hit = boardInfo?.hit || 0;
+  
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -38,13 +44,14 @@ export const TopBarApply = () => {
           <S.ImgContainer>
             <S.ProfileImage src="/img/sesacHi.png" alt="profile" />
           </S.ImgContainer>
-          <S.UserName>사용자 이름</S.UserName>
+          <S.UserName>{username}</S.UserName>
         </S.UserInfo>
         <S.VerticalLine />
-        <S.Date>2024.09.30</S.Date>
+        <S.Date>{createdAt}</S.Date>
         <S.ViewCountWrapper>
           <FaEye style={{ fontSize: "18px" }} />
           조회수
+          {" " + hit}
         </S.ViewCountWrapper>
       </S.Row>
       <S.iconContainer>

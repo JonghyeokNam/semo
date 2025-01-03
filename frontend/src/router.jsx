@@ -40,7 +40,7 @@ const router = createBrowserRouter([
       { path: "/applylist", element: <ApplyList /> },
 
       // 게시글 상세 페이지
-      { path: "/board/detail", element: <BoardDetail /> },
+      { path: "/boards/:boardId", element: <BoardDetail /> },
 
       // 게시글 수정 페이지
       { path: "/board/modify", element: <BoardModify /> },

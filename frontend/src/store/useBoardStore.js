@@ -33,7 +33,10 @@ export const useGetBoardDetailStore = create((set) => ({
     try {
       const response = await API.get(`/boards/${boardId}`);
       if (response.data.resultCode === 'SUCCESS') {
-        set({ boardInfo: response.data.result, loading: false });
+        set({ 
+          boardInfo: response.data.result, 
+          loading: false 
+        });
       } else {
         throw new Error('Failed to fetch list');
       }
@@ -41,4 +44,13 @@ export const useGetBoardDetailStore = create((set) => ({
       set({ error: error.message, loading: false });
     }
   },
+
+  // 모집 분야 업데이트
+  updateRecruitmentTypes: (types) =>
+    set((state) => ({
+      boardInfo: {
+        ...state.boardInfo,
+        recruitmentTypes: types, // 배열 형태로 업데이트
+      },
+    })),
 }));

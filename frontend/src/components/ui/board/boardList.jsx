@@ -3,6 +3,7 @@ import * as S from "./boardListStyle";
 import { LiaHandPaper } from "react-icons/lia";
 import Modal from "../modal/modalWrite";
 import { truncate } from "../../../utils/truncateText";
+import { replaceNewlinesWithSpace } from "../../../utils/replaceUtil";
 
 const BoardListWrite = ({ boardData }) => {
 
@@ -10,7 +11,7 @@ const BoardListWrite = ({ boardData }) => {
   const title = boardData?.title || "제목을 불러오는 중...";
   const content = boardData?.content || "내용을 불러오는 중...";
   const author = boardData?.author?.username || "작성자 없음";
-  const createdAt = boardData?.createdAt || "2024.12.26";
+  const createdAt = boardData?.createdAt || "작성일 불러오는 중...";
   const hit = boardData?.hit || "0";
   const commentCount = boardData?.commentCount || "0";
   const applyForms = boardData?.applyForms || { backend: 0, frontend: 0, marketer: 0, designer: 0 };
@@ -35,7 +36,7 @@ const BoardListWrite = ({ boardData }) => {
 
   return (
     <>
-    <S.LinkContainer to="/board/detail" state={{ boardData }}>
+    <S.LinkContainer to={`/boards/${boardId}`} state={{ boardData }}>
       <S.BoardListContainer>
       <S.RightTop>
         <LiaHandPaper  onClick={modalOpen}/>
@@ -47,7 +48,7 @@ const BoardListWrite = ({ boardData }) => {
           </S.TitleContainer>
         </S.Row>
 
-        <S.Content>{truncate(content, 80)}</S.Content>
+        <S.Content>{truncate(replaceNewlinesWithSpace(content), 80)}</S.Content>
 
         <S.InfoContainer>
           <S.InfoItem>
