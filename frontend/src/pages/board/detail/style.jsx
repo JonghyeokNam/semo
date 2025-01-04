@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaRegBookmark } from "react-icons/fa";
 
 // 스타일 컴포넌트 (styled-components)
 
@@ -295,4 +295,8 @@ export const CommentText = styled.div`
   margin-bottom: 20px;
 `;
 
+export const StyledBookmarkIcon = styled(FaRegBookmark)`
+  font-size: 25px;
+  color: ${({ $isActive }) => ($isActive ? "var(--green)" : "#333")};
+`;
 

@@ -15,15 +15,17 @@ const BoardListBook = ({ boardData }) => {
   const hit = boardData?.hit || "11";
   const comments = boardData?.comments || "0";
   const applicants = boardData?.applicants || { frontend: 0, backend: 0, uiux: 0, marketer: 0 };
+  const isbookmarked = boardData?.isbookmarked || "false";
 
-  const [isActive, setIsActive] = useState(true);
+  const [isActive, setIsActive] = useState(isbookmarked);
 
   const handleClick = async (e) => {
     e.stopPropagation(); // 이벤트 전파 중단
     e.preventDefault(); // 기본 동작 방지
     try {
       await fetchBookmark(boardData.boardId); // 북마크 API 호출
-      fetchBookmarkList();
+      setIsActive((prev) => !prev); // isActive 상태를 토글
+      // fetchBookmarkList();
     } catch (error) {
       console.error("북마크 처리 중 오류:", error);
     }
