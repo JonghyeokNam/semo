@@ -33,7 +33,7 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentResponseDto> getAllComments(Long boardId) {
         Board board = getBoardOrException(boardId);
 
-        return commentRepository.findAllByBoard(board)
+        return commentRepository.findAllByBoardOrderByCreatedAtAsc(board)
                 .stream().map(CommentResponseDto::of).toList();
     }
 
