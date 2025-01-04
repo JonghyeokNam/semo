@@ -97,7 +97,7 @@ export const useGetBoardApplyFormStore = create((set) => ({
     set({ isLoading: true, isError: false, error: null }); // 로딩 상태 설정
 
     try {
-      const response = await API.get(`/boards/${boardId}/applyform`);
+      const response = await API.get(`/boards/${boardId}/applyforms`);
 
       if (response.status === 200) {
         set({ boardApplyForms: response.data.result, isLoading: false }); // 데이터 저장
@@ -114,5 +114,34 @@ export const useGetBoardApplyFormStore = create((set) => ({
     }
   },
 }));
+
+export const useSetApplyFormStatusStore = create((set) => ({
+  isUpdating: false, // 업데이트 중 상태
+  isError: false, // 에러 발생 여부
+  error: null, // 에러 메시지
+  fetchApplyFormStatus: async (applyFormId, status) => {
+    set({ isUpdating: true, isError: false, error: null }); // 요청 시작 상태
+
+    try {
+      const response = await API.post(`/applyforms/${applyFormId}/status`, {
+        status, // 상태를 요청 데이터로 전달
+      });
+
+      if (response.status === 200) {
+        set({ isUpdating: false }); // 요청 성공
+      } else {
+        throw new Error("지원 폼 상태 업데이트에 실패했습니다.");
+      }
+    } catch (error) {
+      set({
+        isUpdating: false,
+        isError: true,
+        error: error.response ? error.response.data : error.message, // 에러 처리
+      });
+      console.error("지원 폼 상태 업데이트 중 오류:", error);
+    }
+  },
+}));
+
 
 export default useApplyStore;

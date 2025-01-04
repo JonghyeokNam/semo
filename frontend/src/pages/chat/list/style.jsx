@@ -61,3 +61,23 @@ export const UserInfo = styled.div`
   flex-direction: column;
   gap: 5px;
 `;
+
+// 오른쪽 영역(시간, 안 읽은 메시지 개수 등)을 묶을 컨테이너
+export const RightSide = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* 오른쪽 정렬 */
+  gap: 5px;             /* 시간, 배지 간격 */
+`;
+
+// 안 읽은 메시지 수를 표시할 배지 스타일
+export const Badge = styled.div`
+  background-color: #FF5252;  /* 빨간색 계열 */
+  color: #FFF;
+  padding: 2px 6px;          /* 배지 내부 여백 */
+  border-radius: 10px;       /* 둥근 테두리 */
+  font-size: 11px;
+  font-weight: bold;
+  min-width: 18px;           /* 숫자가 한자리여도 최소 폭 */
+  text-align: center;
+`;

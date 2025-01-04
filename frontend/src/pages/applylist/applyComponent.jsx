@@ -3,20 +3,27 @@ import * as S from "./style";
 import ModalRead from "../../components/ui/modal/modalRead";
 import { truncate } from "../../utils/truncateText";
 import formatRelativeTime from "../../utils/formatTime";
+import { useGetBoardApplyFormStore, useSetApplyFormStatusStore } from "../../store/useApplyStore";
 
 const ApplyComponent = ({ formData }) => {
-  const [action, setAction] = useState(""); // 수락/거부 상태 관리
+  const [action, setAction] = useState(formData.status); // 수락/거부 상태 관리
+  const { fetchApplyFormStatus } = useSetApplyFormStatusStore();
+  const { fetchBoardApplyForms } = useGetBoardApplyFormStore();
 
   const handleAccept = (e) => {
     e.stopPropagation(); // 이벤트 전파 중단
     e.preventDefault(); // 기본 동작 방지
     setAction("수락");
+    fetchApplyFormStatus(formData.applyFormId, "수락");
+    fetchBoardApplyForms(formData.boardId);
   };
 
   const handleReject = (e) => {
     e.stopPropagation(); // 이벤트 전파 중단
     e.preventDefault(); // 기본 동작 방지
     setAction("거부");
+    fetchApplyFormStatus(formData.applyFormId, "거부");
+    fetchBoardApplyForms(formData.boardId);
   };
 
   const [open, setOpen] = useState(false); //모달창 상태관리
@@ -54,24 +61,24 @@ const ApplyComponent = ({ formData }) => {
               <S.ProfileImage src="/img/sesacHi.png" alt="프로필 이미지" />
             </S.ImgContainer>
             <S.UserInfo>
-              <S.userName>{formData.userId}</S.userName>
+              <S.userName>{formData.username}</S.userName>
               <S.PostedTime>{formatRelativeTime(formData.createdAt)}</S.PostedTime>
             </S.UserInfo>
           </S.Group>
           <S.VerticalLine />
           <S.Content>
-            {truncate(formData.aboutMe, 41)}
+            {truncate(formData.aboutMe, 40)}
           </S.Content>
         </S.Group>
         <S.Group>
-          {!action && ( // action이 없을 때만 버튼 렌더링
+          {action === "대기" && ( // action이 없을 때만 버튼 렌더링
             <>
               <S.AcceptButton onClick={handleAccept}>수락</S.AcceptButton>
               <S.RejectButton onClick={handleReject}>거부</S.RejectButton>
             </>
           )}
         </S.Group>
-        {action && (
+        {action !== "대기" && (
           <S.ResultText isAccept={action === "수락"}>{action}</S.ResultText>
         )}
       </S.Container>
