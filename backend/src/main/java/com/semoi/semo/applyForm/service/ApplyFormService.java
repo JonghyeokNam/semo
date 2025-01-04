@@ -238,6 +238,13 @@ public class ApplyFormService {
 
         // 변경사항 저장
         applyFormRepository.save(applyForm);
+
+        // 알림 수신자
+        User notificationUser = userRepository.findById(applyForm.getUserId())
+                        .orElseThrow(() -> new SemoException(ErrorCode.USER_NOT_FOUND));
+        
+        // 알림 생성
+        notificationService.createNotification(Type.PARTICIPATION_RESULT, notificationUser, board);
     }
 
 }
