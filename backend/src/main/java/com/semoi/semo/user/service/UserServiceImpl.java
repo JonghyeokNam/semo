@@ -32,7 +32,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserResponseDto updateUser(String loginEmail, UserInfoRequestDto userInfoRequestDto) {
+        // 로그인 유저 조회
         User user = getUserByLoginEmailOrElseThrow(loginEmail);
+        // 유저의 과정 조회
         Course course = user.getCourse();
 
         // 이미 등록된 과정의 수정을 막기 위해, null 경우에만 수정 가능.
@@ -49,9 +51,11 @@ public class UserServiceImpl implements UserService{
             }
         }
 
+        // 유저가 입력한 position 조회
         Position position = positionRepository.findByName(userInfoRequestDto.position())
                         .orElseThrow(() -> new SemoException(ErrorCode.POSITION_NOT_FOUND));
 
+        // 유저 정보 수정
         user.updateInfo(
                 userInfoRequestDto.userEmail(),
                 position,
@@ -64,18 +68,21 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    // userId로 유저 조회, 실패 시 에러 발생
     public User getUserByUserIdOrElseThrow(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
+                .orElseThrow(() -> new SemoException(ErrorCode.USER_NOT_FOUND));
     }
 
     @Override
+    // loginEmail로 유저 조회, 실패 시 에러 발생
     public User getUserByLoginEmailOrElseThrow(String loginEmail) {
         return userRepository.findByLoginEmail(loginEmail)
-                .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
+                .orElseThrow(() -> new SemoException(ErrorCode.USER_NOT_FOUND));
     }
 
     @Override
+    // 유저의 점수를 초기화 하는 로직
     public void resetUserScore() {
         List<User> users = userRepository.findAll();
 
@@ -90,6 +97,7 @@ public class UserServiceImpl implements UserService{
 
         User user = getUserByLoginEmailOrElseThrow(loginEmail);
 
+        // 유저의 포지션이나 과정이 입력되지 않았다면, 신규 유저로 판단.
         if (user.getPosition() == null || user.getCourse() == null) {
             return true;
         }

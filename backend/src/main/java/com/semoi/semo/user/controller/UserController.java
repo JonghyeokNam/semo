@@ -16,7 +16,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -96,6 +95,21 @@ public class UserController {
         return Response.success();
     }
 
+    @Operation(
+            summary = "신규 유저 확인 API",
+            description = "신규 유저의 경우 true, 기존 유저의 경우 false 반환합니다."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = Response.class))
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증 실패",
+                    content = @Content(schema = @Schema(implementation = Response.class))
+            ),
+    })
     @GetMapping("/check")
     public Response<Boolean> checkNewUser(HttpServletRequest request) {
         return Response.success(userService.getCheckNewUser(tokenProvider.getUserLoginEmail(request)));

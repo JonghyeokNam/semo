@@ -26,6 +26,7 @@ public class TokenProvider {
     private static final String HEADER_AUTHORIZATION = "Authorization";
     private static final String TOKEN_PREFIX = "Bearer ";
 
+    // 해당 유저의 정해진 기간으로 토큰 생성
     public String generateToken(User user, Duration expiredAt) {
         Date now = new Date();
         return makeToken(new Date(now.getTime() + expiredAt.toMillis()), user);
@@ -71,6 +72,7 @@ public class TokenProvider {
             ), token, authoritySet);
     }
 
+    // HttpServletRequest 에서 토큰을 파싱하여 로그인 이메일 반환
     public String getUserLoginEmail(HttpServletRequest request) {
         String authorizationHeader = request.getHeader(HEADER_AUTHORIZATION);
 
@@ -87,6 +89,7 @@ public class TokenProvider {
         return null;
     }
 
+    // 토큰의 클레임 반환
     public Claims getClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(jwtProperties.getSecretKey())

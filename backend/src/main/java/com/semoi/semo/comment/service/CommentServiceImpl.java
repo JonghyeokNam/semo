@@ -30,6 +30,7 @@ public class CommentServiceImpl implements CommentService {
     private final NotificationService notificationService;
 
     @Override
+    // 특정 게시글의 모든 댓글을 조회
     public List<CommentResponseDto> getAllComments(Long boardId) {
         Board board = getBoardOrException(boardId);
 
@@ -38,6 +39,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    // 특정 게시글에 댓글 추가.
     public void addComment(String loginEmail, Long boardId, CommentRequestDto commentRequestDto) {
         Board board = getBoardOrException(boardId);
         User user = getUserOrException(loginEmail);
@@ -49,6 +51,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    // 특정 댓글 수정
     public void updateComment(String loginEmail, Long commentId, CommentRequestDto commentRequestDto) {
 
         Comment comment = getCommentOwnerOrException(loginEmail, commentId);
@@ -57,11 +60,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    // 특정 댓글 삭제
     public void deleteComment(String loginEmail, Long commentId) {
         Comment comment = getCommentOwnerOrException(loginEmail, commentId);
         commentRepository.delete(comment);
     }
 
+    // 댓글의 작성자가 로그인 유저인 경우 댓글, 아닌 경우 에러 반환
     private Comment getCommentOwnerOrException(String loginEmail, Long commentId) {
         User user = getUserOrException(loginEmail);
         Comment comment = commentRepository.findById(commentId)
@@ -74,11 +79,13 @@ public class CommentServiceImpl implements CommentService {
         return comment;
     }
 
+    // 게시글 조회하거나 익셉션
     private Board getBoardOrException(Long boardId) {
         return boardRepository.findById(boardId)
                 .orElseThrow(() -> new SemoException(ErrorCode.BOARD_NOT_FOUND));
     }
 
+    // 유저 조회하거나 익셉션
     private User getUserOrException(String loginEmail) {
         return userRepository.findByLoginEmail(loginEmail)
                 .orElseThrow(() -> new SemoException(ErrorCode.USER_NOT_FOUND));

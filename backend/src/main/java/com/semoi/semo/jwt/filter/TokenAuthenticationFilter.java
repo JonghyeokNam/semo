@@ -30,6 +30,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
         String accessToken = getAccessToken(authorizationHeader);
 
+        // 엑세스 토큰이 있는 경우, SrcurityContextHolder에 유저 정보 등록.
         if (accessToken != null) {
             Authentication authentication = tokenProvider.getAuthentication(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -38,6 +39,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    // 해당 헤더에서 엑세스 토큰 조회
     private String getAccessToken(String authorizationHeader) {
         if (authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
             return authorizationHeader.substring(TOKEN_PREFIX.length());
