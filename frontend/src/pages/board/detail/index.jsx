@@ -41,7 +41,7 @@ const Index = () => {
       <S.Title2>프로젝트 소개</S.Title2>
       <S.Separator />
       <S.Content>{replaceNewlinesWithBr(content)}</S.Content>
-      <Comment/>
+      <Comment boardId={boardId}/>
     </S.DetailContainer>
   );
 };
