@@ -1,6 +1,8 @@
 package com.semoi.semo.chat.service;
 
 
+import com.semoi.semo.board.entity.Board;
+import com.semoi.semo.board.repository.BoardRepository;
 import com.semoi.semo.chat.dto.ChatRoomDto;
 import com.semoi.semo.chat.dto.MessageDto;
 import com.semoi.semo.chat.entity.ChatPart;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -34,6 +37,7 @@ public class ChatServiceImpl implements ChatService {
     private final ChatPartRepository chatPartRepository;
     private final MessageRepository messageRepository;
     private final ModelMapper modelMapper;
+    private final BoardRepository boardRepository;
 
     @Override
     public List<ChatRoomDto> chatRoomList(String loginEmail) {
@@ -151,6 +155,65 @@ public class ChatServiceImpl implements ChatService {
         return new ChatRoomDto(chatRoom, new ArrayList<>());
     }
 
+    @Override
+    @Transactional
+    public ChatRoomDto createRoomByEmails(String loginEmail, String authorEmail) {
+        // 0) 같은 이메일로 요청이 들어온 경우 처리 (원한다면)
+        if (loginEmail.equals(authorEmail)) {
+            throw new IllegalArgumentException("SAME_USER_FOR_1_1_CHAT");
+        }
+
+        // 1) 각각 User 엔티티 조회
+        User loginUser = userRepository.findByLoginEmail(loginEmail)
+                .orElseThrow(() -> new EntityNotFoundException("LOGIN_USER_NOT_FOUND"));
+        User author = userRepository.findByLoginEmail(authorEmail)
+                .orElseThrow(() -> new EntityNotFoundException("AUTHOR_NOT_FOUND"));
+
+        // 2) user1이 참여하고 있는 모든 ChatPart 조회
+        //    => user1이 속한 모든 ChatRoom 목록을 구한 뒤,
+        //    => 각각의 방에 user2도 참여하고 있으면 → "이미 존재하는 1:1 방"
+        List<ChatPart> loginUserParts = chatPartRepository.findByUser(loginUser);
+        List<ChatRoom> loginUserRooms = loginUserParts.stream()
+                .map(ChatPart::getChatRoom)
+                .distinct()
+                .collect(Collectors.toList());
+
+        for (ChatRoom room : loginUserRooms) {
+            // 그 방에 user2가 포함되어 있는지 확인
+            boolean authorExists = chatPartRepository.existsByChatRoomAndUser(room, author);
+            // 2명 다 참여중이라면 "이미 존재하는 1:1 방"으로 간주
+            if (authorExists) {
+                // DTO 생성 후 반환
+                List<ChatPart> chatParts = chatPartRepository.findByChatRoom(room);
+                return new ChatRoomDto(room, chatParts);
+            }
+        }
+
+        // 3) 여기까지 왔다면 "user1과 user2가 함께 속해있는 방"이 없으므로 새 방 생성
+        ChatRoom newRoom = ChatRoom.builder()
+                .roomId(UUID.randomUUID().toString())
+                // 방 이름은 자유롭게 지정 (ex: "user1-user2")
+                .roomName(loginUser.getUsername() + " - " + author.getUsername())
+                .userCount(0)
+                .build();
+        chatRoomRepository.save(newRoom);
+
+        // (A) userCount를 2 올림 (2명이 참여)
+        newRoom.upUserCount();
+        newRoom.upUserCount();
+
+        // (B) user1 참여
+        ChatPart part1 = new ChatPart(newRoom, loginUser, LocalDateTime.now());
+        chatPartRepository.save(part1);
+
+        // (C) user2 참여
+        ChatPart part2 = new ChatPart(newRoom, author, LocalDateTime.now());
+        chatPartRepository.save(part2);
+
+        // 4) 최종적으로 ChatRoomDto로 변환해서 반환
+        List<ChatPart> newRoomParts = Arrays.asList(part1, part2);
+        return new ChatRoomDto(newRoom, newRoomParts);
+    }
 
     // 채팅방에 참여 중인 사용자 목록
     @Override
@@ -223,5 +286,22 @@ public class ChatServiceImpl implements ChatService {
         return chats.stream()
                 .map(chat -> modelMapper.map(chat, MessageDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public String getAuthorLoginEmail(Long boardId) {
+        // 1. boardId로 Board 객체 조회
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new EntityNotFoundException("BOARD_NOT_FOUND"));
+
+        // 2. Board 객체에서 User 객체 직접 접근
+        User user = board.getUser();
+        if (user == null) {
+            throw new EntityNotFoundException("USER_NOT_FOUND");
+        }
+
+        // 3. User 객체에서 로그인 이메일 추출
+        return user.getLoginEmail();
     }
 }
