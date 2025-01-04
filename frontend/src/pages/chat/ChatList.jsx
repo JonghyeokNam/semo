@@ -1,61 +1,88 @@
-// import React from "react";
 import ListComponent from "./list/listComponent";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import { useAuthStore } from "../../store/useAuthStore"; 
+import { API } from "../../lib/apis/utils/index";
+import { useChatStore } from "../../store/useChatStore";
+import { Stomp } from "@stomp/stompjs"; 
 
 const ChatList = ({ onSelectRoom }) => {
   const [chatData, setChatData] = useState([]);
-
-  // 가정: 현재 로그인된 사용자를 저장해둔다고 치자
-  const currentUser = "남종혁";
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:8080/chatrooms/")
-      .then((response) => {
-        const { resultCode, result } = response.data; 
-        if (resultCode === "GET_CHATROOMLIST_SUCCESS") {
-          // result는 ChatRoomDto[] 리스트
-          // 현재 구조: { roomId, roomName, userCount, userList }
   
-          // ListComponent에서 쓰던 'id', 'image', 'userName', 'content', 'time' 구조에 맞게 변환
-          const mappedData = result.map((room) => {
-            // 1) 상대방 닉네임 찾기
-            // userList는 2명만 있다고 가정
-            const otherUser = room.userList.find(
-              (u) => u !== currentUser
-            ) || room.roomName;
-            // 혹시라도 방에 2명이 아니면 roomName 사용 (fallback)
+  // useAuthStore에서 유저 정보와 메서드 가져오기
+  const { user, isLoggedIn, fetchUserInfo } = useAuthStore((state) => state);
 
-            // (2) 마지막 메시지, 시간
+  /**
+   * (1) 채팅방 목록 불러오는 함수: fetchChatRooms
+   * - 이 함수를 주기적으로 호출하여 목록 자동 갱신
+   */
+  const fetchChatRooms = useCallback(() => {
+    if (!isLoggedIn) return;
+    // 아직 user 정보가 없을 수도 있으니, user?.username이 없으면 일단 무시
+    if (!user || !user.username) return;
+
+    API.get("/chatrooms/")
+      .then((response) => {
+        const { resultCode, result } = response.data;
+        if (resultCode === "GET_CHATROOMLIST_SUCCESS") {
+          const currentUserName = user.username;
+
+          // result: ChatRoomDto[] 
+          // 예: { roomId, roomName, userCount, userList, lastMessage, lastMessageTime, unreadCount }
+          const mappedData = result.map((room) => {
+            const otherUser =
+              room.userList.find((u) => u !== currentUserName) || room.roomName;
             const lastMsg = room.lastMessage || "";
             const lastTime = room.lastMessageTime
-              ? new Date(room.lastMessageTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+              ? new Date(room.lastMessageTime).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
               : "";
 
-            // 2) 현재는 백엔드가 마지막 메시지나 미확인 메시지 정보를 주지 않으므로
-            //    임시로 빈 값/기본값으로 채워둠
             return {
-              id: room.roomId,               // onSelectRoom에 넘길 roomId
-              image: "/img/sesacHi.png",     // 임의의 기본 이미지 경로
-              userName: otherUser,       // 방 이름을 사용하거나 적절히 처리
-              content: lastMsg,                   // 아직 '마지막 메시지'가 없다면 빈 값
-              time: lastTime,                      // 시간 정보가 없다면 비워둠
+              id: room.roomId,
+              image: "/img/sesacHi.png", // 임의의 프로필 이미지
+              userName: otherUser,
+              content: lastMsg,
+              time: lastTime,
               unreadCount: room.unreadCount || 0,
             };
           });
-  
           setChatData(mappedData);
         } else {
           console.error("Failed to load chat rooms");
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Error while fetching chatrooms:", error);
       });
-  }, []);
-  
+  }, [isLoggedIn, user]);
+
+  /**
+   * (2) 초기 렌더링 시: 유저 정보가 없으면 fetchUserInfo 호출
+   *  - 그 후, 바로 fetchChatRooms() 한 번 실행
+   *  - setInterval()을 사용해 5초마다 fetchChatRooms()를 재호출
+   */
+  useEffect(() => {
+    if (isLoggedIn && (!user || !user.username)) {
+      fetchUserInfo();
+    }
+
+    // 즉시 1회 조회
+    fetchChatRooms();
+
+    // 2초 간격으로 목록 재조회
+    const intervalId = setInterval(() => {
+      fetchChatRooms();
+    }, 2000);
+
+    // 언마운트 시 interval 해제
+    return () => clearInterval(intervalId);
+
+    // 의존성: 유저 / 로그인 상태 등이 바뀌면 다시 실행
+  }, [isLoggedIn, user, fetchUserInfo, fetchChatRooms]);
 
   return <ListComponent chatData={chatData} onSelectRoom={onSelectRoom} />;
 };
