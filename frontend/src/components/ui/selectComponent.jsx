@@ -1,7 +1,7 @@
 import React from "react";
 import Select from "react-select";
 
-const SelectComponent = ({ label, options, defaultValue, isMulti, placeholder, width, value, onChange}) => {
+const SelectComponent = ({ label, options, defaultValue, isMulti, placeholder, width, value, onChange, isDisabled}) => {
   const customStyles = {
     container: (provided) => ({
       ...provided,
@@ -29,6 +29,7 @@ const SelectComponent = ({ label, options, defaultValue, isMulti, placeholder, w
         isMulti={isMulti}
         placeholder={placeholder}
         styles={customStyles}
+        isDisabled={isDisabled}
       />
     </div>
   );

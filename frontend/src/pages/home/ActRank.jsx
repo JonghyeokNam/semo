@@ -23,7 +23,7 @@ const ActRank = () => {
           </tr>
         </thead>
         <tbody>
-          {ranks.map((item, index) => (
+          {ranks.slice(0, 5).map((item, index) => ( // 처음 5개의 항목만 표시
             <tr key={index}>
               {/* 순위를 정적으로 매핑 (인덱스 + 1) */}
               <S.TableCell $rank={index + 1}>{index + 1}</S.TableCell>

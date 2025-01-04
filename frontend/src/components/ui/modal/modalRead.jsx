@@ -3,14 +3,14 @@ import { IoClose } from "react-icons/io5";
 import * as S from "./modalStyle"; 
 import SelectComponent from "../selectComponent";
 
-const ModalRead = ({ isOpen, onClose }) => {
+const ModalRead = ({ isOpen, onClose, formData }) => {
   // isOpen이 false일 경우 모달을 렌더링하지 않음
   if (!isOpen) return null;
 
   const positionList = [
-    { value: "uiux", label: "UI/UX" },
-    { value: "front", label: "프론트엔드 개발자" },
-    { value: "back", label: "백엔드 개발자" },
+    { value: "designer", label: "UI/UX" },
+    { value: "frontend", label: "프론트엔드 개발자" },
+    { value: "backend", label: "백엔드 개발자" },
     { value: "marketer", label: "마케터" },
   ];
 
@@ -31,7 +31,8 @@ const ModalRead = ({ isOpen, onClose }) => {
             options={positionList}
             placeholder="포지션 선택"
             width="310px"
-            // isDisabled={!isEditable} // 수정 가능 여부에 따라 선택지를 비활성화
+            isDisabled={true} // 수정 가능 여부에 따라 선택지를 비활성화
+            value={formData.position}
           />
           {/* 댓글 입력 칸 */}
           <S.ContentTitle>
@@ -42,7 +43,9 @@ const ModalRead = ({ isOpen, onClose }) => {
           </S.ContentDescription>
           <S.ContentInput
             placeholder="내용을 입력하세요"
-            // readOnly={!isEditable} // 수정 가능 여부에 따라 읽기 전용 설정
+            value={formData.aboutMe}
+            readOnly={true} // 수정 가능 여부에 따라 읽기 전용 설정
+            disabled={true} // 완전히 비활성화
           />
         </S.Column>
       </S.ModalContent>

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as S from "./boardListStyle";
-import { Link } from "react-router-dom"; 
+import { truncate } from "../../../utils/truncateText";
+import formatRelativeTime from "../../../utils/formatTime";
 
 const BoardListApplyList = ({ boardData }) => {
 
@@ -21,18 +22,18 @@ const BoardListApplyList = ({ boardData }) => {
         <S.Row>
           <S.TitleContainer>
             <S.Badge>모집중</S.Badge>
-            <S.Title>{title}</S.Title>
+            <S.Title>{truncate(title, 33)}</S.Title>
           </S.TitleContainer>
         </S.Row>
 
-        <S.Content>{content}</S.Content>
+        <S.Content>{truncate(content, 52)}</S.Content>
 
         <S.InfoContainer>
           <S.InfoItem>
             <div>{author}</div>
           </S.InfoItem>
           <S.InfoItem>
-            <div>・ {createdAt}</div>
+            <div>・ {formatRelativeTime(createdAt)}</div>
           </S.InfoItem>
           <S.InfoItem>
             <S.Icon>
