@@ -39,12 +39,15 @@ export const Position = styled.div`
   border-radius: 5px;
   padding: 5px 10px;
   font-weight: bold;
+  width: 5rem;
+  text-align: center;
 `;
 
 export const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
+  width: 2.8rem;
 `;
 
 export const PostedTime = styled.div`

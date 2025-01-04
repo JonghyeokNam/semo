@@ -18,18 +18,18 @@ const BoardListWrite = ({ boardData }) => {
     <S.LinkContainer100 to="/board/detail" state={{ boardData }}>
       <S.BoardListContainer>
       <S.RightTop>
-        <Link to="/applylist">
+        <Link to="/applylist" state={{ boardData }}>
             <S.ApplyButton>지원 리스트</S.ApplyButton>
         </Link>
       </S.RightTop>
         <S.Row>
           <S.TitleContainer>
             <S.Badge>모집중</S.Badge>
-            <S.Title>{truncate(title, 17)}</S.Title>
+            <S.Title>{truncate(title, 33)}</S.Title>
           </S.TitleContainer>
         </S.Row>
 
-        <S.Content>{truncate(content)}</S.Content>
+        <S.Content>{truncate(content, 52)}</S.Content>
 
         <S.InfoContainer>
           <S.InfoItem>

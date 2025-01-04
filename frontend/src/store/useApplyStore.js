@@ -86,4 +86,33 @@ export const useUpdateApplyFormStore = create((set) => ({
   },
 }));
 
+export const useGetBoardApplyFormStore = create((set) => ({
+  boardApplyForms: [], // 지원 폼 데이터 상태
+  isLoading: false, // 로딩 상태
+  isError: false, // 에러 상태
+  error: null, // 에러 메시지
+
+  // 특정 게시글의 지원 폼 데이터를 가져오는 함수
+  fetchBoardApplyForms: async (boardId) => {
+    set({ isLoading: true, isError: false, error: null }); // 로딩 상태 설정
+
+    try {
+      const response = await API.get(`/boards/${boardId}/applyform`);
+
+      if (response.status === 200) {
+        set({ boardApplyForms: response.data.result, isLoading: false }); // 데이터 저장
+      } else {
+        throw new Error("Failed to fetch board apply forms.");
+      }
+    } catch (error) {
+      set({
+        isLoading: false,
+        isError: true,
+        error: error.response ? error.response.data : error.message,
+      }); // 에러 처리
+      console.error("게시글 지원 폼 데이터를 가져오는 중 오류 발생:", error);
+    }
+  },
+}));
+
 export default useApplyStore;
