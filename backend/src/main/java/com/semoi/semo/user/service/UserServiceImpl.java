@@ -120,4 +120,17 @@ public class UserServiceImpl implements UserService{
             throw new SemoException(ErrorCode.UNSUITABLE_EMAIL, String.format("%s doesn't meet the conditions", email));
         }
     }
+
+    @Override
+    // 유저의 모집점수와 활동점수 업데이트
+    // 댓글 생성 - 활동 점수 5점
+    // 게시글 생성 - 모집 점수 10점
+    // 신청서 지원 - 활동 점수 10점
+    // 지원 결과 선택 - 모집 점수 3점
+    public void updateUserScore(User user, int recScore, int actScore) {
+        user.plusRecScore(recScore);
+        user.plusActScore(actScore);
+
+        userRepository.save(user);
+    }
 }

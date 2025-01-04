@@ -10,4 +10,5 @@ public interface UserService {
     UserResponseDto updateUser(String loginEmail, UserInfoRequestDto userInfoRequestDto);
     void resetUserScore();
     Boolean getCheckNewUser(String loginEmail);
+    void updateUserScore(User user, int recScore, int actScore);
 }

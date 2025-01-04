@@ -12,6 +12,7 @@ import com.semoi.semo.notification.enums.Type;
 import com.semoi.semo.notification.service.NotificationService;
 import com.semoi.semo.user.domain.User;
 import com.semoi.semo.user.repository.UserRepository;
+import com.semoi.semo.user.service.UserService;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -28,13 +29,14 @@ public class CommentServiceImpl implements CommentService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final NotificationService notificationService;
+    private final UserService userService;
 
     @Override
     // 특정 게시글의 모든 댓글을 조회
     public List<CommentResponseDto> getAllComments(Long boardId) {
         Board board = getBoardOrException(boardId);
 
-        return commentRepository.findAllByBoard(board)
+        return commentRepository.findAllByBoardOrderByCreatedAt(board)
                 .stream().map(CommentResponseDto::of).toList();
     }
 
@@ -47,6 +49,8 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = Comment.create(commentRequestDto.content(), user, board);
         commentRepository.save(comment);
 
+        // 활동 점수 추가
+        userService.updateUserScore(user, 0, 5);
         notificationService.createNotification(Type.COMMENT_ALERT, board.getUser(), board);
     }
 

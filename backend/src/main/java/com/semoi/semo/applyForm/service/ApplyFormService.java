@@ -22,6 +22,7 @@ import com.semoi.semo.position.entity.Position;
 import com.semoi.semo.position.repository.PositionRepository;
 import com.semoi.semo.user.domain.User;
 import com.semoi.semo.user.repository.UserRepository;
+import com.semoi.semo.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,6 +40,7 @@ public class ApplyFormService {
     private final CommentRepository commentRepository;
     private final TokenProvider tokenProvider;
     private final NotificationService notificationService;
+    private final UserService userService;
 
     public List<ApplyFormListResponseDto> getApplyFormsByBoardId(Long boardId, HttpServletRequest request) {
         // 사용자 이메일 추출
@@ -132,6 +134,8 @@ public class ApplyFormService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new SemoException(ErrorCode.BOARD_NOT_FOUND));
 
+        // 활동 점수 추가
+        userService.updateUserScore(user, 0, 10);
         notificationService.createNotification(Type.COMMENT_ALERT, board.getUser(), board);
     }
 
@@ -242,7 +246,10 @@ public class ApplyFormService {
         // 알림 수신자
         User notificationUser = userRepository.findById(applyForm.getUserId())
                         .orElseThrow(() -> new SemoException(ErrorCode.USER_NOT_FOUND));
-        
+
+        // 모집 점수 추가
+        userService.updateUserScore(user, 3, 0);
+
         // 알림 생성
         notificationService.createNotification(Type.PARTICIPATION_RESULT, notificationUser, board);
     }
