@@ -143,5 +143,5 @@ export const IconWrapper = styled.div`
 
 export const StyledBookmarkIcon = styled(FaRegBookmark)`
   font-size: 25px;
-  color: ${({ isActive }) => (isActive ? "var(--green)" : "#333")}; 
+  color: ${({ $isActive }) => ($isActive ? "var(--green)" : "#333")};
 `;

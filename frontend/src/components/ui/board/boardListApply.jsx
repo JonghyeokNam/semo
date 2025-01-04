@@ -36,11 +36,11 @@ const BoardListApply = ({ boardData, formData }) => {
         <S.Row>
           <S.TitleContainer>
             <S.Badge>모집중</S.Badge>
-            <S.Title>{truncate(title, 17)}</S.Title>
+            <S.Title>{truncate(title, 33)}</S.Title>
           </S.TitleContainer>
         </S.Row>
 
-        <S.Content>{truncate(content)}</S.Content>
+        <S.Content>{truncate(content, 52)}</S.Content>
 
         <S.InfoContainer>
           <S.InfoItem>

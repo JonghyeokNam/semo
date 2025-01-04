@@ -27,6 +27,7 @@ export const Title = styled.h1`
   font-size: 25px;
   font-weight: bold;
   margin: 0;
+  margin-bottom: 1rem;
   color: var(--green);
 
 `;
