@@ -74,7 +74,7 @@ const BoardListWrite = ({ boardData }) => {
             <div>지원자 수 |</div>
             <div>프론트엔드 {applyForms.frontend}명</div>
             <div>백엔드 {applyForms.backend}명</div>
-            <div>UI/UX {applyForms.uiux}명</div>
+            <div>UI/UX {applyForms.designer}명</div>
             <div>마케터 {applyForms.marketer}명</div>
           </S.ApplicantInfo>
         </S.InfoContainer>
