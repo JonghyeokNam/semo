@@ -263,6 +263,32 @@ export const DeleteButton = styled.button`
   }
 `;
 
+
+export const SaveButton = styled.button`
+  font-size: 14px;
+  color: #333333;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+
+export const CancelButton = styled.button`
+  font-size: 14px;
+  color: #333333;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 export const CommentText = styled.div`
   font-size: 14px;
   color: #333;
