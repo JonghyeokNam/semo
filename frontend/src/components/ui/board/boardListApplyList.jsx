@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import * as S from "./boardListStyle";
 import { truncate } from "../../../utils/truncateText";
 import formatRelativeTime from "../../../utils/formatTime";
+import {replaceNewlinesWithSpace} from "../../../utils/replaceUtil";
 
 const BoardListApplyList = ({ boardData }) => {
 
@@ -27,7 +28,7 @@ const BoardListApplyList = ({ boardData }) => {
           </S.TitleContainer>
         </S.Row>
 
-        <S.Content>{truncate(content, 52)}</S.Content>
+        <S.Content>{truncate(replaceNewlinesWithSpace(content), 52)}</S.Content>
 
         <S.InfoContainer>
           <S.InfoItem>

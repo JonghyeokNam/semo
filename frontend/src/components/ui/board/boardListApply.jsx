@@ -5,6 +5,7 @@ import { truncate } from "../../../utils/truncateText";
 import formatRelativeTime from "../../../utils/formatTime";
 const BoardListApply = ({ boardData, formData }) => {
 
+  const boardId = boardData?.boardId || "1";
   const title = boardData?.title || "제목을 불러오는 중...";
   const content = boardData?.content || "내용을 불러오는 중...";
   const author = boardData?.author?.username || "이유진";
@@ -28,7 +29,7 @@ const BoardListApply = ({ boardData, formData }) => {
 
   return (
     <>
-    <S.LinkContainer100 to="/board/detail" state={{ boardData }}>
+    <S.LinkContainer100 to={`/boards/${boardId}`} state={{ boardData }}>
       <S.BoardListContainer>
         <S.RightTop>
           <S.ApplyButton onClick={modalOpen} >지원 폼</S.ApplyButton>
