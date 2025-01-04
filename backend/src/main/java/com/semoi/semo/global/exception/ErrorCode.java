@@ -34,7 +34,10 @@ public enum ErrorCode {
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Comment not found"),
 
     // position
-    POSITION_NOT_FOUND(HttpStatus.NOT_FOUND, "Position not found"),;
+    POSITION_NOT_FOUND(HttpStatus.NOT_FOUND, "Position not found"),
+
+    // user
+    UNSUITABLE_EMAIL(HttpStatus.BAD_REQUEST, "Email is invalid"),;
 
     private final HttpStatus status;
     private final String message;

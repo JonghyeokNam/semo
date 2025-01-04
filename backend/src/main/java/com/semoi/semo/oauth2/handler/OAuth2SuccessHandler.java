@@ -63,6 +63,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
+    // 리프레시 토큰 DB에 저장
     private void saveRefreshToken(Long userId, String newRefreshToken) {
         RefreshToken refreshToken = refreshTokenRepository.findByUserId(userId)
                 .map(entity -> entity.update(newRefreshToken))
@@ -70,7 +71,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         refreshTokenRepository.save(refreshToken);
     }
-
+    
+    // 쿠키에 리프레시 토큰 등록
     private void addRefreshTokenToCookie(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
         int cookieMaxAge = (int) REFRESH_TOKEN_DURATION.toSeconds();
 
@@ -78,6 +80,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         CookieUtil.addCookie(response, REFRESH_TOKEN_COOKIE_NAME, refreshToken, cookieMaxAge);
     }
 
+    // 인증 관련 설정 값 제거
     private void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
         super.clearAuthenticationAttributes(request);
         authorizationRequestRepository.removeAuthorizationRequestCookies(request, response);

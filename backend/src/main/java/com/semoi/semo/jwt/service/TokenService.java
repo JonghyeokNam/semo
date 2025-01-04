@@ -24,6 +24,7 @@ public class TokenService {
     private final UserService userService;
     private final RefreshTokenRepository refreshTokenRepository;
 
+    // 새로운 액세스 토큰 생성
     public String createNewAccessToken(String refreshToken) {
         validateRefreshTokenOrElseThrow(refreshToken);
 
@@ -33,6 +34,7 @@ public class TokenService {
         return tokenProvider.generateToken(user, Duration.ofHours(2));
     }
 
+    // 리프레시 토큰 삭제
     public void deleteRefreshToken(String loginEmail) {
         User user = userService.getUserByLoginEmailOrElseThrow(loginEmail);
         RefreshToken refreshToken = refreshTokenRepository.findByUserId(user.getUserId())
@@ -41,6 +43,7 @@ public class TokenService {
         refreshTokenRepository.delete(refreshToken);
     }
 
+    // 토큰 유효성 검사
     public void validateRefreshTokenOrElseThrow(String refreshToken) {
         if(!tokenProvider.validToken(refreshToken)) {
             throw new SemoException(ErrorCode.INVALID_TOKEN, "Invalid refresh token");

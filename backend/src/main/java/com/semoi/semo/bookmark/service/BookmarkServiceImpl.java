@@ -32,6 +32,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     private final CommentRepository commentRepository;
 
     @Override
+    // 북마크 상태 조회
     public Boolean getState(String loginEmail, Long boardId) {
         User user = getUserByEmailOrElseThrow(loginEmail);
         Board board = getBoardByIdOrElseThrow(boardId);
@@ -40,6 +41,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
+    // 북마크 추가 혹은 삭제
     public void addOrCancelBookmark(String loginEmail, Long boardId) {
 
         User user = getUserByEmailOrElseThrow(loginEmail);
@@ -59,6 +61,7 @@ public class BookmarkServiceImpl implements BookmarkService {
         }
     }
 
+    // 해당 유저의 모든 북마크 게시글 목록 조회
     public List<BoardResponseDto> getBookmarksFromUser(String loginEmail) {
         User user = getUserByEmailOrElseThrow(loginEmail);
 
@@ -84,11 +87,13 @@ public class BookmarkServiceImpl implements BookmarkService {
         return boardListDtos;
     }
 
+    // 로그인 이메일로 유저 조회 혹은 익셉션
     private User getUserByEmailOrElseThrow(String loginEmail) {
         return userRepository.findByLoginEmail(loginEmail)
                 .orElseThrow(() -> new SemoException(ErrorCode.USER_NOT_FOUND));
     }
 
+    // 보드 조회 혹은 익셉션
     private Board getBoardByIdOrElseThrow(Long boardId) {
         return boardRepository.findById(boardId)
                 .orElseThrow(() -> new SemoException(ErrorCode.BOARD_NOT_FOUND));

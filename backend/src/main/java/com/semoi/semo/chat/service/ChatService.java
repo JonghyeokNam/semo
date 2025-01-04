@@ -20,6 +20,10 @@ public interface ChatService {
     List<MessageDto> getChatList(String roomId, String loginEmail);
 
     void readRoom(String roomId, String loginEmail);
+
+    String getAuthorLoginEmail(Long boardId);
+
+    ChatRoomDto createRoomByEmails(String loginEmail, String authorEmail);
 }
 
 
