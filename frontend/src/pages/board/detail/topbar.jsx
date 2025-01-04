@@ -32,8 +32,8 @@ export const TopBar = () => {
           </S.ViewCountWrapper>
         </S.Row>
         <S.Row>
-          <S.Status onClick={handlelist}>지원리스트</S.Status>
-          <S.Status>마감</S.Status>
+          <S.Status onClick={handlelist}>지원서 목록</S.Status>
+          {/* <S.Status>마감</S.Status> */}
           <S.Status onClick={handleModify}>수정</S.Status>
           <S.Status>삭제</S.Status>
         </S.Row>

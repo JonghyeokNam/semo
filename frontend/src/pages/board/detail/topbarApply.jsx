@@ -13,7 +13,7 @@ export const TopBarApply = ({boardInfo}) => {
   ? new Date(boardInfo.createdAt).toLocaleDateString()
   : "작성일 불러오는 중...";
   const hit = boardInfo?.hit || 0;
-  const isbookmarked = boardInfo?.isbookmarked || "false";
+  const isbookmarked = boardInfo?.isbookmarked || false;
   
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);

@@ -15,8 +15,7 @@ const Index = () => {
 
   const title = boardInfo?.title || "제목을 불러오는 중...";
   const content = boardInfo?.content || "내용을 불러오는 중...";
-
-  console.log(replaceNewlinesWithBr(content));
+  const isAuthor = boardInfo?.author?.isAuthor || false;
 
   useEffect(() => {
     if (boardId) {
@@ -35,7 +34,13 @@ const Index = () => {
     <S.DetailContainer>
       <Back/>
       <S.Title>{title}</S.Title>
-      <TopBarApply boardInfo={boardInfo}/>
+      {
+        isAuthor ? 
+        <TopBar boardInfo={boardInfo}/>
+        :
+        <TopBarApply boardInfo={boardInfo}/>
+
+      }
       <S.Separator />
       <BoardData boardInfo={boardInfo} />
       <S.Title2>프로젝트 소개</S.Title2>

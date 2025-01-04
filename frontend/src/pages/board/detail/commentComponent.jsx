@@ -16,8 +16,6 @@ export const CommentComponent = ({ key, comment, onUpdate, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(commentContent);
   
-  console.log(`loggedInUserId: ${loggedInUserId}`)
-  console.log(`commentAuthorId: ${commentAuthorId}`)
   const handleEditClick = () => {
     setIsEditing(true); // 수정 상태로 전환
   };
