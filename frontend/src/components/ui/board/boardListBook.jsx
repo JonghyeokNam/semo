@@ -34,7 +34,7 @@ const BoardListBook = ({ boardData }) => {
       <S.BoardListContainer>
         <S.RightTop>
             <S.IconWrapper onClick={handleClick}>
-                <S.StyledBookmarkIcon isActive={isActive} />
+              <S.StyledBookmarkIcon $isActive={isActive} />
             </S.IconWrapper>
         </S.RightTop>
         <S.Row>
