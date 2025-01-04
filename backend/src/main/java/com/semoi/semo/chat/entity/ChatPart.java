@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "chat_parts")
 public class ChatPart {
 
     @Id
