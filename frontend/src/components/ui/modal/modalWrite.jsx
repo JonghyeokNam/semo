@@ -3,9 +3,11 @@ import { IoClose } from "react-icons/io5";
 import * as S from "./modalStyle"; 
 import SelectComponent from "../selectComponent";
 import useApplyStore from "../../../store/useApplyStore";
+import useBoardListStore from "../../../store/useBoardListStore";
 
-const Modal = ({ isOpen, onClose, boardId }) => {
+const Modal = ({ isOpen, onClose, boardId, setIsParticipated }) => {
   const { submitApplication, isLoading, isError, error } = useApplyStore();
+  const { boards } = useBoardListStore();
   const [selectedPosition, setSelectedPosition] = useState("");
   const [aboutMe, setAboutMe] = useState("");
   
@@ -22,12 +24,12 @@ const Modal = ({ isOpen, onClose, boardId }) => {
   const handleComplete = () => {
     const positionName = selectedPosition;
     
-    submitApplication(boardId, positionName, aboutMe ); // 지원 폼 제출
-    console.log("positionName" , positionName);
+    submitApplication(boardId, positionName, aboutMe); // 지원 폼 제출
+    console.log("positionName", positionName);
     console.log("aboutMe", aboutMe);
 
-
     // 서버에 데이터 제출 후 모달 닫기
+    setIsParticipated(true); // 지원 상태 업데이트
     onClose();
   };
 

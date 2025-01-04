@@ -7,6 +7,7 @@ import { replaceNewlinesWithSpace } from "../../../utils/replaceUtil";
 import formatRelativeTime from "../../../utils/formatTime";
 
 const BoardListWrite = ({ boardData }) => {
+  const [isParticipated, setIsParticipated] = useState(boardData?.isParticipated || false);
   const boardId = boardData?.boardId || "2";
   const title = boardData?.title || "제목을 불러오는 중...";
   const content = boardData?.content || "내용을 불러오는 중...";
@@ -20,17 +21,24 @@ const BoardListWrite = ({ boardData }) => {
     marketer: 0,
     designer: 0,
   };
-  const isParticipated = boardData?.isParticipated || false;
   const isClosed = boardData?.isClosed || false;
 
   const [open, setOpen] = useState(false);
 
+  // 모달 열기
   const modalOpen = (e) => {
     e.stopPropagation(); // 이벤트 전파 중단
     e.preventDefault(); // 기본 동작 방지
-    setOpen(true);
+
+    if (isParticipated) {
+      // 이미 참여한 경우
+      alert("이미 지원했습니다. 수정을 원하시면 마이페이지에서 해주세요.");
+    } else {
+      setOpen(true); // 모달 열기
+    }
   };
 
+  // 모달 닫기
   const closeModal = () => {
     setOpen(false); // 모달 닫기
   };
@@ -71,7 +79,7 @@ const BoardListWrite = ({ boardData }) => {
               </S.Icon>
               <div>{commentCount}</div>
             </S.InfoItem>
-            <S.ApplicantInfo  $isClosed={isClosed}>
+            <S.ApplicantInfo $isClosed={isClosed}>
               <div>지원자 수 |</div>
               <div>프론트엔드 {applyForms.frontend}명</div>
               <div>백엔드 {applyForms.backend}명</div>
@@ -81,7 +89,12 @@ const BoardListWrite = ({ boardData }) => {
           </S.InfoContainer>
         </S.BoardListContainer>
       </S.LinkContainer>
-      <Modal isOpen={open} onClose={closeModal} boardId={boardId} />
+      <Modal
+        isOpen={open}
+        onClose={closeModal}
+        boardId={boardId}
+        setIsParticipated={setIsParticipated} // 상태 변경 함수 전달
+      />
     </>
   );
 };
