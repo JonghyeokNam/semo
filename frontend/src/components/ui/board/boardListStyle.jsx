@@ -65,7 +65,7 @@ export const RightTop = styled.div`
   top: 30px;
   right: 30px;
   font-size: 35px;
-  color: #343330;
+  color:${(props) => (props.$isParticipated ? "var(--green)" : "#343330")};
 `;
 
 export const ApplyButton = styled.div`
