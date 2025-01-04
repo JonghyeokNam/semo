@@ -4,6 +4,7 @@ import ModalRead from "../../components/ui/modal/modalRead";
 import { truncate } from "../../utils/truncateText";
 import formatRelativeTime from "../../utils/formatTime";
 import { useGetBoardApplyFormStore, useSetApplyFormStatusStore } from "../../store/useApplyStore";
+import { replaceNewlinesWithSpace } from "../../utils/replaceUtil";
 
 const ApplyComponent = ({ formData }) => {
   const [action, setAction] = useState(formData.status); // 수락/거부 상태 관리
@@ -67,7 +68,7 @@ const ApplyComponent = ({ formData }) => {
           </S.Group>
           <S.VerticalLine />
           <S.Content>
-            {truncate(formData.aboutMe, 40)}
+            {replaceNewlinesWithSpace(truncate(formData.aboutMe, 40))}
           </S.Content>
         </S.Group>
         <S.Group>
