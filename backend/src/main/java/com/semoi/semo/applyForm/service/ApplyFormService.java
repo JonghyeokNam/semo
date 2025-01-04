@@ -1,19 +1,20 @@
 package com.semoi.semo.applyForm.service;
 
 import com.semoi.semo.applyForm.dto.requestdto.ApplyFormRequestDto;
+import com.semoi.semo.applyForm.dto.requestdto.ApplyFormStatusRequestDto;
 import com.semoi.semo.applyForm.dto.responsedto.ApplyFormListResponseDto;
 import com.semoi.semo.applyForm.dto.responsedto.ApplyFormResponseDto;
 import com.semoi.semo.applyForm.dto.responsedto.UserApplyFormListResponseDto;
 import com.semoi.semo.applyForm.entity.ApplyForm;
-import com.semoi.semo.position.entity.Position;
 import com.semoi.semo.applyForm.repository.ApplyFormRepository;
-import com.semoi.semo.position.repository.PositionRepository;
 import com.semoi.semo.board.dto.responsedto.BoardResponseDto;
 import com.semoi.semo.board.entity.Board;
 import com.semoi.semo.board.repository.BoardRepository;
 import com.semoi.semo.comment.repository.CommentRepository;
 import com.semoi.semo.global.exception.DataNotFoundException;
 import com.semoi.semo.jwt.service.TokenProvider;
+import com.semoi.semo.position.entity.Position;
+import com.semoi.semo.position.repository.PositionRepository;
 import com.semoi.semo.user.domain.User;
 import com.semoi.semo.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -197,4 +198,35 @@ public class ApplyFormService {
         // 삭제
         applyFormRepository.delete(applyForm);
     }
+
+    public void updateApplyFormStatus(Long applyFormId, ApplyFormStatusRequestDto requestDto, HttpServletRequest request) {
+
+        // 사용자 이메일 추출
+        String userEmail = tokenProvider.getUserLoginEmail(request);
+
+        // 사용자 조회
+        User user = userRepository.findByLoginEmail(userEmail)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
+
+        // 신청서 조회
+        ApplyForm applyForm = applyFormRepository.findById(applyFormId)
+                .orElseThrow(() -> new DataNotFoundException("ApplyForm not found"));
+
+        Board board = boardRepository.findById(applyForm.getBoardId())
+                .orElseThrow(() -> new DataNotFoundException("Board not found"));
+
+        Long boardAuthorId = board.getUser().getUserId();
+        Long userId = user.getUserId();
+
+        if (!boardAuthorId.equals(userId)) {
+            throw new DataNotFoundException("Only the board owner can update the status of an apply form.");
+        }
+
+        // 상태 업데이트
+        applyForm.setStatus(requestDto.getStatus());
+
+        // 변경사항 저장
+        applyFormRepository.save(applyForm);
+    }
+
 }

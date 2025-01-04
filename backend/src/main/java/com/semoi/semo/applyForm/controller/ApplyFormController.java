@@ -1,6 +1,7 @@
 package com.semoi.semo.applyForm.controller;
 
 import com.semoi.semo.applyForm.dto.requestdto.ApplyFormRequestDto;
+import com.semoi.semo.applyForm.dto.requestdto.ApplyFormStatusRequestDto;
 import com.semoi.semo.applyForm.dto.responsedto.ApplyFormListResponseDto;
 import com.semoi.semo.applyForm.dto.responsedto.ApplyFormResponseDto;
 import com.semoi.semo.applyForm.dto.responsedto.UserApplyFormListResponseDto;
@@ -110,6 +111,21 @@ public class ApplyFormController {
             HttpServletRequest request
     ) {
         applyFormService.deleteApplyForm(applyFormId, request);
+        return Response.success();
+    }
+
+    @Operation(summary = "신청서 상태 변경", description = "사용자가 특정 신청서의 status를 수락/거부로 변경")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "신청서 상태 변경 성공"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
+    @PostMapping("/applyforms/{applyFormId}/status")
+    public Response<Void> updateApplyFormStatus(
+            @PathVariable("applyFormId") Long applyFormId,
+            @RequestBody ApplyFormStatusRequestDto updateStatusDto,
+            HttpServletRequest request
+    ) {
+        applyFormService.updateApplyFormStatus(applyFormId, updateStatusDto, request);
         return Response.success();
     }
 }
