@@ -5,8 +5,14 @@ import useMediaQueries from "../../../hooks/useMediaQueries";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import axios from "axios";
+import { API } from "../../../lib/apis/utils";        // Interceptor
+import { useAuthStore } from "../../../store/useAuthStore";
+import { useChatStore } from "../../../store/useChatStore"; 
+import { useNavigate } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
 
 const ChatRoom = ({ roomId }) => {
+  const navigate = useNavigate();
   const { isMobile } = useMediaQueries();
 
   // 입력 중인 메시지
@@ -19,28 +25,43 @@ const ChatRoom = ({ roomId }) => {
   // 채팅 스크롤 하단 처리를 위한 ref
   const messagesEndRef = useRef(null);
 
-  // 1) 방 선택 시: 기존 메시지 불러오기 + 소켓 연결
+  // Zustand 스토어에서 user 정보 가져옴
+  const { user, isLoggedIn, fetchUserInfo } = useAuthStore((state) => state);
+
+  // (A) 방 정보 세팅 (유저 정보 없으면 불러오기)
   useEffect(() => {
-    // roomId가 없다면 실행 X
+    if (!roomId) return;
+    if (isLoggedIn && (!user || !user.username)) {
+      // 아직 사용자 정보가 없다면 가져오기
+      fetchUserInfo(); 
+    }
+  }, [roomId, isLoggedIn, user, fetchUserInfo]);
+
+  // (B) 채팅방 초기 설정: 읽음 처리 + 과거 메시지 + 웹소켓 연결
+  useEffect(() => {
     if (!roomId) return;
 
-    // (0) 읽음 처리 API
-    axios.post(`http://localhost:8080/chatrooms/read?roomId=${roomId}`)
-      .then(res => {
+    const currentUserName = user?.username;
+    if (!currentUserName) {
+      // 유저명이 아직 없다면 대기 (fetchUserInfo 후 재렌더링되면 실행됨)
+      return;
+    }
+
+    // (B1) "이 방에 있는 모든 메시지"를 우선 읽음 처리
+    API.post(`/chatrooms/read?roomId=${roomId}`, {})
+      .then((res) => {
         if (res.data.resultCode === "READ_ROOM_SUCCESS") {
-          console.log("읽음 처리 완료");
+          console.log("방 진입 시 읽음 처리 완료");
         }
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
 
-    // (1) 먼저 과거 메시지 불러오기 (REST API)
-    axios
-      .get(`http://localhost:8080/chatrooms/chats?roomId=${roomId}`)
+    // (B2) 과거 메시지 가져오기
+    API.get(`/chatrooms/chats?roomId=${roomId}`)
       .then((response) => {
         const { resultCode, result } = response.data;
         if (resultCode === "GET_CHATLIST_SUCCESS") {
-          // result: MessageDto[] 형태 (roomId, sender, content, time 등)
-          // UI에서 사용하기 좋도록 변환
+          // result: MessageDto[] (roomId, sender, content, time, ...)
           const formatted = result.map((msg) => ({
             userName: msg.sender,
             content: msg.content,
@@ -48,8 +69,7 @@ const ChatRoom = ({ roomId }) => {
               hour: "2-digit",
               minute: "2-digit",
             }),
-            // (임시 로직) 본인인지 여부 판단
-            isUser: msg.sender === "남종혁",
+            isUser: msg.sender === currentUserName,
           }));
           setMessages(formatted);
         } else {
@@ -60,17 +80,17 @@ const ChatRoom = ({ roomId }) => {
         console.error(error);
       });
 
-    // (2) WebSocket + STOMP 연결
+    // (B3) WebSocket (STOMP) 연결
     const sock = new WebSocket("ws://localhost:8080/ws");
     const stompClient = Stomp.over(sock);
 
     stompClient.connect({}, () => {
-      // 연결 성공 후, 특정 채팅방을 subscribe
+      // 연결 성공
+      // (1) 방 구독
       stompClient.subscribe(`/sub/chat/room/${roomId}`, (msg) => {
-        // 서버에서 전달된 메시지를 수신
         const payload = JSON.parse(msg.body);
-        // 예: { roomId, sender, content, time, ... }
 
+        // 새 메시지를 messages 배열에 추가
         setMessages((prev) => [
           ...prev,
           {
@@ -80,69 +100,121 @@ const ChatRoom = ({ roomId }) => {
               hour: "2-digit",
               minute: "2-digit",
             }),
-            isUser: payload.sender === "남종혁",
+            isUser: payload.sender === currentUserName,
           },
         ]);
+
+        // (2) 상대방(내가 아닌 사람)이 보낸 메시지라면 → 즉시 읽음 처리
+        if (payload.sender !== currentUserName) {
+          API.post(`/chatrooms/read?roomId=${roomId}`, {})
+            .then((res) => {
+              if (res.data.resultCode === "READ_ROOM_SUCCESS") {
+                console.log("상대방 메시지 즉시 읽음 처리");
+              }
+            })
+            .catch((err) => console.error("readRoom Error", err));
+        }
       });
 
-      // (선택) 방 입장 메시지 전송
+      // (2) 방 입장 메시지 (optional)
       stompClient.send(
         `/pub/chat.enter.${roomId}`,
         {},
-        JSON.stringify({ roomId, sender: "남종혁" })
+        JSON.stringify({
+          roomId,
+          sender: currentUserName,
+        })
       );
     });
 
-    // stompClient를 ref에 저장
     wsClientRef.current = stompClient;
 
-    // cleanup: roomId가 바뀌거나 컴포넌트 언마운트 시 소켓 해제
+    // (B4) cleanup
     return () => {
       if (wsClientRef.current) {
         wsClientRef.current.disconnect();
       }
     };
-  }, [roomId]);
+  }, [roomId, user]);
 
-  // 2) 메시지가 갱신될 때마다 자동으로 스크롤 하단으로 이동
+  // (C) 스크롤 하단 처리
   useEffect(() => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
 
-  // 3) 메시지 전송
+  // (D) 메시지 전송
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (!message.trim()) return;
 
-    // STOMP 연결이 살아있는지 확인
+    const currentUserName = user?.username;
     if (wsClientRef.current && wsClientRef.current.connected) {
-      // 서버로 메시지 발행
+      // (D1) 메시지 발행
       wsClientRef.current.send(
         `/pub/chat.message.${roomId}`,
         {},
         JSON.stringify({
           roomId,
-          sender: "남종혁", // 로그인 사용자명으로 대체 필요
+          sender: currentUserName,
           content: message,
         })
       );
-      // 입력창 비우기
+
+      // (D2) 내가 보낸 메시지도 "나 바로 읽음" 처리를 위해
+      API.post(`/chatrooms/read?roomId=${roomId}`, {})
+        .then((res) => {
+          if (res.data.resultCode === "READ_ROOM_SUCCESS") {
+            console.log("내 메시지도 즉시 읽음 처리");
+          }
+        })
+        .catch(console.error);
+
       setMessage("");
     }
   };
 
+  // (E) 채팅방 나가기
+  const handleLeaveRoom = () => {
+    if (!roomId) return;
+    // 1) 서버 측에 POST 요청
+    API.post(`/chatrooms/leave?roomId=${roomId}`, {})
+      .then((res) => {
+        if (res.data.resultCode === "LEAVE_ROOM_SUCCESS") {
+          console.log("방 나가기 성공!", roomId);
+          // 2) 웹소켓 연결 해제
+          if (wsClientRef.current) {
+            wsClientRef.current.disconnect();
+          }
+          // 3) 채팅 목록 또는 다른 페이지로 이동
+          navigate("/chat"); 
+        } else {
+          console.error("나가기 실패:", res.data);
+        }
+      })
+      .catch((err) => {
+        console.error("나가기 중 오류:", err);
+      });
+  };
+
   return (
     <S.ChatRoomContainer>
-      {/* 메시지 목록 */}
+      {/* 상단 바 + 나가기 버튼 */}
       <S.MessagesContainer $isMobile={isMobile}>
+        <S.TopBar>
+          <S.LeaveButton onClick={handleLeaveRoom}>
+            <FaArrowLeft /> 나가기
+          </S.LeaveButton>
+        </S.TopBar>
+        <br />
+
+        {/* 메시지 목록 */}
         {messages.map((m, idx) => (
           <S.Message key={idx}>
             <S.UserName isUser={m.isUser}>{m.userName}</S.UserName>
             <S.ContentContainer isUser={m.isUser}>
               <S.Content>
-                {/* 말풍선 꼬리 (왼쪽/오른쪽) */}
                 {m.isUser ? <S.UserTail /> : <S.Tail />}
                 {m.content}
               </S.Content>
@@ -150,11 +222,10 @@ const ChatRoom = ({ roomId }) => {
             </S.ContentContainer>
           </S.Message>
         ))}
-        {/* 채팅 스크롤 자동 이동을 위한 ref */}
         <div ref={messagesEndRef} />
       </S.MessagesContainer>
 
-      {/* 입력창 + 전송 버튼 */}
+      {/* 입력창 */}
       <S.MessageInputContainer>
         <S.MessageInput
           value={message}
@@ -168,80 +239,3 @@ const ChatRoom = ({ roomId }) => {
 };
 
 export default ChatRoom;
-
-
-
-
-// const sampleMessages = [
-//   { userName: "이유진", content: "안녕하세요, 대화 시작합니다!", time: "오후 3:16", isUser: true },
-//   { userName: "홍길동", content: "네, 안녕하세요!", time: "오후 3:17", isUser: false },
-//   { userName: "이유진", content: "안녕하세요, 대화 시작합니다!", time: "오후 3:16", isUser: true },
-//   { userName: "홍길동", content: "네, 안녕하세요!!!!!!", time: "오후 3:17", isUser: false },
-//   { userName: "홍길동", content: "네, 안녕하세요!", time: "오후 3:17", isUser: false },
-//   { userName: "홍길동", content: "네, 안녕하세요!", time: "오후 3:17", isUser: false },
-//   { userName: "이유진", content: "안녕하세요, 대화 시작합니다!", time: "오후 3:16", isUser: true },
-//   { userName: "이유진", content: "안녕하세요, 대화 시작합니다!", time: "오후 3:16", isUser: true },
-// ];
-
-// const ChatRoom = ({ roomId }) => {
-//   const { isMobile } = useMediaQueries();
-//   const [message, setMessage] = useState("");
-//   const [messages, setMessages] = useState(sampleMessages);
-
-//   const handleInputChange = (e) => {
-//     setMessage(e.target.value);
-//   };
-
-//   const handleSendMessage = (e) => {
-//     e.preventDefault();
-//     if (message.trim()) {
-//       const newMessage = {
-//         userName: "이유진", // Assuming the current user is "이유진"
-//         content: message,
-//         time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-//         isUser: true,
-//       };
-//       setMessages([...messages, newMessage]);
-//       setMessage(""); // Clear input field
-//     }
-//   };
-
-//   const messagesEndRef = useRef(null);
-
-//   useEffect(() => {
-//     // 메시지가 변경될 때마다 마지막 요소로 스크롤
-//     if (messagesEndRef.current) {
-//       messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
-//     }
-//   }, [messages]); // messages 배열이 변경될 때마다 실행
-
-//   return (
-//     <S.ChatRoomContainer>
-//       <S.MessagesContainer $isMobile={isMobile}>
-//         {messages.map((message, index) => (
-//           <S.Message key={index}>
-//             <S.UserName isUser={message.isUser}>{message.userName}</S.UserName>
-//             <S.ContentContainer isUser={message.isUser}>
-//               <S.Content>
-//                 {message.isUser ? <S.UserTail /> : <S.Tail />}
-//                 {message.content}
-//               </S.Content>
-//               <S.Time>{message.time}</S.Time>
-//             </S.ContentContainer>
-//           </S.Message>
-//         ))}
-//         <div ref={messagesEndRef} />
-//       </S.MessagesContainer>
-//       <S.MessageInputContainer>
-//         <S.MessageInput
-//           value={message}
-//           onChange={handleInputChange}
-//           placeholder="메시지를 입력하세요..."
-//         />
-//         <S.SendButton onClick={handleSendMessage}>전송</S.SendButton>
-//       </S.MessageInputContainer>
-//     </S.ChatRoomContainer>
-//   );
-// };
-
-// export default ChatRoom;
