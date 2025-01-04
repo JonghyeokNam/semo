@@ -50,10 +50,13 @@ public class ApplyFormService {
         System.out.println("Fetched apply forms: " + applyForms);
 
         return applyForms.stream().map(applyForm -> {
+            User user = userRepository.findById(applyForm.getUserId())
+                    .orElseThrow(()-> new DataNotFoundException("User not found"));
+
                 return ApplyFormListResponseDto.builder()
                         .applyFormId(applyForm.getApplyFormId())
                         .boardId(applyForm.getBoardId())
-                        .userId(applyForm.getUserId())
+                        .username(user.getUsername())
                         .position(applyForm.getPosition().getName())
                         .aboutMe(applyForm.getAboutMe())
                         .status(applyForm.getStatus())

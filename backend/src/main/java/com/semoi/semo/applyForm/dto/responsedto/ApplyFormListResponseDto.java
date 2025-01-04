@@ -15,7 +15,7 @@ public class ApplyFormListResponseDto {
     private Long applyFormId;
     private Long boardId;
     private String boardTitle;
-    private Long userId;
+    private String username;
     private String position;
     private String aboutMe;
     private String status;
