@@ -31,7 +31,7 @@ public class ApplyFormController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 오류")
     })
-    @GetMapping("/boards/{boardId}/applyform")
+    @GetMapping("/boards/{boardId}/applyforms")
     public Response<List<ApplyFormListResponseDto>> getApplyFormsByBoardId(
             @Parameter(description = "게시글 ID", example = "1")
             @PathVariable("boardId") Long boardId,
@@ -58,7 +58,7 @@ public class ApplyFormController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 오류")
     })
-    @PostMapping("/boards/{boardId}/applyform")
+    @PostMapping("/boards/{boardId}/applyforms")
     public Response<Void> createApplyForm(
             @PathVariable("boardId") Long boardId,
             @RequestBody ApplyFormRequestDto requestDto,
