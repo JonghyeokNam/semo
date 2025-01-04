@@ -18,9 +18,6 @@ const Index = () => {
     fetchBoardApplyForms(boardData.boardId);
   }, [fetchBoardApplyForms]); // 빈 배열을 넣어서 첫 렌더링 시 한 번만 실행되도록 설정
   
-  console.log(boardData.boardId)
-  console.log(boardApplyForms);
-  
   return (
     <S.applyWrapper>
       <S.MainTitle>지원 리스트</S.MainTitle>
