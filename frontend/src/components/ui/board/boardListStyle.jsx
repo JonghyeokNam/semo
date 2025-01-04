@@ -41,7 +41,7 @@ export const Title = styled.div`
 `;
 
 export const Badge = styled.div`
-  background-color: var(--green);
+  background-color: ${(props) => (props.$isClosed ? "#BDBDBD" : "var(--green)")};
   color: #fff;
   font-size: 10px;
   font-weight: bold;
@@ -120,7 +120,7 @@ export const ApplicantInfo = styled.div`
   display: flex;
   gap: 8px;
   font-size: 12px;
-  color: var(--green);
+  color: ${(props) => (props.$isClosed ? "#495057" : "var(--green)")};
 `;
 
 export const EyeIcon = styled(FaEye)`

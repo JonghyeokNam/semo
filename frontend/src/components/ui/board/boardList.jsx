@@ -45,7 +45,7 @@ const BoardListWrite = ({ boardData }) => {
           </S.RightTop>
           <S.Row>
             <S.TitleContainer>
-              <S.Badge>모집중</S.Badge>
+              <S.Badge $isClosed={isClosed}>{isClosed ? "모집마감" : "모집중"}</S.Badge>
               <S.Title>{title}</S.Title>
             </S.TitleContainer>
           </S.Row>
@@ -71,7 +71,7 @@ const BoardListWrite = ({ boardData }) => {
               </S.Icon>
               <div>{commentCount}</div>
             </S.InfoItem>
-            <S.ApplicantInfo>
+            <S.ApplicantInfo  $isClosed={isClosed}>
               <div>지원자 수 |</div>
               <div>프론트엔드 {applyForms.frontend}명</div>
               <div>백엔드 {applyForms.backend}명</div>
