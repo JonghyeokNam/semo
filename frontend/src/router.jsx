@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "./App";
 import Home from "./pages/home/index";
 import Chat from "./pages/chat/index";
@@ -18,8 +18,11 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
+      // 기본 경로는 로그인 페이지로 리디렉션
+      { path: "/", element: <Navigate to="/login" replace /> },
+
       // 홈 페이지
-      { path: "/", element: <ProtectedRoute><Home /></ProtectedRoute> },
+      { path: "/home", element: <ProtectedRoute><Home /></ProtectedRoute> },
 
       // 채팅 페이지
       { path: "/chat", element: <ProtectedRoute><Chat /></ProtectedRoute> },
