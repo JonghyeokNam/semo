@@ -12,6 +12,7 @@ import com.semoi.semo.global.exception.DataNotFoundException;
 import com.semoi.semo.jwt.service.TokenProvider;
 import com.semoi.semo.user.domain.User;
 import com.semoi.semo.user.repository.UserRepository;
+import com.semoi.semo.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,6 +33,7 @@ public class BoardService {
     private final ApplyFormRepository applyFormRepository;
     private final CommentRepository commentRepository;
     private final TokenProvider tokenProvider;
+    private final UserService userService;
 
     public Page<BoardListResponseDto> getAllBoards(Pageable pageable, HttpServletRequest request) {
 
@@ -90,6 +92,9 @@ public class BoardService {
 
         Board board = BoardMapper.toEntity(boardRequestDto, user);
         boardRepository.save(board);
+        
+        // 모집 점수 추가
+        userService.updateUserScore(user, 10, 0);
     }
 
     public void updateBoard(Long boardId, BoardRequestDto boardRequestDto, HttpServletRequest request) {
