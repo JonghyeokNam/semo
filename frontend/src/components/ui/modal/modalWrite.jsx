@@ -8,22 +8,22 @@ const Modal = ({ isOpen, onClose, boardId }) => {
   const { submitApplication, isLoading, isError, error } = useApplyStore();
   const [selectedPosition, setSelectedPosition] = useState("");
   const [aboutMe, setAboutMe] = useState("");
-  const userId = 1;
+  
 
   if (!isOpen) return null;
 
   const positionList = [
-    { value: "front", label: "프론트엔드 개발자" },
-    { value: "back", label: "백엔드 개발자" },
-    { value: "uiux", label: "UI/UX" },
+    { value: "frontend", label: "프론트엔드 개발자" },
+    { value: "backend", label: "백엔드 개발자" },
+    { value: "designer", label: "UI/UX" },
     { value: "marketer", label: "마케터" },
   ];
 
   const handleComplete = () => {
-    const positionId = positionList.findIndex((pos) => pos.value === selectedPosition);
+    const positionName = selectedPosition;
     
-    submitApplication(boardId, positionId, aboutMe, userId ); // 지원 폼 제출
-    console.log("positionId" , positionId);
+    submitApplication(boardId, positionName, aboutMe ); // 지원 폼 제출
+    console.log("positionName" , positionName);
     console.log("aboutMe", aboutMe);
 
 
@@ -53,7 +53,7 @@ const Modal = ({ isOpen, onClose, boardId }) => {
             options={positionList}
             placeholder="포지션 선택"
             value={selectedPosition}
-            onChange={(selectedOption) => setSelectedPosition(selectedOption.value)} 
+            onChange={(selectedOption) => setSelectedPosition(selectedOption?.value || "")} 
             width="310px"
           />
           <S.ContentTitle>
