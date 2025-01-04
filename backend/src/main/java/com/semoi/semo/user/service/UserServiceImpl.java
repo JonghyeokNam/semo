@@ -18,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -55,9 +57,12 @@ public class UserServiceImpl implements UserService{
         Position position = positionRepository.findByName(userInfoRequestDto.position())
                         .orElseThrow(() -> new SemoException(ErrorCode.POSITION_NOT_FOUND));
 
+        String userEmail = userInfoRequestDto.userEmail();
+        validateEmailPattern(userEmail);
+
         // 유저 정보 수정
         user.updateInfo(
-                userInfoRequestDto.userEmail(),
+                userEmail,
                 position,
                 course
         );
@@ -103,5 +108,16 @@ public class UserServiceImpl implements UserService{
         }
 
         return false;
+    }
+
+    // 이메일 패턴 유효성 검사
+    private void validateEmailPattern(String email) {
+        final String REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern regex = Pattern.compile(REGEX);
+        Matcher matcher = regex.matcher(email);
+
+        if (!matcher.matches()) {
+            throw new SemoException(ErrorCode.UNSUITABLE_EMAIL, String.format("%s doesn't meet the conditions", email));
+        }
     }
 }
