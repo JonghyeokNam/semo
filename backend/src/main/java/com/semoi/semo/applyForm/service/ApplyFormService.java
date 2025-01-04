@@ -6,6 +6,11 @@ import com.semoi.semo.applyForm.dto.responsedto.ApplyFormListResponseDto;
 import com.semoi.semo.applyForm.dto.responsedto.ApplyFormResponseDto;
 import com.semoi.semo.applyForm.dto.responsedto.UserApplyFormListResponseDto;
 import com.semoi.semo.applyForm.entity.ApplyForm;
+import com.semoi.semo.global.exception.ErrorCode;
+import com.semoi.semo.global.exception.SemoException;
+import com.semoi.semo.notification.enums.Type;
+import com.semoi.semo.notification.service.NotificationService;
+import com.semoi.semo.position.entity.Position;
 import com.semoi.semo.applyForm.repository.ApplyFormRepository;
 import com.semoi.semo.board.dto.responsedto.BoardResponseDto;
 import com.semoi.semo.board.entity.Board;
@@ -33,6 +38,7 @@ public class ApplyFormService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final TokenProvider tokenProvider;
+    private final NotificationService notificationService;
 
     public List<ApplyFormListResponseDto> getApplyFormsByBoardId(Long boardId, HttpServletRequest request) {
         // 사용자 이메일 추출
@@ -122,6 +128,11 @@ public class ApplyFormService {
                 .build();
 
         applyFormRepository.save(applyForm);
+
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new SemoException(ErrorCode.BOARD_NOT_FOUND));
+
+        notificationService.createNotification(Type.COMMENT_ALERT, board.getUser(), board);
     }
 
     public ApplyFormResponseDto getUserApplyForm(Long applyFormId, HttpServletRequest request) {
