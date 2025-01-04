@@ -6,17 +6,14 @@ const useApplyStore = create((set) => ({
   isLoading: false,
   isError: false,
   error: null,
-  submitApplication: async (boardId, positionId, aboutMe, userId) => {
+  submitApplication: async (boardId, positionName, aboutMe) => {
     set({ isLoading: true, isError: false, error: null }); // 요청 시작
 
     try {
-      const response = await API.post(`/boards/${boardId}/applyform`,{
-        positionId: positionId+1,
+      const response = await API.post(`/boards/${boardId}/applyforms`,{
+        positionName: positionName,
         aboutMe: aboutMe,
       },
-      {
-        params: { userId: userId } // userId를 쿼리 파라미터로 추가
-    }
     ); 
 
       if (response.status === 200) {

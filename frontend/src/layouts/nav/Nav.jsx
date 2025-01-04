@@ -50,7 +50,7 @@ const Nav = () => {
       </S.NavWrapper>
 
       <S.Nav2Wrapper $isDesktop={isDesktop}>
-        <Link to="/">
+        <Link to="/home">
           <S.LeftContainer>
             <S.Logo>
               <img src="/img/logo.png" alt="Logo" />

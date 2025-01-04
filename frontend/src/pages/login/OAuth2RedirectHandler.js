@@ -23,7 +23,7 @@ function OAuth2RedirectHandler() {
 
           // 신규 유저 여부 확인
           const isNewUser = await checkNewUser();
-          console.log(isNewUser);
+          console.log("isNewUser",isNewUser);
 
           // 유저 정보 가져오기
           await fetchUserInfo();
@@ -32,7 +32,7 @@ function OAuth2RedirectHandler() {
           if (isNewUser) {
             navigate("/signup"); // 추가 정보 입력 페이지로 이동
           } else {
-            navigate("/"); // 홈 페이지로 이동
+            navigate("/home"); // 홈 페이지로 이동
           }
         } catch (error) {
           console.error("Failed to process login flow:", error);
