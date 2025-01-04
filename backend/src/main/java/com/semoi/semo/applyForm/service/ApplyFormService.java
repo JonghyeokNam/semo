@@ -6,18 +6,18 @@ import com.semoi.semo.applyForm.dto.responsedto.ApplyFormListResponseDto;
 import com.semoi.semo.applyForm.dto.responsedto.ApplyFormResponseDto;
 import com.semoi.semo.applyForm.dto.responsedto.UserApplyFormListResponseDto;
 import com.semoi.semo.applyForm.entity.ApplyForm;
-import com.semoi.semo.global.exception.ErrorCode;
-import com.semoi.semo.global.exception.SemoException;
-import com.semoi.semo.notification.enums.Type;
-import com.semoi.semo.notification.service.NotificationService;
-import com.semoi.semo.position.entity.Position;
 import com.semoi.semo.applyForm.repository.ApplyFormRepository;
 import com.semoi.semo.board.dto.responsedto.BoardResponseDto;
 import com.semoi.semo.board.entity.Board;
 import com.semoi.semo.board.repository.BoardRepository;
+import com.semoi.semo.bookmark.service.BookmarkService;
 import com.semoi.semo.comment.repository.CommentRepository;
 import com.semoi.semo.global.exception.DataNotFoundException;
+import com.semoi.semo.global.exception.ErrorCode;
+import com.semoi.semo.global.exception.SemoException;
 import com.semoi.semo.jwt.service.TokenProvider;
+import com.semoi.semo.notification.enums.Type;
+import com.semoi.semo.notification.service.NotificationService;
 import com.semoi.semo.position.entity.Position;
 import com.semoi.semo.position.repository.PositionRepository;
 import com.semoi.semo.user.domain.User;
@@ -41,6 +41,7 @@ public class ApplyFormService {
     private final TokenProvider tokenProvider;
     private final NotificationService notificationService;
     private final UserService userService;
+    private final BookmarkService bookmarkService;
 
     public List<ApplyFormListResponseDto> getApplyFormsByBoardId(Long boardId, HttpServletRequest request) {
         // 사용자 이메일 추출
@@ -89,7 +90,12 @@ public class ApplyFormService {
             Board board = boardRepository.findById(applyForm.getBoardId())
                     .orElseThrow(() -> new DataNotFoundException("Board not found"));
 
-            BoardResponseDto boardResponseDto = BoardResponseDto.fromEntity(board, userEmail, false, applyFormRepository, commentRepository);
+            boolean isBookmarked = bookmarkService.getState(userEmail, board.getBoardId());
+
+            // 댓글 수 조회
+            int commentCount = commentRepository.countByBoardId(board.getBoardId());
+
+            BoardResponseDto boardResponseDto = BoardResponseDto.fromEntity(board, userEmail, false, isBookmarked, applyFormRepository, commentCount);
 
             return UserApplyFormListResponseDto.builder()
                     .applyFormId(applyForm.getApplyFormId())

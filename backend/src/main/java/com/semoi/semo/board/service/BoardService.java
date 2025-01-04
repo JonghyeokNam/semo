@@ -7,6 +7,7 @@ import com.semoi.semo.board.dto.responsedto.BoardResponseDto;
 import com.semoi.semo.board.entity.Board;
 import com.semoi.semo.board.mapper.BoardMapper;
 import com.semoi.semo.board.repository.BoardRepository;
+import com.semoi.semo.bookmark.service.BookmarkService;
 import com.semoi.semo.comment.repository.CommentRepository;
 import com.semoi.semo.global.exception.DataNotFoundException;
 import com.semoi.semo.jwt.service.TokenProvider;
@@ -34,6 +35,7 @@ public class BoardService {
     private final CommentRepository commentRepository;
     private final TokenProvider tokenProvider;
     private final UserService userService;
+    private final BookmarkService bookmarkService;
 
     public Page<BoardListResponseDto> getAllBoards(Pageable pageable, HttpServletRequest request) {
 
@@ -78,7 +80,12 @@ public class BoardService {
         // ApplyFormRepository에서 boardId와 userId를 기준으로 존재 여부 확인
         boolean isParticipated = applyFormRepository.existsByBoardIdAndUserId(board.getBoardId(), user.getUserId());
 
-        return BoardResponseDto.fromEntity(board, userEmail, isParticipated, applyFormRepository, commentRepository);
+        boolean isBookmarked = bookmarkService.getState(userEmail, boardId);
+
+        // 댓글 수 조회
+        int commentCount = commentRepository.countByBoardId(board.getBoardId());
+
+        return BoardResponseDto.fromEntity(board, userEmail, isParticipated, isBookmarked, applyFormRepository, commentCount);
     }
 
     public void createBoard(BoardRequestDto boardRequestDto, HttpServletRequest request) {

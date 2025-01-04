@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.semoi.semo.applyForm.repository.ApplyFormRepository;
 import com.semoi.semo.board.entity.Board;
-import com.semoi.semo.comment.repository.CommentRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -34,6 +33,8 @@ public class BoardResponseDto {
     private boolean isParticipated; // 참가 여부
     @JsonProperty("isClosed")
     private boolean isClosed; // 모집 종료 여부
+    @JsonProperty("isBookmarked")
+    private boolean isBookmarked; // 북마크 여부
     private AuthorDto author;
     private ApplyFormsDto applyForms; // 신청자 정보
 
@@ -62,17 +63,15 @@ public class BoardResponseDto {
     // Service 간소화 함수
     public static BoardResponseDto fromEntity(Board board, String userEmail,
             Boolean isParticipated,
+            Boolean isBookmarked,
             ApplyFormRepository applyFormRepository,
-            CommentRepository commentRepository) {
+            int commentCount) {
 
         // 작성자 여부
         boolean isAuthor = board.getUser().getLoginEmail().equals(userEmail);
 
         // 모집 종료 여부
         boolean isClosed = board.getRecruitmentDeadline().isBefore(LocalDateTime.now());
-
-        // 댓글 수 조회
-        int commentCount = commentRepository.countByBoardId(board.getBoardId());
 
         // 분야별 신청자 수 조회
         ApplyFormsDto applyFormsDto = ApplyFormsDto.builder()
@@ -99,6 +98,7 @@ public class BoardResponseDto {
                 .commentCount(commentCount)
                 .isParticipated(isParticipated)
                 .isClosed(isClosed)
+                .isBookmarked(isBookmarked)
                 .author(AuthorDto.builder()
                         .username(board.getUser().getUsername())
 //                        채팅방 생성용, 게시글 작성자 로그인 이메일 전송

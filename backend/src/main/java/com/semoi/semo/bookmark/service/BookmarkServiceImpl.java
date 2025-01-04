@@ -76,10 +76,15 @@ public class BookmarkServiceImpl implements BookmarkService {
                 continue;
             }
 
+            boolean isBookmarked = getState(loginEmail, board.getBoardId());
+
+            // 댓글 수 조회
+            int commentCount = commentRepository.countByBoardId(board.getBoardId());
+
             // ApplyFormRepository에서 boardId와 userId를 기준으로 존재 여부 확인
             boolean isParticipated = applyFormRepository.existsByBoardIdAndUserId(board.getBoardId(), user.getUserId());
 
-            BoardResponseDto boardResponseDto = BoardResponseDto.fromEntity(board, loginEmail, isParticipated, applyFormRepository, commentRepository);
+            BoardResponseDto boardResponseDto = BoardResponseDto.fromEntity(board, loginEmail, isParticipated, isBookmarked, applyFormRepository, commentCount);
 
             boardListDtos.add(boardResponseDto);
         }
