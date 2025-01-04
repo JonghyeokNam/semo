@@ -3,6 +3,7 @@ import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import { useReadNotificationStore, useCheckNoReadNotificationStore, useGetNotificationsStore } from "../../../store/useNotificationStore";
 import { useNavigate } from "react-router-dom";
+import { useGetBoardDetailStore } from "../../../store/useBoardStore";
 
 const NotificationDetail = ({ item, onClose }) => {
     const navigate = useNavigate();
@@ -12,13 +13,15 @@ const NotificationDetail = ({ item, onClose }) => {
     const { readNotification } = useReadNotificationStore();
     const { fechIsReadAll } = useCheckNoReadNotificationStore();
     const { fetchList } = useGetNotificationsStore();
+    const { fetchBoardInfo } = useGetBoardDetailStore();
     
     // 클릭 이벤트 핸들러
     const handleClick = async () => {
+        const fetchedData = await fetchBoardInfo(item.boardId);
         await readNotification(item.notificationId); // 알림 읽음 처리 API 호출
         fechIsReadAll();
-        navigate("/board/detail", {
-            state: { boardId: item.boardId }, // boardId를 state로 전달
+        navigate(`/boards/${item.boardId}`, {
+            state: { boardData: fetchedData }, // boardId를 state로 전달
         });
         onClose();
         fetchList();

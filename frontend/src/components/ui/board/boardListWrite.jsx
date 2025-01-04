@@ -3,6 +3,7 @@ import * as S from "./boardListStyle";
 import { Link } from "react-router-dom"; 
 import { truncate } from "../../../utils/truncateText";
 import formatRelativeTime from "../../../utils/formatTime";
+import {replaceNewlinesWithSpace} from "../../../utils/replaceUtil"
 
 const BoardListWrite = ({ boardData }) => {
 
@@ -13,7 +14,7 @@ const BoardListWrite = ({ boardData }) => {
   const createdAt = boardData?.createdAt || "2024.12.26";
   const hit = boardData?.hit || "11";
   const comments = boardData?.comments || "0";
-  const applicants = boardData?.applicants || { frontend: 0, backend: 0, uiux: 0, marketer: 0 };
+  const applicants = boardData?.applyForms || { frontend: 0, backend: 0, uiux: 0, marketer: 0 };
 
   return (
     <S.LinkContainer100 to={`/boards/${boardId}`} state={{ boardData }}>
@@ -30,7 +31,7 @@ const BoardListWrite = ({ boardData }) => {
           </S.TitleContainer>
         </S.Row>
 
-        <S.Content>{truncate(content, 52)}</S.Content>
+        <S.Content>{replaceNewlinesWithSpace(truncate(content, 52))}</S.Content>
 
         <S.InfoContainer>
           <S.InfoItem>

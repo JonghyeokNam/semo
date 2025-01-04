@@ -3,6 +3,8 @@ import * as S from "./boardListStyle";
 import ModalModify from "../modal/modalModify";
 import { truncate } from "../../../utils/truncateText";
 import formatRelativeTime from "../../../utils/formatTime";
+import {replaceNewlinesWithSpace} from "../../../utils/replaceUtil"
+
 const BoardListApply = ({ boardData, formData }) => {
 
   const boardId = boardData?.boardId || "1";
@@ -12,7 +14,7 @@ const BoardListApply = ({ boardData, formData }) => {
   const createdAt = boardData?.createdAt || "2024.12.26";
   const hit = boardData?.hit || "11";
   const comments = boardData?.comments || "0";
-  const applicants = boardData?.applicants || { frontend: 0, backend: 0, uiux: 0, marketer: 0 };
+  const applicants = boardData?.applyForms || { frontend: 0, backend: 0, uiux: 0, marketer: 0 };
 
   const [open, setOpen] = useState(false);
 
@@ -41,7 +43,7 @@ const BoardListApply = ({ boardData, formData }) => {
           </S.TitleContainer>
         </S.Row>
 
-        <S.Content>{truncate(content, 52)}</S.Content>
+        <S.Content>{replaceNewlinesWithSpace(truncate(content, 52))}</S.Content>
 
         <S.InfoContainer>
           <S.InfoItem>

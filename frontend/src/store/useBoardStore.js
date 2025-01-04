@@ -37,6 +37,7 @@ export const useGetBoardDetailStore = create((set) => ({
           boardInfo: response.data.result, 
           loading: false 
         });
+        return response.data.result;
       } else {
         throw new Error('Failed to fetch list');
       }
