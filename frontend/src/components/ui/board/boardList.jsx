@@ -4,6 +4,7 @@ import { LiaHandPaper } from "react-icons/lia";
 import Modal from "../modal/modalWrite";
 import { truncate } from "../../../utils/truncateText";
 import { replaceNewlinesWithSpace } from "../../../utils/replaceUtil";
+import formatRelativeTime from "../../../utils/formatTime";
 
 const BoardListWrite = ({ boardData }) => {
 
@@ -55,7 +56,7 @@ const BoardListWrite = ({ boardData }) => {
             <div>{author}</div>
           </S.InfoItem>
           <S.InfoItem>
-            <div>・ {createdAt}</div>
+            <div>・ {formatRelativeTime(createdAt)}</div>
           </S.InfoItem>
           <S.InfoItem>
             <S.Icon>

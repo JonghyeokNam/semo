@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as S from "./style";
 import { BiMessageRoundedDots } from "react-icons/bi";
-import { Link } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom"; 
 import useMediaQueries from "../../hooks/useMediaQueries";
 import Notification from "../../components/ui/notification/notificationRead";
 import { useCheckNoReadNotificationStore, useGetNotificationsStore } from "../../store/useNotificationStore";
@@ -12,7 +12,8 @@ const Nav = () => {
   const [open, setOpen] = useState(false);
   const { fetchList } = useGetNotificationsStore();
   const { isReadAll } = useCheckNoReadNotificationStore();
-  const { isLoggedIn, user, fetchUserInfo } = useAuthStore();
+  const { isLoggedIn, user, fetchUserInfo, storeLogout } = useAuthStore();
+  const navigate = useNavigate();
 
   const openNotification = (e) => {
     e.stopPropagation(); // 이벤트 전파 중단
@@ -23,6 +24,11 @@ const Nav = () => {
 
   const closeModal = () => {
     setOpen(false); // 모달 닫기
+  };
+
+  const handleLogout = () => {
+    storeLogout(); // 로그아웃 처리
+    navigate("/login"); // /login 경로로 이동
   };
 
   useEffect(() => {
@@ -40,7 +46,7 @@ const Nav = () => {
           <S.Text>마이페이지</S.Text>
         </S.StyledLink>
         <S.Divider />
-        <S.Text>로그아웃</S.Text>
+        <S.Text onClick={handleLogout}>로그아웃</S.Text>
       </S.NavWrapper>
 
       <S.Nav2Wrapper $isDesktop={isDesktop}>
@@ -57,8 +63,10 @@ const Nav = () => {
           <Link to="/chat">
             <BiMessageRoundedDots size={36} />
           </Link>
-            <S.StyledGoBell size={36}  onClick={openNotification}/>
-            {isReadAll && <S.RedDot />}
+            <S.NotificationContainer>
+              <S.StyledGoBell size={36}  onClick={openNotification}/>
+              {isReadAll && <S.RedDot />}
+            </S.NotificationContainer>
         </S.RightContainer>
       </S.Nav2Wrapper>
       <Notification isOpen={open} onClose={closeModal}/>

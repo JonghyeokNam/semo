@@ -50,6 +50,7 @@ export const LogoText = styled.span`
 export const Text = styled.span`
   color: #493f3c;
   margin: 0 15px;
+  cursor: pointer;
 `;
 
 export const Divider = styled.div`
@@ -68,16 +69,21 @@ export const StyledLink = styled(Link)`
 
 export const StyledGoBell = styled(GoBell)`
   cursor: pointer;
+  position: relative;
 `;
 
 // RedDot: 빨간 원
 export const RedDot = styled.div`
   position: absolute;
-  right: 8.5rem;
-  top: 3.9rem;
+  left: 1rem;
+  bottom: 1.5rem;
   width: 1rem;
   height: 1rem;
   background-color: red;
   border-radius: 50%;
   border: 2px solid white;
 `;
+
+export const NotificationContainer = styled.div`
+  position: relative;
+`
