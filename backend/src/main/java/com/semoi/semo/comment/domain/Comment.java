@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-@SQLDelete(sql = "UPDATE comments SET deleted_at = SYSDATE WHERE id = ?")
+@SQLDelete(sql = "UPDATE comments SET deleted_at = SYSDATE WHERE comment_id = ?")
 @Where(clause = "deleted_at IS NULL")
 public class Comment {
 
