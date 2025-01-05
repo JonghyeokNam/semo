@@ -14,7 +14,7 @@ const Signup = () => {
   const [selectedCourse, setSelectedCourse] = useState(null); // 선택된 과정 상태
   const [selectedPosition, setSelectedPosition] = useState(null); // 선택된 포지션 상태
   const [userEmail, setUserEmail] = useState(""); // 이메일 상태
-  const { checkNewUser } = useNewCheckStore();
+  const { checkNewUser, isNewUser } = useNewCheckStore();
 
   useEffect(() => {
     fetchCampuses(); // 캠퍼스 목록을 가져옵니다.
@@ -44,12 +44,10 @@ const Signup = () => {
       courseName: selectedCourse?.label,
     };
 
-    await checkNewUser();
-
-    console.log(userInfo);
-
     try {
       await updateUserInfo(userInfo); // 사용자 정보 업데이트 요청
+      await checkNewUser();
+
     } catch (error) {
       console.error("프로필 저장 중 오류 발생:", error);
     }
