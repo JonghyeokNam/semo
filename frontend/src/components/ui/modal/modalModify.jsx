@@ -11,7 +11,7 @@ const ModalModify = ({ isOpen, onClose, formData }) => {
   const [selectedPosition, setSelectedPosition] = useState(
     formData.position || ""
   );
-  const [aboutMe, setAboutMe] = useState(formData.aboutMe || "");
+  const [aboutMe, setAboutMe] = useState(formData.aboutMe.replace(/\\n/g, "\n") || "");
 
   // 모달이 열려있지 않으면 렌더링하지 않음
   if (!isOpen) return null;
