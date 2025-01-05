@@ -119,7 +119,7 @@ public class ApplyFormService {
 
         // 포지션 ID를 기반으로 Position 엔티티 조회
         Position position = positionRepository.findByName(requestDto.getPositionName())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid position ID: " + requestDto.getPositionName()));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid position Name: " + requestDto.getPositionName()));
 
         // Board ID 유효성 확인
         boardRepository.findById(boardId)
