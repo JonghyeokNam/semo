@@ -49,7 +49,7 @@ const Signup = () => {
     } catch (error) {
       console.error("프로필 저장 중 오류 발생:", error);
     }
-    navigate("/"); // 완료 후 홈으로 이동
+    navigate("/home"); // 완료 후 홈으로 이동
   };
 
 
