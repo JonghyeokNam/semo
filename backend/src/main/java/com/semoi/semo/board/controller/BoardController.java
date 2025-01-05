@@ -40,11 +40,11 @@ public class BoardController {
     })
     @GetMapping
     public Response<Page<BoardListResponseDto>> getBoardList(
-            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
             HttpServletRequest request
     ){
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page - 1, size);
         Page<BoardListResponseDto> boardList = boardService.getAllBoards(pageable, request);
 
         return Response.success(boardList);
