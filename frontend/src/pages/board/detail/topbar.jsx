@@ -1,10 +1,15 @@
 import React from "react";
 import * as S from "./style";
 import { FaEye } from "react-icons/fa"; 
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-
-export const TopBar = () => {
+export const TopBar = ({boardInfo}) => {
+  const boardData = boardInfo;
+  const username = boardInfo?.author?.username || "작성자 없음";
+  const createdAt = boardInfo?.createdAt
+  ? new Date(boardInfo.createdAt).toLocaleDateString()
+  : "작성일 불러오는 중...";
+  const hit = boardInfo?.hit || 0;
     const navigate = useNavigate();
 
     const handlelist = () => {
@@ -22,17 +27,20 @@ export const TopBar = () => {
             <S.ImgContainer>
                 <S.ProfileImage src="/img/sesacHi.png" alt="profile" />
             </S.ImgContainer>
-            <S.UserName>사용자 이름</S.UserName>
+            <S.UserName>{username}</S.UserName>
           </S.UserInfo>
           <S.VerticalLine />
-          <S.Date>2024.09.30</S.Date>
+          <S.Date>{createdAt}</S.Date>
           <S.ViewCountWrapper>
             <FaEye style={{ fontSize: '18px' }} />
             조회수
+            {" " + hit}
           </S.ViewCountWrapper>
         </S.Row>
         <S.Row>
-          <S.Status onClick={handlelist}>지원서 목록</S.Status>
+          <Link to="/applylist" state={{ boardData }}>
+            <S.Status>지원서 목록</S.Status>
+          </Link>
           {/* <S.Status>마감</S.Status> */}
           <S.Status onClick={handleModify}>수정</S.Status>
           <S.Status>삭제</S.Status>

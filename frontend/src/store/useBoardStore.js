@@ -53,4 +53,28 @@ export const useGetBoardDetailStore = create((set) => ({
         recruitmentTypes: types, // 배열 형태로 업데이트
       },
     })),
-}));
+  }));
+    
+  export const useCreateBoardStore = create((set) => ({
+    boardData: null, // 생성된 게시글 데이터를 저장할 상태
+    loading: false, // 로딩 상태
+    error: null, // 에러 상태
+  
+    // 게시글 생성 함수
+    createBoard: async (payload) => {
+      set({ loading: true, error: null }); // 로딩 상태 시작
+      try {
+        const response = await API.post('/boards', payload);
+        if (response.data.resultCode === 'SUCCESS') {
+          set({ 
+            boardData: response.data.result, // 생성된 게시글 데이터 저장
+            loading: false 
+          });
+        } else {
+          throw new Error('Failed to create board');
+        }
+      } catch (error) {
+        set({ error: error.message, loading: false }); // 에러 상태 저장
+      }
+    },
+  }));
