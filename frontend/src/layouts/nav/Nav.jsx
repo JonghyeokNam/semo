@@ -28,7 +28,6 @@ const Nav = () => {
 
   const handleLogout = () => {
     storeLogout(); // 로그아웃 처리
-    navigate("/login"); // /login 경로로 이동
   };
 
   useEffect(() => {
