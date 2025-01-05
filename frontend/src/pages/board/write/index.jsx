@@ -12,7 +12,6 @@ const Delta = Quill.import("delta");
 
 const Index = () => {
 
-  const [formSubmitted, setFormSubmitted] = useState(false);
   const { isDesktop, isTablet } = useMediaQueries();
 
   // Zustand Store 상태 및 함수
@@ -69,8 +68,8 @@ const Index = () => {
   ];
 
   const processMethodData = [
-    { value: "Online", label: "온라인" },
-    { value: "Offline", label: "오프라인" },
+    { value: "online", label: "온라인" },
+    { value: "offline", label: "오프라인" },
     { value: "both", label: "온/오프라인" },
   ];
 
@@ -155,7 +154,6 @@ const Index = () => {
     try {
       await createBoard(requestData);
       alert("게시글이 성공적으로 등록되었습니다!");
-      setFormSubmitted(true);
     } catch (err) {
       console.error("에러 발생:", err.message);
       alert(`게시글 등록 실패: ${err.message}`);

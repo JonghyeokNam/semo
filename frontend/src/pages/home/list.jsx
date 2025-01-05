@@ -6,14 +6,14 @@ import * as S from "./style";
 
 const List = () => {
   const { boards, fetchBoards, totalPages, currentPage, loading, error } = useBoardListStore();
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
 
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
   const location = useLocation(); // 현재 URL 정보 가져오기
 
-  // URL에서 page 값 가져오기, 없으면 1로 설정
+  // URL에서 page 값 가져오기, 없으면 0으로 설정
   const query = new URLSearchParams(location.search);
-  const pageFromUrl = parseInt(query.get("page"), 10) || 1;
+  const pageFromUrl = parseInt(query.get("page"), 10) || 0;
 
   // 페이지 변경 시 호출
   const handlePageChange = (pageNumber) => {

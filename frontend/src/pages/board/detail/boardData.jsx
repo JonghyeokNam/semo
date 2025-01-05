@@ -5,10 +5,12 @@ import * as S from "./style";
 export const BoardData = ({boardInfo}) => {
 
   const recruitmentField = boardInfo?.recruitmentField || "알 수 없음";
-  const recruitmentMethod = boardInfo?.recruitmentMethod === "Online"
+  const recruitmentMethod = boardInfo?.recruitmentMethod === "online"
   ? "온라인"
-  : boardInfo?.recruitmentMethod === "Offline"
+  : boardInfo?.recruitmentMethod === "offline"
   ? "오프라인"
+  : boardInfo?.recruitmentMethod === "both"
+  ? "온/오프라인"
   : "알 수 없음";
   const recruitmentCount = boardInfo?.recruitmentCount || 0;
   const recruitmentTypes =  Array.isArray(boardInfo?.recruitmentTypes)
