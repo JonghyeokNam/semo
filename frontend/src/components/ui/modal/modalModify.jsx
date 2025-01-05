@@ -13,6 +13,9 @@ const ModalModify = ({ isOpen, onClose, formData }) => {
   );
   const [aboutMe, setAboutMe] = useState(formData.aboutMe.replace(/\\n/g, "\n") || "");
 
+  const [curAboutMe, setCurAboutMe] = useState(aboutMe || "");
+  const [curPosition, setCurPosition] = useState(selectedPosition || "");
+
   // 모달이 열려있지 않으면 렌더링하지 않음
   if (!isOpen) return null;
 
@@ -28,6 +31,8 @@ const ModalModify = ({ isOpen, onClose, formData }) => {
       try {
         await updateApplyForm(formData.applyFormId, selectedPosition, aboutMe);
         fetchUserApplyForms();
+        setCurAboutMe(aboutMe);
+        setCurPosition(selectedPosition);
         onClose();
       } catch (error) {
         console.log(error);
@@ -43,8 +48,8 @@ const ModalModify = ({ isOpen, onClose, formData }) => {
   };
 
   const handleClose = (e) => {
-      setSelectedPosition(formData.position);
-      setAboutMe(formData.aboutMe);
+      setSelectedPosition(curPosition);
+      setAboutMe(curAboutMe);
       onClose();
   };
 
