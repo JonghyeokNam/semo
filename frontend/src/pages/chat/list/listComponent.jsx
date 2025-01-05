@@ -1,10 +1,37 @@
 import React from "react";
 import * as S from "./style";
+import { truncate } from "../../../utils/truncateText";
 
-// 글자수 제한 함수: 25글자 이상이면 "..." 추가
-const truncate = (str, n) => {
-  return str?.length > n ? str.substr(0, n - 1) + "..." : str;
-};
+// const ListComponent = ({ chatData, onSelectRoom, currentUserName }) => {
+//   return (
+//     <S.ListContainer>
+//       {chatData.map((room, index) => {
+//         const otherUser = room.userList?.find((u) => u !== currentUserName) || room.roomName;
+//         const lastMsg = room.lastMessage || "";
+//         const lastTime = room.lastMessageTime
+//           ? new Date(room.lastMessageTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+//           : "";
+
+//         return (
+//           <S.ChatItem key={index} onClick={() => onSelectRoom(room.roomId)}>
+//             <S.Group>
+//               <S.ImgContainer>
+//                 <S.ProfileImage src="/img/sesacHi.png" alt={`${otherUser} 프로필`} />
+//               </S.ImgContainer>
+//               <S.UserInfo>
+//                 <S.UserName>{otherUser}</S.UserName>
+//                 <S.Content>{truncate(lastMsg, 25)}</S.Content>
+//               </S.UserInfo>
+//             </S.Group>
+//             <S.Time>{lastTime}</S.Time>
+//           </S.ChatItem>
+//         );
+//       })}
+//     </S.ListContainer>
+//   );
+// };
+
+// export default ListComponent;
 
 const ListComponent = ({ chatData, onSelectRoom }) => {
   return (
@@ -20,7 +47,12 @@ const ListComponent = ({ chatData, onSelectRoom }) => {
               <S.Content>{truncate(chat.content, 25)}</S.Content>
             </S.UserInfo>
           </S.Group>
-          <S.Time>{chat.time}</S.Time>
+
+          {/* 오른쪽 영역: 시간 + (안 읽은 메시지 badge) */}
+          <S.RightSide>
+            <S.Time>{chat.time}</S.Time>
+            {chat.unreadCount > 0 && <S.Badge>{chat.unreadCount}</S.Badge>}
+          </S.RightSide>
         </S.ChatItem>
       ))}
     </S.ListContainer>

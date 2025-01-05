@@ -1,34 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoClose } from "react-icons/io5"; 
 import * as S from "./modalStyle"; 
 import SelectComponent from "../selectComponent";
+import useApplyStore from "../../../store/useApplyStore";
+import useBoardListStore from "../../../store/useBoardListStore";
 
-const Modal = ({ isOpen, onClose }) => {
-  // isOpen이 false일 경우 모달을 렌더링하지 않음
+const Modal = ({ isOpen, onClose, boardId, setIsParticipated }) => {
+  const { submitApplication, isLoading, isError, error } = useApplyStore();
+  const { boards } = useBoardListStore();
+  const [selectedPosition, setSelectedPosition] = useState("");
+  const [aboutMe, setAboutMe] = useState("");
+  
+
   if (!isOpen) return null;
 
   const positionList = [
-    { value: "uiux", label: "UI/UX" },
-    { value: "front", label: "프론트엔드 개발자" },
-    { value: "back", label: "백엔드 개발자" },
+    { value: "frontend", label: "프론트엔드 개발자" },
+    { value: "backend", label: "백엔드 개발자" },
+    { value: "designer", label: "UI/UX" },
     { value: "marketer", label: "마케터" },
   ];
 
   const handleComplete = () => {
-    const userConfirmed = window.confirm("지원하시겠습니까? 수정은 마이페이지에서 가능합니다.");
-    if (userConfirmed) {
-      // 사용자가 '확인'을 누르면 모달을 닫음
-      onClose();
-    }
+    const positionName = selectedPosition;
+    
+    submitApplication(boardId, positionName, aboutMe); // 지원 폼 제출
+    console.log("positionName", positionName);
+    console.log("aboutMe", aboutMe);
+
+    // 서버에 데이터 제출 후 모달 닫기
+    setIsParticipated(true); // 지원 상태 업데이트
+    onClose();
   };
 
   const handleClose = () => {
-    // X 아이콘 클릭 시 확인 알림 창
     const confirmClose = window.confirm(
       "작성 중인 내용은 저장되지 않습니다. 정말 닫으시겠습니까?"
     );
     if (confirmClose) {
-      onClose(); // 사용자가 '확인'을 클릭하면 모달을 닫음
+      onClose();
     }
   };
 
@@ -44,9 +54,10 @@ const Modal = ({ isOpen, onClose }) => {
             label="희망하는 포지션을 선택해 주세요."
             options={positionList}
             placeholder="포지션 선택"
+            value={selectedPosition}
+            onChange={(selectedOption) => setSelectedPosition(selectedOption?.value || "")} 
             width="310px"
           />
-          {/* 댓글 입력 칸 */}
           <S.ContentTitle>
             어떤 팀원인가요? 자유롭게 소개해주세요.
           </S.ContentTitle>
@@ -55,9 +66,14 @@ const Modal = ({ isOpen, onClose }) => {
           </S.ContentDescription>
           <S.ContentInput
             placeholder="내용을 입력하세요"
+            value={aboutMe}
+            onChange={(e) => setAboutMe(e.target.value)}
           />
+          {isError && <div>지원 폼 제출에 실패했습니다: {error}</div>}
           <S.CompleteButtonWrapper>
-            <S.CompleteButton onClick={handleComplete}>완료</S.CompleteButton>
+            <S.CompleteButton onClick={handleComplete} disabled={isLoading}>
+              {isLoading ? "제출 중..." : "완료"}
+            </S.CompleteButton>
           </S.CompleteButtonWrapper>
         </S.Column>
       </S.ModalContent>

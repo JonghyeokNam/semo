@@ -1,0 +1,40 @@
+import React, { useEffect } from "react";
+import * as S from "./style";
+import { useActRankStore } from '../../store/useRankStore';
+
+const ActRank = () => {
+  const { ranks, fetchRanks, loading, error } = useActRankStore();
+
+  useEffect(() => {
+    fetchRanks(); // 데이터 가져오기
+  }, [fetchRanks]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  return (
+    <S.RankContainer>
+      <S.RankTable>
+        <thead>
+          <tr>
+            <S.TableHeader>순위</S.TableHeader>
+            <S.TableHeader>캠퍼스</S.TableHeader>
+            <S.TableHeader>점수</S.TableHeader>
+          </tr>
+        </thead>
+        <tbody>
+          {ranks.slice(0, 5).map((item, index) => ( // 처음 5개의 항목만 표시
+            <tr key={index}>
+              {/* 순위를 정적으로 매핑 (인덱스 + 1) */}
+              <S.TableCell $rank={index + 1}>{index + 1}</S.TableCell>
+              <S.TableCell $rank={index + 1}>{item.campusName}</S.TableCell>
+              <S.TableCell $rank={index + 1}>{item.score}</S.TableCell>
+            </tr>
+          ))}
+        </tbody>
+      </S.RankTable>
+    </S.RankContainer>
+  );
+};
+
+export default ActRank;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Calendar } from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
@@ -6,7 +6,7 @@ import { FaCalendarAlt } from "react-icons/fa";  // react-icons에서 캘린더 
 import * as S from "./calendarStyle";
 
 const CustomCalendar = ({ onChange, value }) => {
-  const [nowDate, setNowDate] = useState("날짜");
+  const [nowDate, setNowDate] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggleCalendar = () => {
@@ -18,6 +18,15 @@ const CustomCalendar = ({ onChange, value }) => {
     setIsOpen(false);
     setNowDate(moment(selectedDate).format("YYYY년 MM월 DD일"));
   };
+
+  useEffect(() => {
+    if (value) {
+      setNowDate(moment(value).format("YYYY년 MM월 DD일"));
+    } else {
+      setNowDate("날짜");
+    }
+  }, [value]);
+  
 
   return (
     <S.CalendarContainer>
