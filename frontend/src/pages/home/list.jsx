@@ -12,9 +12,9 @@ const List = () => {
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
   const location = useLocation(); // 현재 URL 정보 가져오기
 
-  // URL에서 page 값 가져오기, 없으면 1로 설정
+  // URL에서 page 값 가져오기, 없으면 0으로 설정
   const query = new URLSearchParams(location.search);
-  const pageFromUrl = parseInt(query.get("page"), 10) || 1;
+  const pageFromUrl = parseInt(query.get("page"), 10) || 0;
 
   const [startPage, setStartPage] = useState(1); // 페이지 그룹의 시작 페이지 번호
 
