@@ -13,7 +13,7 @@ export const BoardData = ({boardInfo}) => {
   ? "온/오프라인"
   : "알 수 없음";
   const recruitmentCount = boardInfo?.recruitmentCount || 0;
-  const recruitmentTypes =  Array.isArray(boardInfo?.recruitmentTypes)
+  const recruitmentTypes = Array.isArray(boardInfo?.recruitmentTypes)
     ? boardInfo.recruitmentTypes
     : [];
   const recruitmentDeadline = boardInfo?.recruitmentDeadline

@@ -23,7 +23,11 @@ const SelectComponent = ({ label, options, defaultValue, isMulti, placeholder, w
       </label>
       <Select
         options={options}
-        value={options.find((option) => option.value === value)}
+        value={
+         isMulti
+          ? options.filter((option) => Array.isArray(value) && value.includes(option.value))
+          : options.find((option) => option.value === value)
+        }
         onChange={onChange}
         defaultValue={defaultValue}
         isMulti={isMulti}

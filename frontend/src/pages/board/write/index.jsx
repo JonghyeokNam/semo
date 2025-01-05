@@ -41,10 +41,9 @@ const Index = () => {
   };
 
   const handleRecruitmentCountChange = (value) => {
-    const intValue = parseInt(value, 10); // 숫자 문자열을 정수로 변환
     setFormData((prev) => ({
       ...prev,
-      recruitmentCount: isNaN(intValue) ? 0 : intValue,
+      recruitmentCount: isNaN(value) ? 0 : value,
     }));
   };
 
@@ -54,19 +53,19 @@ const Index = () => {
   ];
 
   const recruitmentCountData = [
-    { value: "0", label: "인원 미정" },
-    { value: "1", label: "1명" },
-    { value: "2", label: "2명" },
-    { value: "3", label: "3명" },
-    { value: "4", label: "4명" },
-    { value: "5", label: "5명" },
-    { value: "6", label: "6명" },
-    { value: "7", label: "7명" },
-    { value: "8", label: "8명" },
-    { value: "9", label: "9명" },
-    { value: "10", label: "10명" },
+    { value: 0, label: "인원 미정" },
+    { value: 1, label: "1명" },
+    { value: 2, label: "2명" },
+    { value: 3, label: "3명" },
+    { value: 4, label: "4명" },
+    { value: 5, label: "5명" },
+    { value: 6, label: "6명" },
+    { value: 7, label: "7명" },
+    { value: 8, label: "8명" },
+    { value: 9, label: "9명" },
+    { value: 10, label: "10명" },
   ];
-
+  
   const processMethodData = [
     { value: "online", label: "온라인" },
     { value: "offline", label: "오프라인" },
@@ -246,7 +245,7 @@ const Index = () => {
             <Editor
               ref={quillRef}
               readOnly={false}
-              defaultValue={new Delta().insert("내용을 작성해주세요.\n")}
+              placeholder="내용을 작성해주세요."
               onTextChange={handleQuillContentChange}
               style={{ minHeight: "200px" }}
             />

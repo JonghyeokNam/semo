@@ -78,3 +78,31 @@ export const useGetBoardDetailStore = create((set) => ({
       }
     },
   }));
+
+
+export const useUpdateBoardStore = create((set) => ({
+  updatedBoardData: null,
+  loading: false,
+  error: null,
+
+  // 게시글 수정 함수
+  updateBoard: async (boardId, payload) => {
+    set({ loading: true, error: null });
+    try {
+      const response = await API.put(`/boards/${boardId}`, payload);
+      if (response.data.resultCode === 'SUCCESS') {
+        set({
+          updatedBoardData: response.data.result,
+          loading: false,
+        });
+      } else {
+        throw new Error('Failed to update board');
+      }
+    } catch (error) {
+      set({
+        error: error.message,
+        loading: false,
+      });
+    }
+  },
+}));
