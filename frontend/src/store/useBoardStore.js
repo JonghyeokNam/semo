@@ -106,3 +106,31 @@ export const useUpdateBoardStore = create((set) => ({
     }
   },
 }));
+
+
+export const useDeleteBoardStore = create((set) => ({
+  boardData: null,
+  loading: false,
+  error: null,
+
+deleteBoard: async (boardId) => {
+  set({ loading: true, error: null });
+  try {
+    const response = await API.delete(`/boards/${boardId}`);
+    if (response.data.resultCode === 'SUCCESS') {
+      // 필요하다면 state 업데이트 or 리셋
+      set({
+        boardData: null,
+        loading: false,
+      });
+    } else {
+      throw new Error('Failed to delete board');
+    }
+  } catch (error) {
+    set({
+      error: error.message,
+      loading: false,
+    });
+  }
+},
+}));

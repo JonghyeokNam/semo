@@ -2,8 +2,10 @@ import React from "react";
 import * as S from "./style";
 import { FaEye } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import { useDeleteBoardStore } from "../../../store/useBoardStore";
 
 export const TopBar = ({ boardInfo }) => {
+  const { deleteBoard, loading, error } = useDeleteBoardStore();
   const boardData = boardInfo;
   const username = boardInfo?.author?.username || "작성자 없음";
   const createdAt = boardInfo?.createdAt
@@ -12,8 +14,26 @@ export const TopBar = ({ boardInfo }) => {
   const hit = boardInfo?.hit || 0;
   const navigate = useNavigate();
 
-  const handleDelete = () => {
-    console.log("Delteed");
+  const handleDelete = async () => {
+    if (!boardData || !boardData.boardId) {
+      alert("게시글 정보가 없습니다.");
+      return;
+    }
+
+    const confirmDelete = window.confirm("정말 이 게시글을 삭제하시겠습니까?");
+    if (!confirmDelete) return;
+
+    try {
+      // store의 deleteBoard 호출
+      await deleteBoard(boardData.boardId);
+      if (!error) {
+        alert("게시물이 삭제되었습니다!");
+        navigate("/"); // 삭제 후 이동할 경로
+      }
+    } catch (err) {
+      console.error("삭제 요청 오류:", err);
+      alert(`삭제 요청에 실패했습니다: ${err.message}`);
+    }
   };
 
   return (
@@ -41,7 +61,7 @@ export const TopBar = ({ boardInfo }) => {
         <Link to="/board/modify" state={{ boardData }}>
           <S.Status>수정</S.Status>
         </Link>
-          <S.Status onClick={handleDelete}>삭제</S.Status>
+        <S.Status onClick={handleDelete}>삭제</S.Status>
       </S.Row>
     </S.TopBar>
   );
