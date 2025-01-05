@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import SelectComponent from "../../components/ui/selectComponent";
 import useSignupStore from "../../store/useSignupStore";
 import { useUpdateUserStore } from "../../store/useAuthStore"; // useUpdateUserStore 추가
+import { useNewCheckStore } from "../../store/useNewCheckStore";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const Signup = () => {
   const [selectedCourse, setSelectedCourse] = useState(null); // 선택된 과정 상태
   const [selectedPosition, setSelectedPosition] = useState(null); // 선택된 포지션 상태
   const [userEmail, setUserEmail] = useState(""); // 이메일 상태
+  const { checkNewUser } = useNewCheckStore();
 
   useEffect(() => {
     fetchCampuses(); // 캠퍼스 목록을 가져옵니다.
@@ -41,6 +43,8 @@ const Signup = () => {
       campusName: selectedCampus?.label,
       courseName: selectedCourse?.label,
     };
+
+    await checkNewUser();
 
     console.log(userInfo);
 
