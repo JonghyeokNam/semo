@@ -1,10 +1,10 @@
 package com.semoi.semo.user.domain;
 
-import com.semoi.semo.campus.domain.Campus;
+import com.semoi.semo.position.entity.Position;
 import com.semoi.semo.bookmark.domain.Bookmark;
+import com.semoi.semo.campus.domain.Course;
 import com.semoi.semo.comment.domain.Comment;
 import com.semoi.semo.notification.entity.Notification;
-import com.semoi.semo.user.enums.Position;
 import com.semoi.semo.user.enums.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -41,10 +41,6 @@ public class User {
     @Column(name = "user_email", nullable = false)
     private String userEmail;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Position position;
-
     @Column(name = "rec_score", nullable = false)
     private int recScore = 0;
 
@@ -62,8 +58,12 @@ public class User {
     private Role role;
 
     @ManyToOne
-    @JoinColumn(name = "campus_id")
-    private Campus campus;
+    @JoinColumn(name = "position_id")
+    private Position position;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Bookmark> bookmarks;
@@ -89,27 +89,22 @@ public class User {
             String username,
             String loginEmail,
             String userEmail,
-            Position position,
-            Role role,
-            Campus campus
+            Role role
     ) {
         this.username = username;
         this.loginEmail = loginEmail;
         this.userEmail = userEmail;
-        this.position = position;
         this.role = role;
-        this.campus = campus;
     }
 
-    public static User create(String username, String loginEmail, String userEmail, Position position, Role role, Campus campus) {
-        return new User(username, loginEmail, userEmail, position, role, campus);
+    public static User create(String username, String loginEmail, String userEmail, Role role) {
+        return new User(username, loginEmail, userEmail, role);
     }
 
-    public void updateInfo(String username, String userEmail, Position position, Campus campus) {
-        this.username = username;
+    public void updateInfo(String userEmail, Position position, Course course) {
         this.userEmail = userEmail;
         this.position = position;
-        this.campus = campus;
+        this.course = course;
     }
 
     public void resetCurrentScore() {

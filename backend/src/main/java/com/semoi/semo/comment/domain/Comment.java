@@ -19,12 +19,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-@SQLDelete(sql = "UPDATE comments SET deleted_at = SYSDATE WHERE id = ?")
+@SQLDelete(sql = "UPDATE comments SET deleted_at = SYSDATE WHERE comment_id = ?")
 @Where(clause = "deleted_at IS NULL")
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_form_seq ")
+    @SequenceGenerator(name = "comment_form_seq ", sequenceName = "comment_form_seq", allocationSize = 1)
     @Column(name = "comment_id", nullable = false, updatable = false)
     private Long commentId;
 

@@ -21,4 +21,12 @@ public class Response<T> {
     public static <T> Response<T> success(T result) {
         return new Response<T> ("SUCCESS", result);
     }
+
+    public static <T> Response<T> of(String message, T data) {
+        return new Response<>(message, data);
+    }
+
+//    public static <T> Response<T> of(String message) {
+//        return new Response<>(message);
+//    }
 }

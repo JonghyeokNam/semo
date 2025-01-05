@@ -7,7 +7,8 @@ import com.semoi.semo.user.dto.response.UserResponseDto;
 public interface UserService {
     User getUserByUserIdOrElseThrow(Long userId);
     User getUserByLoginEmailOrElseThrow(String loginEmail);
-    UserResponseDto createUser(String loginEmail, UserInfoRequestDto userInfoRequestDto);
-
+    UserResponseDto updateUser(String loginEmail, UserInfoRequestDto userInfoRequestDto);
     void resetUserScore();
+    Boolean getCheckNewUser(String loginEmail);
+    void updateUserScore(User user, int recScore, int actScore);
 }

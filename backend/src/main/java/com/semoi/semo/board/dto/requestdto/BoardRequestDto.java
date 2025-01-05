@@ -2,6 +2,7 @@ package com.semoi.semo.board.dto.requestdto;
 
 import jakarta.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +17,7 @@ public class BoardRequestDto {
     private String content;
 
     @NotNull
-    private String recruitmentType;
+    private List<String> recruitmentTypes;
 
     @NotNull
     private Long recruitmentCount;

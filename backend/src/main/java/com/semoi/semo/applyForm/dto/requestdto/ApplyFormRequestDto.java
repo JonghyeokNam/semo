@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ApplyFormRequestDto {
 
-    private Long positionId; // 참여 포지션
+    private String positionName; // 참여 포지션
     private String aboutMe; // 포트폴리오 URL 등을 포함한 자기소개
 
 }

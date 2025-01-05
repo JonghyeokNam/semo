@@ -1,6 +1,7 @@
 package com.semoi.semo.user.controller;
 
 import com.semoi.semo.global.response.Response;
+import com.semoi.semo.jwt.service.TokenProvider;
 import com.semoi.semo.jwt.service.TokenService;
 import com.semoi.semo.oauth2.util.CookieUtil;
 import com.semoi.semo.user.dto.request.UserInfoRequestDto;
@@ -15,7 +16,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,6 +26,7 @@ public class UserController {
 
     private final UserService userService;
     private final TokenService tokenService;
+    private final TokenProvider tokenProvider;
     private static final String REFRESH_TOKEN_KEY_NAME = "refresh_token";
 
     @Operation(
@@ -45,8 +46,8 @@ public class UserController {
             ),
     })
     @PutMapping
-    public Response<UserResponseDto> saveInfo(Authentication authentication, @RequestBody UserInfoRequestDto userInfoRequestDto) {
-        return Response.success(userService.createUser(authentication.getName(), userInfoRequestDto));
+    public Response<UserResponseDto> saveInfo(HttpServletRequest request, @RequestBody UserInfoRequestDto userInfoRequestDto) {
+        return Response.success(userService.updateUser(tokenProvider.getUserLoginEmail(request), userInfoRequestDto));
     }
 
     @Operation(
@@ -66,8 +67,8 @@ public class UserController {
             ),
     })
     @GetMapping
-    public Response<UserResponseDto> getLoginUser(Authentication authentication) {
-        return Response.success(UserResponseDto.toDto(userService.getUserByLoginEmailOrElseThrow(authentication.getName())));
+    public Response<UserResponseDto> getLoginUser(HttpServletRequest request) {
+        return Response.success(UserResponseDto.toDto(userService.getUserByLoginEmailOrElseThrow(tokenProvider.getUserLoginEmail(request))));
     }
 
     @Operation(
@@ -87,10 +88,30 @@ public class UserController {
             ),
     })
     @PostMapping("/logout")
-    public Response<Void> logout(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
-        tokenService.deleteRefreshToken(authentication.getName());
+    public Response<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+        tokenService.deleteRefreshToken(tokenProvider.getUserLoginEmail(request));
 
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN_KEY_NAME);
         return Response.success();
+    }
+
+    @Operation(
+            summary = "신규 유저 확인 API",
+            description = "신규 유저의 경우 true, 기존 유저의 경우 false 반환합니다."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = Response.class))
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증 실패",
+                    content = @Content(schema = @Schema(implementation = Response.class))
+            ),
+    })
+    @GetMapping("/check")
+    public Response<Boolean> checkNewUser(HttpServletRequest request) {
+        return Response.success(userService.getCheckNewUser(tokenProvider.getUserLoginEmail(request)));
     }
 }
