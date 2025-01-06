@@ -5,6 +5,7 @@ import formatRelativeTime from "../../../utils/formatTime";
 import { useDoBookmarkStore } from "../../../store/useBookmarkStore";
 import {replaceNewlinesWithSpace} from "../../../utils/replaceUtil"
 
+// 이유진, 차현철
 const BoardListBook = ({ boardData }) => {
   const { fetchBookmark } = useDoBookmarkStore();
 

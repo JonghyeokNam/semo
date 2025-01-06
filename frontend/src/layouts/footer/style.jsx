@@ -1,5 +1,6 @@
     import styled from "styled-components";
 
+    // 이유진
     // Footer 스타일링
     export const FooterWrapper = styled.div`
     display: flex;

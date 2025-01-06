@@ -5,6 +5,7 @@ import NoRoom from "./noRoom";
 import ChatList from "./ChatList";
 import ChatRoom from "./message/chatRoom";
 
+// 이유진, 남종혁
 const Index = () => {
   const { isMobile } = useMediaQueries();
 

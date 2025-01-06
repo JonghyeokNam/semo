@@ -3,6 +3,7 @@ import * as S from "./style";
 import formatRelativeTime from "../../../utils/formatTime";
 import { useAuthStore } from "../../../store/useAuthStore";
 
+// 이유진, 주현우
 export const CommentComponent = ({ key, comment, onUpdate, onDelete }) => {
   const { user } = useAuthStore();
   const loggedInUserId = user?.userId;

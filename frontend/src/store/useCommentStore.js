@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { API } from "../lib/apis/utils/index";
 
+// 주현우 
 export const useCommentStore = create((set, get) => ({
   comments: [], 
   loading: false,

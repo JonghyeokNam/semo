@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
+// 이유진
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 

@@ -7,6 +7,7 @@ import Notification from "../../components/ui/notification/notificationRead";
 import { useCheckNoReadNotificationStore, useGetNotificationsStore } from "../../store/useNotificationStore";
 import { useAuthStore } from "../../store/useAuthStore";
 
+// 이유진
 const Nav = () => {
   const {isDesktop } = useMediaQueries();
   const [open, setOpen] = useState(false);

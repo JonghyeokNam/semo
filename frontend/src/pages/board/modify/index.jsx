@@ -11,6 +11,7 @@ import { Link, useLocation } from "react-router-dom";
 import moment from "moment";
 import "moment-timezone";  // 이 부분 추가
 
+// 이유진, 주현우
 const Delta = Quill.import("delta");
 
 const Index = () => {

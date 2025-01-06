@@ -2,6 +2,7 @@ import React from "react";
 import * as S from "./boardListStyle";
 import { LiaHandPaper } from "react-icons/lia";
 
+// 이유진
 const FinishBoardList = ({ boardData }) => {
   return (
     <S.BoardListContainer>

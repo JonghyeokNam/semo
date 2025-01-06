@@ -7,6 +7,7 @@ import useMediaQueries from "./hooks/useMediaQueries";
 import { useEffect } from 'react';
 import { useCheckNoReadNotificationStore } from './store/useNotificationStore';
 
+// 이유진
 const BackGroundColor = styled.div`
   width: 100vw;
   min-height: 100vh;

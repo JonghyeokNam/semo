@@ -4,7 +4,7 @@ import NotificationDetail from "./notificationDetail"
 import { useGetNotificationsStore } from "../../../store/useNotificationStore";
 import { useEffect } from "react";
 
-
+// 차현철
 const Notification = ({ isOpen, onClose }) => {
     // isOpen이 false일 경우 모달을 렌더링하지 않음
     

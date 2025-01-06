@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+// 이유진, 남종혁
 export const ListContainer = styled.div`
   display: flex;
   flex-direction: column;

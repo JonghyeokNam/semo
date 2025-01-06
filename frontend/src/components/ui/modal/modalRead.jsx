@@ -3,6 +3,7 @@ import { IoClose } from "react-icons/io5";
 import * as S from "./modalStyle"; 
 import SelectComponent from "../selectComponent";
 
+// 이유진
 const ModalRead = ({ isOpen, onClose, formData }) => {
   // isOpen이 false일 경우 모달을 렌더링하지 않음
   if (!isOpen) return null;

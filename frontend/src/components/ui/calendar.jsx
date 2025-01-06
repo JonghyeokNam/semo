@@ -5,6 +5,7 @@ import moment from "moment";
 import { FaCalendarAlt } from "react-icons/fa";  // react-icons에서 캘린더 아이콘 가져오기
 import * as S from "./calendarStyle";
 
+// 이유진
 const CustomCalendar = ({ onChange, value }) => {
   const [nowDate, setNowDate] = useState("");
   const [isOpen, setIsOpen] = useState(false);

@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { FaArrowLeft, FaRegBookmark } from "react-icons/fa";
 
-// 스타일 컴포넌트 (styled-components)
-
+// 이유진
 export const DetailContainer = styled.div`
 
 `;

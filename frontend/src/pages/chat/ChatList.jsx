@@ -7,6 +7,7 @@ import { API } from "../../lib/apis/utils/index";
 import { useChatStore } from "../../store/useChatStore";
 import { Stomp } from "@stomp/stompjs"; 
 
+// 이유진, 남종혁
 const ChatList = ({ onSelectRoom }) => {
   const [chatData, setChatData] = useState([]);
   

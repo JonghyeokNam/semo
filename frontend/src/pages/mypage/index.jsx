@@ -10,7 +10,7 @@ import { useGetMyBookmarksStore } from "../../store/useBookmarkStore";
 import { useGetMyBoardsStore } from "../../store/useBoardStore";
 import { useGetUserApplyFormsStore } from "../../store/useApplyStore";
 
-
+// 이유진, 차현철
 const positionList = [
   { value: "designer", label: "UI/UX" },
   { value: "frontend", label: "프론트엔드 개발자" },

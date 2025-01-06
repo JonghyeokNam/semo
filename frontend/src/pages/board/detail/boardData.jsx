@@ -1,6 +1,7 @@
 import React from "react";
 import * as S from "./style";
 
+// 이유진, 주현우
 // BoardData 컴포넌트
 export const BoardData = ({boardInfo}) => {
 

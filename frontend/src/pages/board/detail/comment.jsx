@@ -3,6 +3,7 @@ import * as S from "./style";
 import { CommentComponent } from "./commentComponent";
 import { useCommentStore } from "../../../store/useCommentStore";
 
+// 이유진, 주현우
 export const Comment = ({ boardId }) => {
 
   const [comment, setComment] = useState("");

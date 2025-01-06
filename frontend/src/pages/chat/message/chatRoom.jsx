@@ -11,6 +11,8 @@ import { useChatStore } from "../../../store/useChatStore";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 
+// 이유진, 남종혁
+
 const ChatRoom = ({ roomId }) => {
   const navigate = useNavigate();
   const { isMobile } = useMediaQueries();

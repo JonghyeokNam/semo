@@ -6,6 +6,7 @@ import useSignupStore from "../../store/useSignupStore";
 import { useUpdateUserStore } from "../../store/useAuthStore"; // useUpdateUserStore 추가
 import { useNewCheckStore } from "../../store/useNewCheckStore";
 
+// 이유진
 const Signup = () => {
   const navigate = useNavigate();
   const { campuses, courses, fetchCampuses, fetchCourses, loading } = useSignupStore();
