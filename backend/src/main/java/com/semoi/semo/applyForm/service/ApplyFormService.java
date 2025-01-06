@@ -142,7 +142,7 @@ public class ApplyFormService {
 
         // 활동 점수 추가
         userService.updateUserScore(user, 0, 10);
-        notificationService.createNotification(Type.COMMENT_ALERT, board.getUser(), board);
+        notificationService.createNotification(Type.PARTICIPATION_REQUEST, board.getUser(), board);
     }
 
     public ApplyFormResponseDto getUserApplyForm(Long applyFormId, HttpServletRequest request) {
