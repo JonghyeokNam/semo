@@ -92,7 +92,7 @@ export const RankContainer = styled.div`
 `;
 
 export const RankTable = styled.table`
-  width: 270px;
+  width: 100%;
   border-collapse: collapse;  
   display: block; 
   white-space: nowrap; 
@@ -144,7 +144,7 @@ export const FilterItem = styled.div`
   cursor: pointer;
   font-size: 20px;
   font-weight: bold;
-  color: ${({ isSelected }) => (isSelected ? "#444444" : "#868E96")};
+  color: ${( props ) => (props.$isSelected ? "#444444" : "#868E96")};
   // border-bottom: ${({ isSelected }) =>
     isSelected ? "2px solid #444444" : "none"};
 `;
@@ -226,6 +226,7 @@ export const RegisterButton = styled.button`
 export const Pagination = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   margin: 24px 0;
 `;
 
@@ -240,8 +241,33 @@ export const PageNumber = styled.span`
   color: black;
   border-radius: 10px;
   border: none;
+  transition: background-color 0.3s ease;
 
   &:hover {
     background-color: #e7ebef;
+  }
+`;
+
+export const PageButton = styled.button`
+  margin: 0 6px;
+  cursor: pointer;
+  padding: 10px 15px;
+  font-family: "MonRegular";
+  font-size: 16px;
+  background-color: white;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    background-color: #f0f0f0;
+    color: black;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: #f9f9f9;
+    color: #ccc;
   }
 `;

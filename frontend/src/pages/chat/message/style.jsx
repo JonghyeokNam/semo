@@ -119,3 +119,26 @@ export const SendButton = styled.button`
     background-color: #44A253;
   }
 `;
+
+export const TopBar = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: #f1f1f1;
+  justify-content: space-between;
+`;
+
+// “나가기” 버튼 스타일 (원하는 스타일로 지정)
+export const LeaveButton = styled.button`
+  background-color: #ff5959;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.85;
+  }
+`;

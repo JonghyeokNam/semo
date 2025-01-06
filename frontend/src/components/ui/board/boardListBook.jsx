@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import * as S from "./boardListStyle";
-import { Link } from "react-router-dom"; 
+import { truncate } from "../../../utils/truncateText";
+import formatRelativeTime from "../../../utils/formatTime";
+import { useDoBookmarkStore } from "../../../store/useBookmarkStore";
+import {replaceNewlinesWithSpace} from "../../../utils/replaceUtil"
 
 const BoardListBook = ({ boardData }) => {
+  const { fetchBookmark } = useDoBookmarkStore();
 
   const title = boardData?.title || "제목을 불러오는 중...";
   const content = boardData?.content || "내용을 불러오는 중...";
@@ -10,39 +14,46 @@ const BoardListBook = ({ boardData }) => {
   const createdAt = boardData?.createdAt || "2024.12.26";
   const hit = boardData?.hit || "11";
   const comments = boardData?.comments || "0";
-  const applicants = boardData?.applicants || { frontend: 0, backend: 0, uiux: 0, marketer: 0 };
+  const applicants = boardData?.applyForms || { frontend: 0, backend: 0, uiux: 0, marketer: 0 };
 
-  const [isActive, setIsActive] = useState(true);
+  const isbookmarked = boardData?.isbookmarked || "false";
 
-  const handleClick = (e) => {
+  const [isActive, setIsActive] = useState(isbookmarked);
+
+  const handleClick = async (e) => {
     e.stopPropagation(); // 이벤트 전파 중단
     e.preventDefault(); // 기본 동작 방지
-    setIsActive(!isActive); // 상태 토글
+    try {
+      await fetchBookmark(boardData.boardId); // 북마크 API 호출
+      setIsActive((prev) => !prev); // isActive 상태를 토글
+    } catch (error) {
+      console.error("북마크 처리 중 오류:", error);
+    }
   };
 
   return (
-    <S.LinkContainer100 to="/board/detail" state={{ boardData }}>
+    <S.LinkContainer100 to={`/boards/${boardData.boardId}`} state={{ boardData }}>
       <S.BoardListContainer>
         <S.RightTop>
             <S.IconWrapper onClick={handleClick}>
-                <S.StyledBookmarkIcon isActive={isActive} />
+              <S.StyledBookmarkIcon $isActive={isActive} />
             </S.IconWrapper>
         </S.RightTop>
         <S.Row>
           <S.TitleContainer>
             <S.Badge>모집중</S.Badge>
-            <S.Title>{title}</S.Title>
+            <S.Title>{truncate(title, 33)}</S.Title>
           </S.TitleContainer>
         </S.Row>
 
-        <S.Content>{content}</S.Content>
+        <S.Content>{replaceNewlinesWithSpace(truncate(content, 52))}</S.Content>
 
         <S.InfoContainer>
           <S.InfoItem>
             <div>{author}</div>
           </S.InfoItem>
           <S.InfoItem>
-            <div>・ {createdAt}</div>
+            <div>・ {formatRelativeTime(createdAt)}</div>
           </S.InfoItem>
           <S.InfoItem>
             <S.Icon>

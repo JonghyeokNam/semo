@@ -5,25 +5,48 @@ import { TopBar } from "./topbar";
 import { BoardData } from "./boardData";
 import { Comment } from "./comment";
 import { TopBarApply } from "./topbarApply";
+import { useGetBoardDetailStore } from "../../../store/useBoardStore"; // Zustand Store 가져오기
+import { useParams } from "react-router-dom"; // URL에서 boardId를 가져오기 위한 훅
+import { replaceNewlinesWithBr } from "../../../utils/replaceUtil";
 
 const Index = () => {
+  const { boardId } = useParams(); // URL에서 boardId 가져오기
+  const { boardInfo, fetchBoardInfo, loading, error } = useGetBoardDetailStore(); // Zustand 상태 및 동작 가져오기
+
+  const title = boardInfo?.title || "제목을 불러오는 중...";
+  const content = boardInfo?.content || "내용을 불러오는 중...";
+  const isAuthor = boardInfo?.author?.isAuthor || false;
 
   useEffect(() => {
-    // 컴포넌트가 마운트될 때 화면 상단으로 스크롤
+    if (boardId) {
+      fetchBoardInfo(boardId); // boardId로 데이터 Fetch
+    }
+  }, [boardId, fetchBoardInfo]);
+
+  useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []); // 빈 배열을 넣어서 첫 렌더링 시 한 번만 실행되도록 설정
-  
+  }, []); 
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   return (
     <S.DetailContainer>
       <Back/>
-      <S.Title>프론트엔드 모집</S.Title>
-      <TopBarApply/>
+      <S.Title>{title}</S.Title>
+      {
+        isAuthor ? 
+        <TopBar boardInfo={boardInfo}/>
+        :
+        <TopBarApply boardInfo={boardInfo}/>
+
+      }
       <S.Separator />
-      <BoardData/>
+      <BoardData boardInfo={boardInfo} />
       <S.Title2>프로젝트 소개</S.Title2>
       <S.Separator />
-      <S.Content>프로젝트 소개 내용이 여기에 들어갑니다.</S.Content>
-      <Comment/>
+      <S.Content>{replaceNewlinesWithBr(content)}</S.Content>
+      <Comment boardId={boardId}/>
     </S.DetailContainer>
   );
 };

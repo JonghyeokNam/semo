@@ -11,6 +11,8 @@ export const GlobalStyle = createGlobalStyle`
   --red: #EB5757;
   --gray: #868E96;
   --light-gray: #DEE2E6;
+  --dpadding: 12rem;
+  --tpadding: 32px;
 }
 
 
@@ -82,7 +84,20 @@ a {
   color: inherit;
 }
 
-
+div::-webkit-scrollbar {
+        width: 0.5rem;
+        height: 0.5rem;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: rgba(78, 185, 96); /* 스크롤바 색상 */
+        border-radius: 10px; /* 스크롤바 둥근 테두리 */
+      }
+      &::-webkit-scrollbar-button:end:increment {
+        /*  스크롤의 화살표가 포함된 영역   */
+        display:block;
+        height:8px;
+        background-color: 0;
+      }
 
 `;
 

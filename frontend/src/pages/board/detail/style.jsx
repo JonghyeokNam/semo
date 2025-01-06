@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaRegBookmark } from "react-icons/fa";
 
 // 스타일 컴포넌트 (styled-components)
 
@@ -263,10 +263,40 @@ export const DeleteButton = styled.button`
   }
 `;
 
+
+export const SaveButton = styled.button`
+  font-size: 14px;
+  color: #333333;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+
+export const CancelButton = styled.button`
+  font-size: 14px;
+  color: #333333;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 export const CommentText = styled.div`
   font-size: 14px;
   color: #333;
   margin-bottom: 20px;
 `;
 
+export const StyledBookmarkIcon = styled(FaRegBookmark)`
+  font-size: 25px;
+  color: ${({ $isActive }) => ($isActive ? "var(--green)" : "#333")};
+`;
 

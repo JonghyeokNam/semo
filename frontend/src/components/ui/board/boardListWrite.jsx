@@ -1,40 +1,44 @@
 import React from "react";
 import * as S from "./boardListStyle";
 import { Link } from "react-router-dom"; 
+import { truncate } from "../../../utils/truncateText";
+import formatRelativeTime from "../../../utils/formatTime";
+import {replaceNewlinesWithSpace} from "../../../utils/replaceUtil"
 
 const BoardListWrite = ({ boardData }) => {
 
+  const boardId = boardData?.boardId || "1";
   const title = boardData?.title || "제목을 불러오는 중...";
   const content = boardData?.content || "내용을 불러오는 중...";
   const author = boardData?.author?.username || "이유진";
   const createdAt = boardData?.createdAt || "2024.12.26";
   const hit = boardData?.hit || "11";
   const comments = boardData?.comments || "0";
-  const applicants = boardData?.applicants || { frontend: 0, backend: 0, uiux: 0, marketer: 0 };
+  const applicants = boardData?.applyForms || { frontend: 0, backend: 0, uiux: 0, marketer: 0 };
 
   return (
-    <S.LinkContainer100 to="/board/detail" state={{ boardData }}>
+    <S.LinkContainer100 to={`/boards/${boardId}`} state={{ boardData }}>
       <S.BoardListContainer>
       <S.RightTop>
-        <Link to="/applylist">
+        <Link to="/applylist" state={{ boardData }}>
             <S.ApplyButton>지원 리스트</S.ApplyButton>
         </Link>
       </S.RightTop>
         <S.Row>
           <S.TitleContainer>
             <S.Badge>모집중</S.Badge>
-            <S.Title>{title}</S.Title>
+            <S.Title>{truncate(title, 33)}</S.Title>
           </S.TitleContainer>
         </S.Row>
 
-        <S.Content>{content}</S.Content>
+        <S.Content>{replaceNewlinesWithSpace(truncate(content, 52))}</S.Content>
 
         <S.InfoContainer>
           <S.InfoItem>
             <div>{author}</div>
           </S.InfoItem>
           <S.InfoItem>
-            <div>・ {createdAt}</div>
+            <div>・ {formatRelativeTime(createdAt)}</div>
           </S.InfoItem>
           <S.InfoItem>
             <S.Icon>

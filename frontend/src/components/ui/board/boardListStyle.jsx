@@ -41,7 +41,7 @@ export const Title = styled.div`
 `;
 
 export const Badge = styled.div`
-  background-color: var(--green);
+  background-color: ${(props) => (props.$isClosed ? "#BDBDBD" : "var(--green)")};
   color: #fff;
   font-size: 10px;
   font-weight: bold;
@@ -65,7 +65,7 @@ export const RightTop = styled.div`
   top: 30px;
   right: 30px;
   font-size: 35px;
-  color: #343330;
+  color:${(props) => (props.$isParticipated ? "var(--green)" : "#343330")};
 `;
 
 export const ApplyButton = styled.div`
@@ -120,7 +120,7 @@ export const ApplicantInfo = styled.div`
   display: flex;
   gap: 8px;
   font-size: 12px;
-  color: var(--green);
+  color: ${(props) => (props.$isClosed ? "#495057" : "var(--green)")};
 `;
 
 export const EyeIcon = styled(FaEye)`
@@ -143,5 +143,5 @@ export const IconWrapper = styled.div`
 
 export const StyledBookmarkIcon = styled(FaRegBookmark)`
   font-size: 25px;
-  color: ${({ isActive }) => (isActive ? "var(--green)" : "#333")}; 
+  color: ${({ $isActive }) => ($isActive ? "var(--green)" : "#333")};
 `;

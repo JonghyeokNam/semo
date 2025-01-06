@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { GoBell } from "react-icons/go";
 
 export const NavWrapper = styled.div`
   display: flex;
@@ -7,7 +8,7 @@ export const NavWrapper = styled.div`
   justify-content: flex-end; /* 오른쪽 정렬 */
   width: 100%; /* 100% 너비로 전체 영역을 채움 */
   height: 45px;
-  padding: ${(props) => (props.$isDesktop ? "0 250px" : "0 32px")};
+  padding: ${(props) => (props.$isDesktop ? "0 var(--dpadding)" : "0 var(--tpadding)")};
   font-size: ${(props) => (props.$isDesktop ? "14px" : "10px")};
   
 `;
@@ -18,7 +19,7 @@ export const Nav2Wrapper = styled.div`
   justify-content: space-between; /* 양쪽 끝에 정렬 */
   width: 100%;
   height: 75px;
-  padding: ${(props) => (props.$isDesktop ? "0 250px" : "0 48px")};
+  padding: ${(props) => (props.$isDesktop ? "0 var(--dpadding)" : "0 var(--tpadding)")};
 `;
 
 export const LeftContainer = styled.div`
@@ -49,6 +50,7 @@ export const LogoText = styled.span`
 export const Text = styled.span`
   color: #493f3c;
   margin: 0 15px;
+  cursor: pointer;
 `;
 
 export const Divider = styled.div`
@@ -64,3 +66,24 @@ export const StyledLink = styled(Link)`
   display: flex;
   align-items: center;
 `;
+
+export const StyledGoBell = styled(GoBell)`
+  cursor: pointer;
+  position: relative;
+`;
+
+// RedDot: 빨간 원
+export const RedDot = styled.div`
+  position: absolute;
+  left: 1rem;
+  bottom: 1.5rem;
+  width: 1rem;
+  height: 1rem;
+  background-color: red;
+  border-radius: 50%;
+  border: 2px solid white;
+`;
+
+export const NotificationContainer = styled.div`
+  position: relative;
+`

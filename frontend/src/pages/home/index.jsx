@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import List from "./list";
-import Rank from "./rank";
 import { Link } from "react-router-dom"; 
 import * as S from "./style";  
 import { FaSearch } from "react-icons/fa";
 import useMediaQueries from "../../hooks/useMediaQueries";
+import ActRank from "./ActRank";
+import RecruitRank from "./recruitRank";
 
 
 const Index = () => {
@@ -24,15 +25,14 @@ const Index = () => {
 
   return (
     <>
-
       <S.IndexContainer $isDesktop={isDesktop}>
         <S.Column>
           <S.Title>🔥 모집이 활발한 캠퍼스</S.Title>
-          <Rank url="/campuses/recruit" />
+          <RecruitRank />
         </S.Column>
         <S.Column>
           <S.Title>❤️‍🔥 참여가 활발한 캠퍼스</S.Title>
-          <Rank url="/campuses/join" />
+          <ActRank />
         </S.Column>
         <S.ColumnCenter>
           <S.Image src="/img/sesacCheer.png" alt="새싹사진" />
@@ -44,17 +44,17 @@ const Index = () => {
     <S.Index2Container>
         <S.FilterRow>
           <S.FilterItem
-            isSelected={selectedType === "전체"}
+            $isSelected={selectedType === "전체"}
             onClick={() => handleSelect("전체")}
           >전체</S.FilterItem>
 
           <S.FilterItem
-            isSelected={selectedType === "프로젝트"}
+            $isSelected={selectedType === "프로젝트"}
             onClick={() => handleSelect("프로젝트")}
           >프로젝트</S.FilterItem>
 
           <S.FilterItem
-            isSelected={selectedType === "스터디"}
+            $isSelected={selectedType === "스터디"}
             onClick={() => handleSelect("스터디")}
           >스터디</S.FilterItem>
         </S.FilterRow>

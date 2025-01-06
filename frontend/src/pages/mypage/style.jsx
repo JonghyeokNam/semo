@@ -27,6 +27,7 @@ export const Title = styled.h1`
   font-size: 25px;
   font-weight: bold;
   margin: 0;
+  margin-bottom: 1rem;
   color: var(--green);
 
 `;
@@ -118,3 +119,8 @@ export const SaveButton = styled.button`
     background-color: #2d8f44;
   }
 `;
+
+export const ContainerBody = styled.div`
+  max-height: 20rem;
+  overflow: auto;
+`
