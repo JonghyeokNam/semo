@@ -6,12 +6,13 @@ import SelectComponent from "../../../components/ui/selectComponent";
 import CustomCalendar from "../../../components/ui/calendar";
 import useMediaQueries from "../../../hooks/useMediaQueries";
 import { useCreateBoardStore } from "../../../store/useBoardStore";
+import useBoardListStore from "../../../store/useBoardListStore";
 import { Link } from "react-router-dom";
 
 const Delta = Quill.import("delta");
 
 const Index = () => {
-
+  const { fetchBoards } = useBoardListStore();
   const { isDesktop, isTablet } = useMediaQueries();
 
   // Zustand Store 상태 및 함수
@@ -152,7 +153,7 @@ const Index = () => {
 
     try {
       await createBoard(requestData);
-      alert("게시글이 성공적으로 등록되었습니다!");
+      fetchBoards();
     } catch (err) {
       console.error("에러 발생:", err.message);
       alert(`게시글 등록 실패: ${err.message}`);
@@ -228,6 +229,7 @@ const Index = () => {
               placeholder="프론트엔드, 백엔드..."
               width="270px"
               onChange={handleRecruitmentTypeChange}
+              value={formData.recruitmentTypes}
             />
           </S.Column>
         </S.Grid>
@@ -251,10 +253,10 @@ const Index = () => {
             />
           </S.EditorContainer>
           <S.ButtonContainer>
-            <Link to="/" onClick={handleCancel}>
+            <Link to="/home" onClick={handleCancel}>
               <S.CancelButton>취소</S.CancelButton>
             </Link>
-            <Link to="/">
+            <Link to="/home">
               <S.SubmitButton onClick={handleSubmit} disabled={loading}>
                 {loading ? "등록 중..." : "등록하기"}
               </S.SubmitButton>
