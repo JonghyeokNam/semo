@@ -47,7 +47,7 @@ export const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-  width: 2.8rem;
+  width: 3.6rem;
 `;
 
 export const PostedTime = styled.div`
