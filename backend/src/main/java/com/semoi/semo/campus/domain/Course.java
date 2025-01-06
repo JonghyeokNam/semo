@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+// 차현철
 @Entity
 @Table(name = "courses")
 @Getter

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 
+// 차현철
 @Slf4j
 public class KakaoResponse implements OAuth2Response {
 

@@ -2,6 +2,7 @@ package com.semoi.semo.user.dto.response;
 
 import com.semoi.semo.user.domain.User;
 
+// 차현철
 public record UserResponseDto(
         Long userId,
         String username,

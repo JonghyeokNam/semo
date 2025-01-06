@@ -5,6 +5,7 @@ import com.semoi.semo.user.dto.response.UserResponseDto;
 
 import java.time.LocalDateTime;
 
+// 차현철
 public record CommentResponseDto(
         Long commentId,
         String content,

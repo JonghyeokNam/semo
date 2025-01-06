@@ -8,6 +8,7 @@ import com.semoi.semo.campus.dto.response.CourseResponseDto;
 
 import java.util.List;
 
+// 차현철
 public interface CampusService {
     Campus getCampusOrElseThrow(String name);
     List<CampusRecScoreResponseDto> getCampusRecRankingByYear(int year);

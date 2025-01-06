@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
+// 차현철
 public interface CampusRepository extends JpaRepository<Campus, Long> {
     Optional<Campus> findByName(String name);
     Optional<Campus> findByCampusId(Long campusId);

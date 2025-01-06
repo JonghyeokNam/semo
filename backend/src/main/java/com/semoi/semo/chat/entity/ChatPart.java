@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+// 남종혁
 @Entity
 @Data
 @NoArgsConstructor

@@ -4,6 +4,7 @@ import com.semoi.semo.user.domain.User;
 import com.semoi.semo.user.dto.request.UserInfoRequestDto;
 import com.semoi.semo.user.dto.response.UserResponseDto;
 
+// 차현철
 public interface UserService {
     User getUserByUserIdOrElseThrow(Long userId);
     User getUserByLoginEmailOrElseThrow(String loginEmail);

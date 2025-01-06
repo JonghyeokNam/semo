@@ -2,6 +2,7 @@ package com.semoi.semo.campus.dto.response;
 
 import com.semoi.semo.campus.domain.Course;
 
+// 차현철
 public record CourseResponseDto(
         Long courseId,
         String name,

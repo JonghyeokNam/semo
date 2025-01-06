@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
+// 차현철
 public interface CampusYearlyScoreRepository extends JpaRepository<CampusYearlyScore, Long> {
     List<CampusYearlyScore> findByYearOrderByRecScoreDesc(int year);
 

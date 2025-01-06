@@ -3,6 +3,7 @@ package com.semoi.semo.global.response;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+// 차현철, 남종혁
 @Getter
 @AllArgsConstructor
 public class Response<T> {
@@ -25,8 +26,4 @@ public class Response<T> {
     public static <T> Response<T> of(String message, T data) {
         return new Response<>(message, data);
     }
-
-//    public static <T> Response<T> of(String message) {
-//        return new Response<>(message);
-//    }
 }

@@ -5,6 +5,7 @@ import com.semoi.semo.chat.dto.MessageDto;
 
 import java.util.List;
 
+// 남종혁
 public interface ChatService {
 
     List<ChatRoomDto> chatRoomList(String loginEmail);

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+// 차현철
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
