@@ -6,12 +6,15 @@ import SelectComponent from "../../../components/ui/selectComponent";
 import CustomCalendar from "../../../components/ui/calendar";
 import useMediaQueries from "../../../hooks/useMediaQueries";
 import { useUpdateBoardStore } from "../../../store/useBoardStore";
+import useBoardListStore from "../../../store/useBoardListStore";
 import { Link, useLocation } from "react-router-dom";
 import moment from "moment";
+import "moment-timezone";  // 이 부분 추가
 
 const Delta = Quill.import("delta");
 
 const Index = () => {
+  const { fetchBoards } = useBoardListStore();
   const location = useLocation();
   const { boardData } = location.state || {};
 
@@ -31,11 +34,6 @@ const Index = () => {
     recruitmentDeadline: boardData?.recruitmentDeadline || null,
     progressPeriod: boardData?.progressPeriod || "",
   });
-
-  console.log(formData);
-  console.log("deadline:", formData.recruitmentDeadline);
-  console.log("moment(deadline):", moment(formData.recruitmentDeadline));
-  console.log("moment(deadline).toDate():", moment(formData.recruitmentDeadline).toDate());
 
   const quillRef = useRef(null);
 
@@ -107,35 +105,28 @@ const Index = () => {
     setFormData((prev) => ({ ...prev, recruitmentTypes: types }));
   };
 
+  // ★ 여기 수정: 한국 시간대(+09:00)까지 포함한 ISO 문자열 만들기
   const handleCalendarChange = (selectedDate) => {
-    // 선택된 날짜를 서버 요구 형식으로 변환
-    const offset = new Date().getTimezoneOffset() * -1; // 시간대 보정
-    const timezoneOffset = `${offset >= 0 ? "+" : "-"}${String(
-      Math.abs(offset / 60)
-    ).padStart(2, "0")}:00`;
-
-    const formattedDeadline = `${selectedDate.toISOString().split("T")[0]}T${
-      selectedDate.toTimeString().split(" ")[0]
-    }${timezoneOffset}`;
+    // moment로 변환 후 서울 시간대 기준 포맷
+    const formattedDeadline = moment(selectedDate)
+      .tz("Asia/Seoul")
+      .format("YYYY-MM-DDTHH:mm:ssZ");
 
     setFormData((prev) => ({
       ...prev,
-      recruitmentDeadline: formattedDeadline, // 서버 요구 형식으로 설정
+      recruitmentDeadline: formattedDeadline,
     }));
   };
 
   const getStringValue = (item) => {
-    // 예) {value: "프로젝트", label: "프로젝트"} → "프로젝트"
     if (item && typeof item === "object" && item.value) {
       return item.value;
     }
-    // 그 외에는 문자열 그대로
     return item;
   };
 
   // 수정하기 버튼 클릭 핸들러
   const handleSubmit = async () => {
-    // 필수 항목 검증
     if (
       !formData.title ||
       !formData.content ||
@@ -152,7 +143,7 @@ const Index = () => {
       recruitmentCount: formData.recruitmentCount,
       recruitmentField: getStringValue(formData.recruitmentField),
       recruitmentMethod: getStringValue(formData.recruitmentMethod),
-      recruitmentDeadline: formData.recruitmentDeadline, // 그대로 저장됨
+      recruitmentDeadline: formData.recruitmentDeadline,
       progressPeriod: getStringValue(formData.progressPeriod),
     };
 
@@ -160,7 +151,7 @@ const Index = () => {
 
     try {
       await updateBoard(boardData.boardId, requestData);
-      alert("게시글이 성공적으로 수정되었습니다!");
+      fetchBoards();
     } catch (err) {
       console.error("에러 발생:", err.message);
       alert(`게시글 수정 실패: ${err.message}`);
@@ -172,7 +163,7 @@ const Index = () => {
       "정말 취소하시겠습니까? 작성 내용이 모두 삭제됩니다."
     );
     if (!confirmCancel) {
-      e.preventDefault(); // 이동을 막음
+      e.preventDefault();
     }
   };
 
@@ -191,7 +182,7 @@ const Index = () => {
               value={formData.recruitmentField}
               onChange={(option) =>
                 handleInputChange("recruitmentField", option.value)
-              } // 이거 필요하면 바꿔야됨, 아니면 create를 수정하거나
+              }
             />
           </S.Column>
           <S.Column>
@@ -202,7 +193,6 @@ const Index = () => {
               width="270px"
               value={formData.recruitmentCount}
               onChange={(option) => {
-                console.log("Select changed:", option.value);
                 handleRecruitmentCountChange(option.value);
               }}
             />
@@ -222,12 +212,14 @@ const Index = () => {
 
           <S.Column>
             <SelectComponent
-              label="진행 기간" 
+              label="진행 기간"
               options={progressPeriodData}
               placeholder="기간 미정 ~ 6개월 이상"
               width="270px"
               value={formData.progressPeriod}
-              onChange={(option) => handleInputChange("progressPeriod", option.value)}
+              onChange={(option) =>
+                handleInputChange("progressPeriod", option.value)
+              }
             />
           </S.Column>
           <S.Column>
@@ -237,7 +229,7 @@ const Index = () => {
                 formData.recruitmentDeadline
                   ? moment(formData.recruitmentDeadline).toDate()
                   : null
-                }
+              }
               onChange={handleCalendarChange}
             />
           </S.Column>
@@ -272,16 +264,18 @@ const Index = () => {
               ref={quillRef}
               readOnly={false}
               placeholder="내용을 작성해주세요."
-              defaultValue={new Delta().insert(formData.content.replace(/\\n/g, "\n") || "")}
+              defaultValue={
+                new Delta().insert(formData.content.replace(/\\n/g, "\n") || "")
+              }
               onTextChange={handleQuillContentChange}
               style={{ minHeight: "200px" }}
             />
           </S.EditorContainer>
           <S.ButtonContainer>
-            <Link to="/" onClick={handleCancel}>
+            <Link to="/home" onClick={handleCancel}>
               <S.CancelButton>취소</S.CancelButton>
             </Link>
-            <Link to="/">
+            <Link to="/home">
               <S.SubmitButton onClick={handleSubmit} disabled={loading}>
                 {loading ? "수정 중..." : "수정하기"}
               </S.SubmitButton>

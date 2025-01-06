@@ -11,7 +11,7 @@ export const GlobalStyle = createGlobalStyle`
   --red: #EB5757;
   --gray: #868E96;
   --light-gray: #DEE2E6;
-  --dpadding: 200px;
+  --dpadding: 12rem;
   --tpadding: 32px;
 }
 
