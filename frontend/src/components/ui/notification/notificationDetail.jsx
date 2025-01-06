@@ -5,6 +5,7 @@ import { useReadNotificationStore, useCheckNoReadNotificationStore, useGetNotifi
 import { useNavigate } from "react-router-dom";
 import { useGetBoardDetailStore } from "../../../store/useBoardStore";
 
+// 차현철
 const NotificationDetail = ({ item, onClose }) => {
     const navigate = useNavigate();
 

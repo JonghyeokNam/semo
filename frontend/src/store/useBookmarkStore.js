@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { API } from '../lib/apis/utils/index';
 
+// 차현철
 export const useGetMyBookmarksStore = create((set) => ({
     bookmarkList: [], // 데이터를 저장할 상태
     loading: false, // 로딩 상태

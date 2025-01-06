@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+// 이유진
 export const IndexContainer = styled.div`
   display: flex;
   justify-content: center;

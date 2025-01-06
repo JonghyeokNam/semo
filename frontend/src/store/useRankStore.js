@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { API } from '../lib/apis/utils/index';
 
+// 이유진
 // 모집이 활발한 캠퍼스 랭킹
 const useRecruitRankStore = create((set) => ({
   ranks: [], // 랭킹 데이터를 저장할 상태

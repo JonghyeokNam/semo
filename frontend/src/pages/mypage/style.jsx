@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+// 이유진
 export const mypageWrapper = styled.div`
     display: flex;
     flex-direction: column;

@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { API } from '../lib/apis/utils/index';
 
+// 주현우
 const useBoardStore = create((set) => ({
   // 상태
   boards: [], // 게시글 목록

@@ -4,6 +4,7 @@ import * as S from "./modalStyle";
 import SelectComponent from "../selectComponent";
 import { useGetUserApplyFormsStore, useUpdateApplyFormStore } from "../../../store/useApplyStore";
 
+// 이유진, 주현우
 const ModalModify = ({ isOpen, onClose, formData }) => {
   const { updateApplyForm } = useUpdateApplyFormStore();
   const { fetchUserApplyForms } = useGetUserApplyFormsStore();

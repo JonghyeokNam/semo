@@ -1,6 +1,6 @@
 //GlobalStyle.js
 import { createGlobalStyle } from 'styled-components';
-
+//이유진
 // reset.css
 export const GlobalStyle = createGlobalStyle`
 

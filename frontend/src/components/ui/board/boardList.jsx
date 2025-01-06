@@ -6,6 +6,7 @@ import { truncate } from "../../../utils/truncateText";
 import { replaceNewlinesWithSpace } from "../../../utils/replaceUtil";
 import formatRelativeTime from "../../../utils/formatTime";
 
+// 이유진
 const BoardListWrite = ({ boardData }) => {
   const [isParticipated, setIsParticipated] = useState(boardData?.isParticipated || false);
   const boardId = boardData?.boardId || "2";

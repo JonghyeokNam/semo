@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// 이유진
 // axios 인스턴스 생성
 export const API = axios.create({
   baseURL: process.env.REACT_APP_API_URL, // 환경 변수에서 API URL 가져오기

@@ -6,6 +6,7 @@ import ApplyComponent from "./applyComponent";
 import { useLocation } from "react-router-dom";
 import { useGetBoardApplyFormStore } from "../../store/useApplyStore";
 
+// 이유진
 const Index = () => {
   const { boardApplyForms, fetchBoardApplyForms } = useGetBoardApplyFormStore();
 

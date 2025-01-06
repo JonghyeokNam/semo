@@ -5,6 +5,7 @@ import SelectComponent from "../selectComponent";
 import useApplyStore from "../../../store/useApplyStore";
 import useBoardListStore from "../../../store/useBoardListStore";
 
+// 이유진
 const Modal = ({ isOpen, onClose, boardId, setIsParticipated }) => {
   const { submitApplication, isLoading, isError, error } = useApplyStore();
   const { boards } = useBoardListStore();

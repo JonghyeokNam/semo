@@ -4,6 +4,7 @@ import { FaEye } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useDeleteBoardStore } from "../../../store/useBoardStore";
 
+// 이유진, 주현우
 export const TopBar = ({ boardInfo }) => {
   const { deleteBoard, loading, error } = useDeleteBoardStore();
   const boardData = boardInfo;

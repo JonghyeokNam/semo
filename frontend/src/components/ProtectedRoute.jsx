@@ -2,6 +2,7 @@ import { Navigate } from "react-router-dom";
 import { useNewCheckStore } from "../store/useNewCheckStore";
 import { useAuthStore } from "../store/useAuthStore";
 
+// 이유진
 const ProtectedRoute = ({ children }) => {
   const { isNewUser } = useNewCheckStore(); // 추가정보 여부 확인
   const { isLoggedIn } = useAuthStore(); // 로그인 상태 확인
