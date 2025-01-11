@@ -9,6 +9,7 @@ import { useGetBoardDetailStore } from "../../../store/useBoardStore"; // Zustan
 import { useParams } from "react-router-dom"; // URL에서 boardId를 가져오기 위한 훅
 import { replaceNewlinesWithBr } from "../../../utils/replaceUtil";
 
+// 이유진, 주현우
 const Index = () => {
   const { boardId } = useParams(); // URL에서 boardId 가져오기
   const { boardInfo, fetchBoardInfo, loading, error } = useGetBoardDetailStore(); // Zustand 상태 및 동작 가져오기

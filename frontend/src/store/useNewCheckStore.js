@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { API } from "../lib/apis/utils/index"; 
 
+// 이유진
 export const useNewCheckStore = create((set) => ({
   isNewUser: null, // 신규 유저 여부 초기값
   checkNewUser: async () => {

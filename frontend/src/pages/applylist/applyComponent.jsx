@@ -6,6 +6,7 @@ import formatRelativeTime from "../../utils/formatTime";
 import { useGetBoardApplyFormStore, useSetApplyFormStatusStore } from "../../store/useApplyStore";
 import { replaceNewlinesWithSpace } from "../../utils/replaceUtil";
 
+// 이유진
 const ApplyComponent = ({ formData }) => {
   const [action, setAction] = useState(formData.status); // 수락/거부 상태 관리
   const { fetchApplyFormStatus } = useSetApplyFormStatusStore();

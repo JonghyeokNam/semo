@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useBoardListStore from "../../store/useBoardListStore";
 import * as S from "./style";  
 
+// 이유진
 const List = () => {
   const { boards, fetchBoards, totalPages, currentPage, loading, error } = useBoardListStore();
   const itemsPerPage = 10;

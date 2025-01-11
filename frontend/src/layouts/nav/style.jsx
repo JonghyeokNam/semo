@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { GoBell } from "react-icons/go";
 
+// 이유진
 export const NavWrapper = styled.div`
   display: flex;
   align-items: center;

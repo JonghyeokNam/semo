@@ -2,6 +2,7 @@ import React from "react";
 import * as S from "./style";
 import { useNavigate } from 'react-router-dom';
 
+// 이유진
 // 뒤로가기 버튼
 export const Back = () => {
     const navigate = useNavigate();

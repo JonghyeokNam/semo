@@ -9,6 +9,7 @@ import { useCreateBoardStore } from "../../../store/useBoardStore";
 import useBoardListStore from "../../../store/useBoardListStore";
 import { Link } from "react-router-dom";
 
+// 이유진, 주현우
 const Delta = Quill.import("delta");
 
 const Index = () => {

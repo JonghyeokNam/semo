@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { API } from "../lib/apis/utils/index"; 
 
+// 이유진, 차현철
 export const useAuthStore = create((set) => ({
   isLoggedIn: localStorage.getItem("access_token") ? true : false, // 초기 로그인 상태
   user: {}, // 초기 사용자 정보

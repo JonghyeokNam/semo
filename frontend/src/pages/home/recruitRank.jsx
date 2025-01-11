@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import * as S from "./style";
 import { useRecruitRankStore } from '../../store/useRankStore';
 
+// 이유진
 const RecruitRank = () => {
   const { ranks, fetchRanks, loading, error } = useRecruitRankStore();
 

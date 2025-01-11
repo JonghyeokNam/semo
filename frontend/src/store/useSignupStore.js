@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { API } from '../lib/apis/utils/index'; 
 
+// 이유진
 const useSignupStore = create((set) => ({
     campuses: [], // This is already correct; ensure it's always an array
     courses: [],

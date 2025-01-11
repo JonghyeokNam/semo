@@ -3,6 +3,7 @@ import { FaEye, FaRegComment } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FaRegBookmark } from "react-icons/fa";
 
+// 이유진
 export const BoardListContainer = styled.div`
   padding: 20px 30px;
   border-bottom: 1px solid #DEE2E6;

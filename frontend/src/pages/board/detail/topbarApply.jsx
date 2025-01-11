@@ -8,6 +8,7 @@ import { useDoBookmarkStore } from "../../../store/useBookmarkStore";
 import { FaComments } from 'react-icons/fa';
 import { API } from "../../../lib/apis/utils/index";
 
+// 이유진, 주현우, 남종혁
 export const TopBarApply = ({boardInfo}) => {
   const { fetchBookmark } = useDoBookmarkStore();
   const username = boardInfo?.author?.username || "작성자 없음";

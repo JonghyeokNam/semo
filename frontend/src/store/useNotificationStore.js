@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { API } from '../lib/apis/utils/index';
 
+// 차현철
 // 알림 목록 조회
 const useGetNotificationsStore = create((set) => ({
   list: [], // 데이터를 저장할 상태

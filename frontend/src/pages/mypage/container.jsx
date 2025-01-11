@@ -2,6 +2,7 @@ import React from "react";
 import * as S from "./style";
 import useMediaQueries from "../../hooks/useMediaQueries";
 
+// 이유진
 const Container = ({ title, children, type }) => {
     const { isMobile } = useMediaQueries();
 

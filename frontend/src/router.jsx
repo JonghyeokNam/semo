@@ -13,6 +13,7 @@ import BoardWrite from "./pages/board/write/index";
 import NotFound from "./NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+// 이유진
 const router = createBrowserRouter([
   {
     path: "/",

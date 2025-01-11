@@ -5,6 +5,7 @@ import { truncate } from "../../../utils/truncateText";
 import formatRelativeTime from "../../../utils/formatTime";
 import {replaceNewlinesWithSpace} from "../../../utils/replaceUtil"
 
+// 이융진
 const BoardListWrite = ({ boardData }) => {
 
   const boardId = boardData?.boardId || "1";

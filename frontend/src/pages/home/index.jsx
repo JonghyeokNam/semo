@@ -7,7 +7,7 @@ import useMediaQueries from "../../hooks/useMediaQueries";
 import ActRank from "./ActRank";
 import RecruitRank from "./recruitRank";
 
-
+// 이유진
 const Index = () => {
   const {isDesktop } = useMediaQueries();
 

@@ -1,6 +1,7 @@
 import React from "react";
 import * as S from "./style";
 
+// 이유진
 const Login = () => {
 
   const handleKakaoClick = () => {

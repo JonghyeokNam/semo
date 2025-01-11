@@ -1,6 +1,7 @@
 import React, { forwardRef, useEffect, useLayoutEffect, useRef } from 'react';
 import Quill from 'quill';
 
+// 이유진
 const Editor = forwardRef(
   ({ readOnly, defaultValue, onTextChange, onSelectionChange }, ref) => {
     const containerRef = useRef(null);

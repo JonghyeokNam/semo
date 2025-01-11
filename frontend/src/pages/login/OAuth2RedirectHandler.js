@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import {useAuthStore} from "../../store/useAuthStore";
 import {useNewCheckStore} from "../../store/useNewCheckStore";
 
+// 이유진
 function OAuth2RedirectHandler() {
   const navigate = useNavigate();
   const location = useLocation();

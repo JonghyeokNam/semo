@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { API } from "../lib/apis/utils";
 
+// 남종혁
 export const useChatStore = create((set, get) => ({
   chatRooms: [],
 

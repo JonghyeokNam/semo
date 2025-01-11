@@ -1,6 +1,7 @@
 import React from "react";
 import Select from "react-select";
 
+// 이유진
 const SelectComponent = ({ label, options, defaultValue, isMulti, placeholder, width, value, onChange, isDisabled}) => {
   const customStyles = {
     container: (provided) => ({
