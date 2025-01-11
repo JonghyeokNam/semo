@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+// 주현우
 @Entity
 @Table(name = "positions")
 @Data

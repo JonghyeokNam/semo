@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+// 차현철
 @RestController
 @RequestMapping("/api/campuses")
 @Slf4j

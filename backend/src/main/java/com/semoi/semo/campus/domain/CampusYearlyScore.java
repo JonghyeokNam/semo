@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+// 차현철
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

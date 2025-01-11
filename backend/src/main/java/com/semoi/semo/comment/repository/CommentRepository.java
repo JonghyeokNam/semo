@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+// 차현철
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findAllByBoardOrderByCreatedAt(Board board);
 

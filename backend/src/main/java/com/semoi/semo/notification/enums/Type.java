@@ -3,6 +3,7 @@ package com.semoi.semo.notification.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+// 차현철
 @Getter
 @AllArgsConstructor
 public enum Type {

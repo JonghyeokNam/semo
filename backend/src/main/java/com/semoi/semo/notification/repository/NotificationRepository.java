@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
+// 차현철
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
     boolean existsByUserAndIsReadFalse(User user);

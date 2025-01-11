@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+// 차현철
 @RequiredArgsConstructor
 public class CustomOAuth2User implements OAuth2User {
 

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+// 주현우, 차현철
 @Repository
 public interface PositionRepository extends JpaRepository<Position, Long> {
 

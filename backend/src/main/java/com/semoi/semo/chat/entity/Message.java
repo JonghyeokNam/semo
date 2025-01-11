@@ -1,14 +1,13 @@
 package com.semoi.semo.chat.entity;
 
 import com.semoi.semo.chat.dto.MessageDto;
-import com.semoi.semo.user.domain.User;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
+// 남종혁
 @Document(collection = "messages")
 @Data
 public class Message {

@@ -5,6 +5,7 @@ import com.semoi.semo.notification.entity.Notification;
 
 import java.time.LocalDateTime;
 
+// 차현철
 public record NotificationResponseDto(
         Long notificationId,
         String title,

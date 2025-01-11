@@ -7,6 +7,7 @@ import com.semoi.semo.user.domain.User;
 
 import java.util.List;
 
+// 차현철
 public interface NotificationService {
 
     boolean checkNotification(String loginEmail);

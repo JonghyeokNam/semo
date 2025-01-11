@@ -1,12 +1,9 @@
 package com.semoi.semo.chat.entity;
 
-import com.semoi.semo.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
+// 남종혁
 @Entity
 @Data
 @Builder

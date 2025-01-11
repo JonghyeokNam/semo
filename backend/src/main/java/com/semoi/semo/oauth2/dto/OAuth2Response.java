@@ -2,6 +2,7 @@ package com.semoi.semo.oauth2.dto;
 
 import java.util.Map;
 
+// 차현철
 public interface OAuth2Response {
 
     String getProvider(); //제공자 (Ex. naver, google, ...)

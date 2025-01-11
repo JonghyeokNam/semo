@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+// 남종혁
 @Log4j2
 @Service
 @RequiredArgsConstructor
@@ -92,27 +93,6 @@ public class ChatServiceImpl implements ChatService {
                     return dto;
                 })
                 .collect(Collectors.toList());
-
-//        // 4) 각 채팅방에 대한 ChatPart 목록을 다시 구해서 ChatRoomDto로 매핑
-//        return userRooms.stream()
-//                .map(chatRoom -> {
-//                    List<ChatPart> chatParts = chatPartRepository.findByChatRoom(chatRoom);
-//                    return new ChatRoomDto(chatRoom, chatParts);
-//                })
-//                .collect(Collectors.toList());
-
-//        // 1. 모든 채팅방을 가져온 뒤,
-//        List<ChatRoom> chatRoomList = chatRoomRepository.findAll();
-//
-//        // 2. 각 ChatRoom마다 해당 방에 연결된 ChatPart 목록 조회
-//        return chatRoomList.stream()
-//                .map(chatRoom -> {
-//                    // ChatPartRepository를 통해 현재 방에 대한 ChatPart 목록을 조회
-//                    List<ChatPart> chatParts = chatPartRepository.findByChatRoom(chatRoom);
-//                    // ChatRoom + ChatPart 목록을 넘겨서 ChatRoomDto 생성
-//                    return new ChatRoomDto(chatRoom, chatParts);
-//                })
-//                .collect(Collectors.toList());
     }
 
     @Override

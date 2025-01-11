@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
+// 남종혁
 public interface ChatPartRepository extends JpaRepository<ChatPart, User> {
 
     // 특정 ChatRoom, 특정 User가 이미 참여 중인지 확인

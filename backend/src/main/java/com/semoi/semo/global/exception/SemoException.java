@@ -3,6 +3,7 @@ package com.semoi.semo.global.exception;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+// 차현철
 @AllArgsConstructor
 @Getter
 public class SemoException extends RuntimeException {

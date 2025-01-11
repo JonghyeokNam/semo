@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
+// 차현철
 public interface CourseRepository extends JpaRepository<Course, Long> {
     Optional<Course> findByName(String name);
 }
