@@ -47,6 +47,7 @@ SeMO는 다양한 분야의 새싹 교육생들이 한데 모여 협업할 수 �
 -   Spring Data JPA
 -   Spring Security
 -   Spring Web
+-   OAuth2
 -   WebSocket + STOMP
 -   OracleDB
 -   MongoDB
