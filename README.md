@@ -117,4 +117,5 @@ SeMO는 다양한 분야의 새싹 교육생들이 한데 모여 협업할 수 �
 ### 채팅
 
 - 채팅을 통해 팀원 및 스터디원들과 논의를 할 수 있습니다.
+
 ![채팅](https://github.com/user-attachments/assets/9db50f9e-bf25-4ac2-9716-16e78cabdefd)
