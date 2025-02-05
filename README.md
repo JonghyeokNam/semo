@@ -88,12 +88,7 @@ SeMO는 다양한 분야의 새싹 교육생들이 한데 모여 협업할 수 �
     -   투표 진행
 -   Figma
     -   목업 제작, 와이어프레임제작, 디자인 작업 공유
--   Visual Studio Live Share
-    -   실시간으로 의사소통하며 받으며 함께 코딩
-    -   피드백의 빠른 반영 가능
-    -   집단지성을 이용해 코드의 신뢰성과 작업속도 향상
- 
-      
+
 
 ## ✔ 팀원 역할 분배
 <img width="50%" alt="스크린샷 2025-02-05 오후 2 12 13" src="https://github.com/user-attachments/assets/f89a1aee-9ca4-4911-8a29-8e9e221fea8d" />
