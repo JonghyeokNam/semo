@@ -116,14 +116,14 @@ SeMO는 다양한 분야의 새싹 교육생들이 한데 모여 협업할 수 �
 
 ![메인화면_1](https://github.com/user-attachments/assets/eca45b65-e09f-44d0-8654-338242491aca)
 </br>
-
+</br>
 
 ### 스터디/프로젝트 모집
 - 모집 인원, 진행 방식, 진행 기간, 모집 마감일, 모집 포지션 등을 입력하여 스터디 및 프로젝트원을 모집하는 게시글을 작성합니다.
 
 ![게시글 (1)](https://github.com/user-attachments/assets/96a67c6b-ade5-49e9-adb3-b015c85ba88c)
 </br>
-
+</br>
 
 ### 스터디/프로젝트 지원
 - 게시글 오른쪽 아이콘을 눌러 원하는 파트 및 자기소개를 입력하여 스터디와 프로젝트에 지원할 수 있습니다.
@@ -132,14 +132,14 @@ SeMO는 다양한 분야의 새싹 교육생들이 한데 모여 협업할 수 �
 ![지원1](https://github.com/user-attachments/assets/06ad2474-c48c-4361-b3b6-8ba1c58949f5)
 ![지원2](https://github.com/user-attachments/assets/45f56056-2016-4beb-a300-fe4d26e2febb)
 </br>
-
+</br>
 
 ### 알림
 - 사용자는 자신의 활동에 대한 타인의 반응을 알림으로 받고 곧바로 확인할 수 있습니다.
 
 ![알림](https://github.com/user-attachments/assets/3062eb42-b3dc-4568-af76-1d5c2430f6a2)
 </br>
-
+</br>
 
 ### 마이페이지
 - 마이페이지에서 회원정보 확인/수정 및 작성글, 참여글, 북마크 목록을 확인합니다.
@@ -148,21 +148,21 @@ SeMO는 다양한 분야의 새싹 교육생들이 한데 모여 협업할 수 �
 ![마이페이지1-_1_](https://github.com/user-attachments/assets/7345e090-a3ef-4518-a246-b62bb4c4ce10)
 ![마이페이지2](https://github.com/user-attachments/assets/3c938086-32af-435f-8548-0276cfcfb72d)
 </br>
-
+</br>
 
 ### 댓글
 - 게시글에 원하는 내용의 댓글을 달 수 있습니다.
 
 ![댓글 (1)](https://github.com/user-attachments/assets/e9389f75-3a2e-49cb-a932-4e7f5ec83a4e)
 </br>
-
+</br>
 
 ### 북마크
 - 원하는 글을 북마크에 추가하여 마이페이지에서 확인할 수 있습니다.
 
 ![북마크-_1_-_1_](https://github.com/user-attachments/assets/72e94040-5838-4f8a-a727-4fb128d140df)
 </br>
-
+</br>
 
 ### 채팅
 - 채팅을 통해 팀원 및 스터디원들과 논의를 할 수 있습니다.
