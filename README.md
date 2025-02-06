@@ -63,7 +63,7 @@ SeMO는 다양한 분야의 새싹 교육생들이 한데 모여 협업할 수 �
 
 <img width="70%" alt="스크린샷 2025-02-05 오후 2 13 22" src="https://github.com/user-attachments/assets/fd308bfd-a596-41cb-97ec-b986e1d06153" />
 
-
+</br>
 
 ## ✔ 협업 환경
 
@@ -89,18 +89,22 @@ SeMO는 다양한 분야의 새싹 교육생들이 한데 모여 협업할 수 �
 -   Figma
     -   목업 제작, 와이어프레임제작, 디자인 작업 공유
 
+</br>
 
 ## ✔ 팀원 역할 분배
 <img width="50%" alt="스크린샷 2025-02-05 오후 2 12 13" src="https://github.com/user-attachments/assets/f89a1aee-9ca4-4911-8a29-8e9e221fea8d" />
 
-
+</br>
 
 ## ✔ ERD
 <img width="100%" alt="스크린샷 2025-02-05 오후 2 24 59" src="https://github.com/user-attachments/assets/58924ed2-10f3-48b9-89f9-93b0d81b23a8" />
 
+</br>
 
 ## ✔ 프로젝트 결과물
 -   [새모이 프로젝트 발표자료.pdf](https://github.com/user-attachments/files/18667096/default.pdf)
+
+</br>
 
 ## 🎵 SeMO 서비스 화면
 
@@ -124,6 +128,7 @@ SeMO는 다양한 분야의 새싹 교육생들이 한데 모여 협업할 수 �
 ### 스터디/프로젝트 지원
 - 게시글 오른쪽 아이콘을 눌러 원하는 파트 및 자기소개를 입력하여 스터디와 프로젝트에 지원할 수 있습니다.
 - 스터디/프로젝트 모집자는 신청 목록을 확인 후 원하는 신청자를 팀원으로 확정합니다.
+
 ![지원1](https://github.com/user-attachments/assets/06ad2474-c48c-4361-b3b6-8ba1c58949f5)
 ![지원2](https://github.com/user-attachments/assets/45f56056-2016-4beb-a300-fe4d26e2febb)
 </br>
