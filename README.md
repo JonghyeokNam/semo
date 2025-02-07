@@ -71,6 +71,9 @@ SeMO는 다양한 분야의 새싹 교육생들이 한데 모여 협업할 수 �
     -   매주 목표량을 설정하여 Sprint 진행
     -   업무의 할당량을 정하여 Story Point를 설정하고, In-Progress -> Done 순으로 작업
     -   소멸 차트를 통해 프로젝트 진행도 확인
+ ![image](https://github.com/user-attachments/assets/9f59374a-49f1-41bf-91ca-b41914b5f67f)
+
+    
 -   회의
     -   Gather Town 아침회의 진행, 전날 목표 달성량과 당일 할 업무 브리핑
     -   각자 위치에서 건네야 할 말이 생기면 팀원의 위치로 이동하여 전달
